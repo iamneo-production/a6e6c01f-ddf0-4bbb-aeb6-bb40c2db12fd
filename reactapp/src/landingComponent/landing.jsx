@@ -4,6 +4,9 @@ export default class LandingComponent extends Component{
     handleSignInClick = () => {
         window.location.href="/login";
     };
+    handleSignUpClick = () => {
+        window.location.href="/signup";
+    };
 
     render(){
         return(
@@ -11,13 +14,13 @@ export default class LandingComponent extends Component{
                     <div className='outergrid'>
                         <div className='inheadgrid'>
                             <div className='zestlogo'>
-                                <img style={{width:"14rem",marginLeft:"2rem"}} src={require("../assets/logo.png")}/>
+                                <img alt="logo" style={{width:"14rem",marginLeft:"2rem"}} src={require("../assets/logo.png")}/>
                             </div>
                             <div className='siginbtndiv'>
                                 <div onClick={this.handleSignInClick} className='siginbtn'>SIGN IN</div>
                             </div>
                             <div>
-                                <div style={{marginLeft:"0px"}} className='siginbtn'>SIGN UP</div>
+                                <div style={{marginLeft:"0px"}} onClick={this.handleSignUpClick} className='siginbtn'>SIGN UP</div>
                             </div>            
                         </div> 
                         <div className='midgrid'>
@@ -27,7 +30,7 @@ export default class LandingComponent extends Component{
                                 </p>
                             </div>
                             <div>
-                                <img src={require("../assets/landingShop.png")} 
+                                <img alt="shop vector" src={require("../assets/landingShop.png")} 
                                   style={{width:"80%"}}>
                                 </img>
                             </div>
