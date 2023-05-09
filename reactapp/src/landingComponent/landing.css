@@ -1,0 +1,47 @@
+.landing{
+    /* text-align: center; */
+    /* background: url(../assets/landingShop.png) no-repeat; */
+    /* background-size: cover; */
+    /* overflow: hidden; */
+    height: 100vh; 
+    /* overflow: scroll; */
+    
+}
+.outergrid{
+    display: grid;
+    grid-template-rows: 2fr 10fr ;
+}
+.inheadgrid{
+    display: grid;
+    grid-template-columns: 10fr 2fr 2fr;
+    grid-gap: 2rem;
+    height: 7rem;
+    border-bottom: 2px solid #141920;
+    background-color: #141920;
+}
+.midgrid{
+    display: grid;
+    grid-template-columns: 5fr 5fr;
+}
+.zestlogo{
+    text-align: left;
+    color: white;
+}
+.decripL{
+    text-align: justify;
+    padding: 8rem;
+    line-height: 2rem;
+}
+.siginbtn{
+    font-size: 1rem;
+    padding: 10px 20px;
+    background-color: #6C757D;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    width: 35%;
+    margin: auto;
+    margin-top: 2rem;
+    margin-right: 0px;
+  }
