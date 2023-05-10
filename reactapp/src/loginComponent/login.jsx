@@ -16,7 +16,6 @@ export default class LoginComponent extends Component{
       }
     
       handleSubmit(event) {
-        // event.preventDefault();
         console.log("this is submit funtion");
         console.log(this.state);                
       }
@@ -36,6 +35,7 @@ export default class LoginComponent extends Component{
                 <div className='zestlogo'>
                     <img alt="logo" style={{width:"14rem",marginLeft:"2rem"}} src={require("../assets/logo.png")}/>
                 </div>
+                <div style={{background:"linear-gradient(to right, #f2709c, #ff9472)",height:"100vh"}}>
                 <div className='formdiv'>
                     <h1>Sign In</h1>
                     <div className='formindiv'>
@@ -77,6 +77,7 @@ export default class LoginComponent extends Component{
                     type="submit">Submit</button>
                     <p className='createacc' >Create a <a href="/signup"> <u style={{color:"black",fontWeight:"400"}}>Zest Account</u></a></p>
                 </div>
+               </div>
                 </div>                     
             </div>
         )
