@@ -38,7 +38,7 @@ export default class SignupComponent extends Component{
                     <div className='zestlogo'>
                         <img alt="logo" style={{width:"14rem",marginLeft:"2rem"}} src={require("../assets/logo.png")}/>
                     </div>
-                    <div style={{height:"100vh",background:"linear-gradient(to right, #f2709c, #ff9472)"}} classname="midcontainer">
+                    <div style={{height:"150vh",background:"linear-gradient(to right, #f2709c, #ff9472)"}} classname="midcontainer">
                         <div className='formdiv'>
                         <h1>Sign Up</h1>
                         <div className='formindiv'>
