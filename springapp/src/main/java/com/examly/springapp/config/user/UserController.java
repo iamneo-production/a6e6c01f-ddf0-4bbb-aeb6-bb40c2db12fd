@@ -22,10 +22,18 @@ public class UserController {
         }
     }
 
-//    @PostMapping("/api/auth/login")
-//    public String loginUser(){
-//        return null;
-//    }
+    @PostMapping("/api/auth/login")
+    public String loginUser(@RequestBody UserLoginDto loginDetails){
+        if(userService.checkUserNameExists(loginDetails.getEmail())){
+            if(userService.verifyUser(loginDetails.getEmail(),loginDetails.getPassword())){
+                return userService.generateToke(loginDetails.getEmail(),loginDetails.getPassword());
+            }else {
+                return "Password Invalid";
+            }
+        }else {
+            return "User Not exist";
+        }
+    }
 
 
 }
