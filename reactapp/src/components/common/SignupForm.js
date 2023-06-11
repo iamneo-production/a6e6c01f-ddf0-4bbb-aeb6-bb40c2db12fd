@@ -4,7 +4,7 @@ export default function SignupForm(props) {
     return (
         <Offcanvas placement={'end'} show={props.show} onHide={() => props.onHide()}>
             <Offcanvas.Header closeButton>
-                <Offcanvas.Title>Signup</Offcanvas.Title>
+                <Offcanvas.Title><b>Signup</b></Offcanvas.Title>
             </Offcanvas.Header>
             <Offcanvas.Body>
                 <div class="container">
@@ -46,7 +46,7 @@ export default function SignupForm(props) {
 
                     <br></br>
                     <button style={{ backgroundColor: "#F25151", color: "black", marginTop: 10 }} type="button" class="btn" >Submit</button>
-                    <p style={{ marginTop: 8 }}>Already have an account <a onClick={() => { props.onHide(); props.openSignin() }} class="text-reset">Signin</a></p>
+                    <p style={{ marginTop: 8 }}>Already have an account <a onClick={() => { props.onHide(); props.openSignin() }} style={{cursor:'pointer'}} class="text-reset">Signin</a></p>
                 </div>
             </Offcanvas.Body>
         </Offcanvas>
