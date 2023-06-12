@@ -15,26 +15,31 @@ public class ProductController {
     @Autowired
     private ProductService productService;
 
-    @RequestMapping(value = "/products")
+    @GetMapping(value = "/api/products")
     public List<Product> getProducts(@RequestParam(value = "category", required = false) String cat){
 
         return productService.getProducts(cat);
     }
 
-    @RequestMapping(value = "/products", method = RequestMethod.POST)
-    public Product createProduct(@RequestBody Product product){
-       return productService.createProduct(product);
-    }
-
-    @RequestMapping(value = "/products/{productId}")
+    @GetMapping(value = "/api/products/{productId}")
     public Optional<Product> getProductById(@PathVariable("productId") Integer productId){
         return productService.getProductById(productId); }
 
-    @RequestMapping(value = "/products", method = RequestMethod.PUT)
+    @GetMapping(value = "/api/products/{sellerId}")
+    public List<Product> getProductBySellerId(@PathVariable("sellerId") Integer sellerId){
+        return productService.getProductBySellerId(sellerId); }
+
+    @PostMapping(value = "/api/seller/product")
+    public Product createProduct(@RequestBody Product product){
+        return productService.createProduct(product);
+    }
+
+    @PutMapping(value = "/api/seller/products")
     public Product updateProduct(@RequestBody Product incomingProduct){
         return productService.updateProduct(incomingProduct); }
 
-    @RequestMapping(value = "/products/{productId}", method = RequestMethod.DELETE)
+    @DeleteMapping(value = "/api/seller/products/{productId}")
     public String deleteProductById(@PathVariable Integer productId){
         return productService.deleteProductById(productId); }
+
 }

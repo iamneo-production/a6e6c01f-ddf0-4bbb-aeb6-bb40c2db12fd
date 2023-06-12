@@ -55,4 +55,8 @@ public class ProductService {
 
         return "Deleted Successfully";
     }
+
+    public List<Product> getProductBySellerId(Integer sellerId) {
+        return productRepository.findAllBySellerId(sellerId);
+    }
 }
