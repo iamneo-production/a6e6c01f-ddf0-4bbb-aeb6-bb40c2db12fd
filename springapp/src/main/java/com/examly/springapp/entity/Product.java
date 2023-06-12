@@ -30,12 +30,14 @@ public class Product {
     private String category;
 
 
-    public Product(Integer id, String name, String description, Double price, String category) {
+    public Product(Integer id, String name, String description, Double price, String category, String imageUrl, Integer sellerId) {
         this.id = id;
         this.name = name;
         this.description = description;
         this.price = price;
         this.category = category;
+        this.imageUrl = imageUrl;
+        this.sellerId = sellerId;
 
     }
 
