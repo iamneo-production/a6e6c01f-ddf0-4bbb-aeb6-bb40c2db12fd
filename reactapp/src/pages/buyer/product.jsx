@@ -1,9 +1,9 @@
 
 import NavigationBar from '../../components/common/NavigationBar';
 import Footer from '../../components/common/Footer';
-import SingleProduct from '../../components/common/SingleProduct';
-import Review from '../../components/common/Review';
-import QA from '../../components/common/QA';
+import SingleProduct from '../../components/buyer/SingleProduct';
+import Review from '../../components/buyer/Review';
+import QA from '../../components/buyer/QA';
 import "././product.css";
 
 

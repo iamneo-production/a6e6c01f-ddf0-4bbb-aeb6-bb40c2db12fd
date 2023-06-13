@@ -1,8 +1,8 @@
 import {Link} from 'react-router-dom';
 import NavigationBar from '../../components/common/NavigationBar';
 import "././home.css";
-import Card from '../../components/common/card';
-import cardData from '../../components/common/cardData';
+import Card from '../../components/buyer/Card';
+import cardData from '../../components/buyer/CardData';
 import Footer from '../../components/common/Footer';
 
 
