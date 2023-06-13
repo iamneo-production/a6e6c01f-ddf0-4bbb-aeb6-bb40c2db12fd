@@ -4,7 +4,7 @@ import HeaderBar from '../../components/common/HeaderBar';
 export default function LandingPage() {
     return (
         <div>
-            <HeaderBar/>
+            <HeaderBar type="LandingPage"/>
             <div className="container-fluid">
             <div className="row">
                 <div style={{ marginLeft: 40, marginTop: 60, marginRight:40}} className="col">

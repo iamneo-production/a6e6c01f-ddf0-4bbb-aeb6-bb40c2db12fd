@@ -1,5 +1,8 @@
 package com.examly.springapp.controller;
 
+import com.examly.springapp.config.jwt.JwtTokenProvider;
+import com.examly.springapp.config.user.User;
+import com.examly.springapp.config.user.UserRepository;
 import com.examly.springapp.entity.Product;
 import com.examly.springapp.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +18,11 @@ public class ProductController {
     @Autowired
     private ProductService productService;
 
+    @Autowired
+    JwtTokenProvider tokenProvider;
+
+    @Autowired
+    UserRepository userRepository;
     @GetMapping(value = "/api/products")
     public List<Product> getProducts(@RequestParam(value = "category", required = false) String cat){
 
@@ -29,9 +37,10 @@ public class ProductController {
     public List<Product> getProductBySellerId(@PathVariable("sellerId") Integer sellerId){
         return productService.getProductBySellerId(sellerId); }
 
-    @PostMapping(value = "/api/seller/product")
-    public Product createProduct(@RequestBody Product product){
-        return productService.createProduct(product);
+    @PostMapping(value = "/api/seller/products")
+    public Product createProduct(@RequestHeader(value = "Authorization") String token ,@RequestBody Product product){
+        User user = userRepository.findByEmail(tokenProvider.getUsernameFromToken(token)).orElseThrow();
+        return productService.createProduct(product,user);
     }
 
     @PutMapping(value = "/api/seller/products")

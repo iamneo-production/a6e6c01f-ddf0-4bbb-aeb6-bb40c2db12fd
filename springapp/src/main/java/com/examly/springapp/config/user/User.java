@@ -1,5 +1,6 @@
 package com.examly.springapp.config.user;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -18,8 +19,9 @@ public class User implements UserDetails {
     private String name;
     @Column(unique = true,nullable = false)
     private String email;
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;
-
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String roles;
     private boolean isEnabled=true;
 

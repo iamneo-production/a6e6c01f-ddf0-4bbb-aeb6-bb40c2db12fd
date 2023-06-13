@@ -1,6 +1,7 @@
 package com.examly.springapp.service;
 
 
+import com.examly.springapp.config.user.User;
 import com.examly.springapp.entity.Product;
 import com.examly.springapp.repo.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,7 +36,8 @@ public class ProductService {
 
 
     // Create
-    public Product createProduct(Product product){
+    public Product createProduct(Product product, User user){
+        product.setSeller(user);
         return productRepository.save(product);
     }
 
@@ -57,6 +59,6 @@ public class ProductService {
     }
 
     public List<Product> getProductBySellerId(Integer sellerId) {
-        return productRepository.findAllBySellerId(sellerId);
+        return productRepository.findAllBySeller(sellerId);
     }
 }
