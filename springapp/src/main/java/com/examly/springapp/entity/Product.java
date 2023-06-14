@@ -1,6 +1,8 @@
 package com.examly.springapp.entity;
 
 
+import com.examly.springapp.config.user.User;
+
 import javax.persistence.*;
 
 @Entity
@@ -22,22 +24,23 @@ public class Product {
     @Column(name="imageUrl", nullable = false)
     private String imageUrl;
 
-    @Column(name="sellerId", nullable = false)
-    private Integer sellerId;
+    @ManyToOne
+    @JoinColumn
+    private User seller;
 
 
     @Column(name="category", nullable = false)
     private String category;
 
 
-    public Product(Integer id, String name, String description, Double price, String category, String imageUrl, Integer sellerId) {
+    public Product(Integer id, String name, String description, Double price, String category, String imageUrl, User sellerId) {
         this.id = id;
         this.name = name;
         this.description = description;
         this.price = price;
         this.category = category;
         this.imageUrl = imageUrl;
-        this.sellerId = sellerId;
+        this.seller = sellerId;
 
     }
 
@@ -86,12 +89,12 @@ public class Product {
         this.imageUrl = imageUrl;
     }
 
-    public Integer getSellerId() {
-        return sellerId;
+    public User getSeller() {
+        return seller;
     }
 
-    public void setSellerId(Integer sellerId) {
-        this.sellerId = sellerId;
+    public void setSeller(User seller) {
+        this.seller = seller;
     }
 
     public String getCategory() {

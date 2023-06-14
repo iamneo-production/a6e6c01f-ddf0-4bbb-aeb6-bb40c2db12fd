@@ -21,10 +21,12 @@ export default function HeaderBar() {
                         <button style={{ marginRight: 10 }} type="button" className="btn btn-secondary" onClick={() => { handleOpenSignup() }}>Signup</button>
                         <button style={{ marginRight: 10 }} type="button" className="btn btn-secondary" onClick={() => { handleOpenSignin() }}>Signin</button>
                     </div>
+
                 </div>
             </nav>
             <SignupForm show={signup} onHide={handleCloseSignup} openSignin={handleOpenSignin}></SignupForm>
             <SigninForm show={signin} onHide={handleCloseSignin} openSignup={handleOpenSignup}></SigninForm>
         </div>
+
     )
 }
