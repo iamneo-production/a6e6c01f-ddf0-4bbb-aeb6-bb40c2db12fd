@@ -30,10 +30,10 @@ export default function NavigationBar() {
            <div className="col-md-3">
            <ul className="navbar-nav d-flex flex-row-reverse justify-content me-3">
             <li className="nav-item me-3 me-lg-0">
-                <a className="nav-link text-white" href="#"><i className="md md-envelope mx-1"> <MdAccountCircle style={{width:30, height:50}} /></i> Account</a>
+                <a className="nav-link text-white" href="#"><i className="md md-envelope mx-1"> <MdAccountCircle style={{width:30, height:20}} /></i> Account</a>
             </li>
             <li className="nav-item me-3 me-lg-4">
-                <a className="nav-link text-white" href="#"><i className="hi hi-envelope mx-1"><HiShoppingCart style={{width:30, height:50}}/></i> Cart</a>
+                <a className="nav-link text-white" href="#"><i className="hi hi-envelope mx-1"><HiShoppingCart style={{width:30, height:20}}/></i> Cart</a>
             </li>
            </ul>
            </div>
