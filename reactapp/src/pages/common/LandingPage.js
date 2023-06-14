@@ -1,5 +1,6 @@
 import { ReactComponent as Landingpageimg } from '../../assets/Ecommerce web page-pana 1.svg';
 import HeaderBar from '../../components/common/HeaderBar';
+import Footer from '../../components/common/Footer';
 
 export default function LandingPage() {
     return (
@@ -17,7 +18,8 @@ export default function LandingPage() {
                     <Landingpageimg style={{ width: 500, height: 500 }} />
                 </div>
             </div>
-            </div>   
+            </div>
+            <Footer/> 
         </div>
     )
 }
