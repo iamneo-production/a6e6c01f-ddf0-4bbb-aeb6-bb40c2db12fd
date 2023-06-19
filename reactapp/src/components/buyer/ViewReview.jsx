@@ -23,7 +23,6 @@ const ViewReviewModal = ({ showModal, handleClose, id }) => {
                 <h5>Your comments:</h5>
                 <p>{item.review}</p>
                 <h5>Your rating:</h5>
-                <StarRating />
             </div>
             </Modal.Body>
         </Modal>
