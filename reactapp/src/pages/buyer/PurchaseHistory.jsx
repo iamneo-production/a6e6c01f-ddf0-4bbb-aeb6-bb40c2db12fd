@@ -10,8 +10,6 @@ const PurchaseHistory = () => {
         <NavigationBar/>
         <br/>
             <br/>
-            <br/>
-
             <Card>
                 <Card.Body>
                     <Card.Title >
