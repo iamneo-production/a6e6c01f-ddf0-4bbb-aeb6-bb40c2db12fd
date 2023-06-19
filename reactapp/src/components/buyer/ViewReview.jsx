@@ -1,6 +1,5 @@
 import React from 'react';
 import { Modal } from 'react-bootstrap';
-import StarRating from './StarRating';
 import { TableData } from './DummyTableData';
 
 const ViewReviewModal = ({ showModal, handleClose, id }) => {
