@@ -1,6 +1,7 @@
 import React from 'react';
 import { Modal } from 'react-bootstrap';
 import { TableData } from './DummyTableData';
+import DefaultStars from './DefaultStars';
 
 const ViewReviewModal = ({ showModal, handleClose, id }) => {
     const item = TableData.find((item) => item.id === id);
@@ -22,6 +23,10 @@ const ViewReviewModal = ({ showModal, handleClose, id }) => {
                 <h5>Your comments:</h5>
                 <p>{item.review}</p>
                 <h5>Your rating:</h5>
+                <DefaultStars
+                            value={item.rating}
+                            exportStar={() => { return }}
+                        />
             </div>
             </Modal.Body>
         </Modal>
