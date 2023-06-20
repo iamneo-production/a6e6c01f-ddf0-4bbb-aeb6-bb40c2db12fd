@@ -8,6 +8,7 @@ export const TableData = [
         orderdate: "2021-09-01",
         review: "Great monitor!",
         rating: 4,
+        quantity:10
         },
         {
         id: "102",
@@ -18,6 +19,7 @@ export const TableData = [
         orderdate: "2021-09-10",
         review: null,
         rating: 2,
+        quantity:"Out of stock"
         },
         {
         id: "103",

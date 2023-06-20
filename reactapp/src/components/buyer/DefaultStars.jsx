@@ -1,19 +1,21 @@
 import React, { useState } from 'react';
 import { FaStar } from 'react-icons/fa';
 
-const StarRating = () => {
-    const [rating, setRating] = useState(0);
+const DefaultStars = ({ exportStar, value = 0 }) => {
+    const [rating, setRating] = useState(value);
 
     const handleRating = (value) => {
         setRating(value);
+        exportStar(rating)
     };
 
     return (
         <div>
             {[...Array(5)].map((_, index) => {
                 const starValue = index + 1;
+                const key = `star-${starValue}`;
                 return (
-                    <label key={`star-${starValue}`}>
+                    <label key={key}>
                         <input
                             type="radio"
                             name="rating"
@@ -23,7 +25,7 @@ const StarRating = () => {
                         />
                         <FaStar
                             className="star"
-                            color={starValue <= rating ? '#ffc107' : '#e4e5e9'}
+                            color={starValue <= value ? '#ffc107' : '#e4e5e9'}
                             size={30}
                         />
                     </label>
@@ -33,4 +35,4 @@ const StarRating = () => {
     );
 };
 
-export default StarRating;
+export default DefaultStars;
