@@ -18,7 +18,7 @@ export const TableData = [
         status: "Returned",
         orderdate: "2021-09-10",
         review: null,
-        rating: 2,
+        rating: null,
         quantity: "Out of stock"
     },
     {
