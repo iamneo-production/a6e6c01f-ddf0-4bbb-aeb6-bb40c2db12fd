@@ -59,11 +59,11 @@ export default class Profile extends Component{
                    <br />
                    <br />
                    <br />
-                    <div className='mid'>
+                    <div >
                         
-                                   <h4> MY PROFILE </h4>
-                                   <h4> Personal Information</h4>  
-                                        
+                                   <h4 style={{paddingLeft:"5rem"}}> MY PROFILE </h4>
+                                   <h4 style={{paddingLeft:"5rem"}}> Personal Information</h4>  
+                            <div className='mid'>            
                             <br />
                             
                             
@@ -139,18 +139,19 @@ export default class Profile extends Component{
                             
                             <h6>
                                 { !this.state.editable ?
-                                <button className="btn btn-primary" 
+                                <button style={{backgroundColor:"#F25151",color:"black",width:"10%"}} className="btn btn-primary" 
                                 onClick={(e)=>this.handleEdit(e)}>
                                 
                                 Edit</button>:
-                                <div style={{display:"grid",gridTemplateColumns:"100px 100px",columnGap:"20px"}}> <button className="btn btn-primary"
+                                <div style={{display:"grid",gridTemplateColumns:"100px 100px",columnGap:"20px"}}> <button style={{backgroundColor:"#F25151",color:"black"}} className="btn btn-primary"
                             onClick={(e)=>this.handleSubmit(e)}
                             >Update</button>
-                            <button className="btn btn-primary"
+                            <button className="btn btn-primary" style={{backgroundColor:"#F25151",color:"black"}}
                             onClick={(e)=>this.handleSubmit(e)}
                             >Cancel</button></div> }</h6>
                             <br />
                         </div>
+                    </div>
                     </div>
             
                                 
