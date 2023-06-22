@@ -26,6 +26,7 @@ function App() {
         <Route path="/profile" element={<Profile/>} />
         <Route path="/seller/editproduct" element={<EditProductPage/>}/>
         <Route path="/seller/addproduct" element={<AddProductPage/>}/>
+        
       </Routes>
     </Router>
   );
