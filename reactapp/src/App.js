@@ -13,7 +13,6 @@ import EditProductPage from "./pages/seller/EditProductPage";
 import AddProductPage from "./pages/seller/AddProductPage";
 
 
-
 function App() {
   return (
     <Router>
@@ -27,6 +26,7 @@ function App() {
         <Route path="/seller/editproduct" element={<EditProductPage/>}/>
         <Route path="/seller/addproduct" element={<AddProductPage/>}/>
         
+          
       </Routes>
     </Router>
   );
