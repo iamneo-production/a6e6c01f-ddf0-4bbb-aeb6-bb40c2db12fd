@@ -8,7 +8,7 @@ import HomePage from "./pages/buyer/home";
 import ProductPage from "./pages/buyer/product";
 import PurchaseHistory from "./pages/buyer/PurchaseHistory";
 import ProductsPage from "./pages/admin/ProductsPage";
-
+import Profile from "./pages/common/profile";
 function App() {
   return (
     <Router>
@@ -18,7 +18,7 @@ function App() {
         <Route path="/product" element={<ProductPage/>}/>
         <Route path="/purchasehistory" element={<PurchaseHistory/>}/>
         <Route path="/admin/products" element={<ProductsPage/>}/>
-        <Route path="/profile" element={<ProductPage/>} />
+        <Route path="/profile" element={<Profile/>} />
       </Routes>
     </Router>
   );
