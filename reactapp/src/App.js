@@ -8,6 +8,10 @@ import HomePage from "./pages/buyer/home";
 import ProductPage from "./pages/buyer/product";
 import PurchaseHistory from "./pages/buyer/PurchaseHistory";
 import ProductsPage from "./pages/admin/ProductsPage";
+import Profile from "./pages/common/profile";
+import EditProductPage from "./pages/seller/EditProductPage";
+import AddProductPage from "./pages/seller/AddProductPage";
+
 
 
 function App() {
@@ -19,6 +23,9 @@ function App() {
         <Route path="/product" element={<ProductPage/>}/>
         <Route path="/purchasehistory" element={<PurchaseHistory/>}/>
         <Route path="/admin/products" element={<ProductsPage/>}/>
+        <Route path="/profile" element={<Profile/>} />
+        <Route path="/seller/editproduct" element={<EditProductPage/>}/>
+        <Route path="/seller/addproduct" element={<AddProductPage/>}/>
       </Routes>
     </Router>
   );
