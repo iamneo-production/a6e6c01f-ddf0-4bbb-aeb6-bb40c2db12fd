@@ -3,6 +3,7 @@ import { Table } from 'react-bootstrap';
 import { TableData } from '../../components/buyer/DummyTableData';
 import AdminNavigationBar from "../../components/admin/AdminNavigationBar";
 import ProductsRemoveModal from '../../components/admin/ProductsRemoveModal';
+import Footer from '../../components/common/Footer';
 
 export default function ProductsPage() {
     const [showRemove, setShowRemove] = useState(false);
@@ -29,7 +30,7 @@ export default function ProductsPage() {
                             <th className='text-secondary'>PRICE</th>
                             <th className='text-secondary'>QUANTITY</th>
                             <th className='text-secondary'>DATE ADDED</th>
-                            <th className='text-secondary'>ACTION</th>
+                            <th className='text-secondary text-end'>ACTION</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -55,6 +56,7 @@ export default function ProductsPage() {
                     </tbody>
                 </Table>
             </div>
+            <Footer/>
         </div>
     )
 }
