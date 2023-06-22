@@ -18,6 +18,7 @@ function App() {
         <Route path="/product" element={<ProductPage/>}/>
         <Route path="/purchasehistory" element={<PurchaseHistory/>}/>
         <Route path="/admin/products" element={<ProductsPage/>}/>
+        <Route path="/profile" element={<ProductPage/>} />
       </Routes>
     </Router>
   );
