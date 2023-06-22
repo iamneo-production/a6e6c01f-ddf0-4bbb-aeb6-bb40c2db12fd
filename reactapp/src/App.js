@@ -9,6 +9,7 @@ import ProductPage from "./pages/buyer/product";
 import PurchaseHistory from "./pages/buyer/PurchaseHistory";
 import ProductsPage from "./pages/admin/ProductsPage";
 
+
 function App() {
   return (
     <Router>

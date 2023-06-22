@@ -12,7 +12,7 @@ export default function ProductsRemoveModal(props) {
         <Button variant="secondary" onClick={props.handleHideRemoveModal}>
           No, Cancel
         </Button>
-        <Button variant="primary" onClick={props.handleHideRemoveModal}>
+        <Button variant="primary" style={{backgroundColor:"#F25151"}} onClick={props.handleHideRemoveModal}>
           Yes, Remove
         </Button>
       </Modal.Footer>

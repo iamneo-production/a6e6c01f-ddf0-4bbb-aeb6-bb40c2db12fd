@@ -24,7 +24,7 @@ const PurchaseTable = () => {
 
 
     return (
-        <div className='w-100 h5'>
+        <div>
         <Table>
             <thead>
             <tr>
