@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Modal, Button } from 'react-bootstrap';
 import { TableData } from './DummyTableData';
 import DefaultStars from './DefaultStars';
+import UpdateReview from './UpdateReview';
 
 const ViewReviewModal = ({ showModal, handleClose, id }) => {
     const item = TableData.find((item) => item.id === id);
