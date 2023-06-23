@@ -5,10 +5,20 @@ import DefaultStars from './DefaultStars';
 
 const ViewReviewModal = ({ showModal, handleClose, id }) => {
     const item = TableData.find((item) => item.id === id);
+    const [showUpdateModal, setShowUpdateModal] = useState(false);
 
     if (!item) {
         return null; // Return null or a fallback component if the item is not found
     }
+
+    const handleUpdateClick = () => {
+        setShowUpdateModal(true);
+    };
+
+    const handleUpdateClose = () => {
+        setShowUpdateModal(false);
+    };
+
 
     return (
         <div>
@@ -30,11 +40,19 @@ const ViewReviewModal = ({ showModal, handleClose, id }) => {
                     </div>
                 </Modal.Body>
                 <Modal.Footer>
-                    <Button variant="primary" style={{ backgroundColor: '#F25151', borderColor: '#F25151' }} >
+                    <Button variant="primary"
+                        style={{ backgroundColor: '#F25151', borderColor: '#F25151' }}
+                        onClick={handleUpdateClick}
+                    >
                         Update
                     </Button>
                 </Modal.Footer>
             </Modal>
+
+            {showUpdateModal && (
+                <UpdateReview showModal={showUpdateModal} handleClose={handleUpdateClose} id={id} />
+            )}
+
         </div>
     );
 };
