@@ -100,7 +100,8 @@ export default class Profile extends Component{
                                 <option value="Female">Female</option>
                                 
                             </select>
-                            
+
+                            <br />      
                             <br />
                             <h6  > Email</h6>
                             <input 
