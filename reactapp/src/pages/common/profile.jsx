@@ -59,10 +59,11 @@ export default class Profile extends Component{
                    <br />
                    <br />
                    <br />
-                    <div >
+                    
                         
-                                   <h4 style={{paddingLeft:"5rem"}}> MY PROFILE </h4>
-                                   <h4 style={{paddingLeft:"5rem"}}> Personal Information</h4>  
+                   <h3 style={{paddingLeft:"1rem"}}> <b>MY PROFILE</b> </h3>
+                                   <br/>
+                                   <h4 style={{paddingLeft:100}}><b> Personal Information</b></h4>  
                             <div className='mid'>            
                             <br />
                             
@@ -143,17 +144,17 @@ export default class Profile extends Component{
                                 <button style={{backgroundColor:"#F25151",color:"black",width:"10%"}} className="btn btn-primary" 
                                 onClick={(e)=>this.handleEdit(e)}>
                                 
-                                Edit</button>:
+                                <b>Edit </b></button>:
                                 <div style={{display:"grid",gridTemplateColumns:"100px 100px",columnGap:"20px"}}> <button style={{backgroundColor:"#F25151",color:"black"}} className="btn btn-primary"
                             onClick={(e)=>this.handleSubmit(e)}
-                            >Update</button>
+                            ><b>Update</b></button>
                             <button className="btn btn-primary" style={{backgroundColor:"#F25151",color:"black"}}
                             onClick={(e)=>this.handleSubmit(e)}
                             >Cancel</button></div> }</h6>
                             <br />
                         </div>
                     </div>
-                    </div>
+                    
             
                                 
             
