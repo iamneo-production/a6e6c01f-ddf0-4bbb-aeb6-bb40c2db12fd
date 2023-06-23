@@ -22,6 +22,14 @@ const UpdateReview = ({ showModal, handleClose, id }) => {
         setOpenSnackbar(false);
     };
 
+    const handleFormSubmit = (event) => {
+        event.preventDefault();
+        handleOpenSnackbar();
+        setTimeout(() => {
+            window.location.reload(); // Refresh the website after 5 seconds
+        }, 1000);
+    };
+
     return (
         <div >
             <Modal show={showModal} onHide={handleClose} >
@@ -29,20 +37,21 @@ const UpdateReview = ({ showModal, handleClose, id }) => {
                     <Modal.Title> <h3> Update Review and Rating</h3> </Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    <Form.Group controlId="exampleForm.ControlTextarea">
-                        <Form.Control
-                            as="textarea"
-                            rows={6}
-                            placeholder='Max 100 words'
-                            value={textareaValue}
-                            onChange={handleTextareaChange}
-                        />
-                    </Form.Group>
-                    {/* <div className='d-flex p-3 justify-content-start'> */}
-                    <div className='text-center mt-3'>
-                        <h5>Your rating </h5>
-                        <StarRating />
-                    </div>
+                    <Form onSubmit={handleFormSubmit}>
+                        <Form.Group controlId="exampleForm.ControlTextarea">
+                            <Form.Control
+                                as="textarea"
+                                rows={6}
+                                placeholder='Max 100 words'
+                                value={textareaValue}
+                                onChange={handleTextareaChange}
+                            />
+                        </Form.Group>
+                        <div className='text-center mt-3'>
+                            <h5>Your rating </h5>
+                            <StarRating />
+                        </div>
+                    </Form>
                 </Modal.Body>
                 <Modal.Footer>
                     <Button variant="secondary" onClick={handleClose}>
@@ -73,3 +82,4 @@ const UpdateReview = ({ showModal, handleClose, id }) => {
 }
 
 export default UpdateReview;
+
