@@ -13,6 +13,7 @@ const ViewReviewModal = ({ showModal, handleClose, id }) => {
     }
 
     const handleUpdateClick = () => {
+        handleClose();
         setShowUpdateModal(true);
     };
 

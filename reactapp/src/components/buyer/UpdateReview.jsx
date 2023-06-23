@@ -3,11 +3,14 @@ import { Button, Modal, Form } from 'react-bootstrap';
 import StarRating from './StarRating';
 import Snackbar from '@mui/material/Snackbar';
 import Alert from '@mui/material/Alert';
+import { TableData } from './DummyTableData';
 
 
 const UpdateReview = ({ showModal, handleClose, id }) => {
-    const [textareaValue, setTextareaValue] = useState('');
+    const item = TableData.find((item) => item.id === id);
+    const [textareaValue, setTextareaValue] = useState(item.review);
     const [openSnackbar, setOpenSnackbar] = useState(false);
+    const [rating, setRating] = useState(item.rating)
 
     const handleTextareaChange = (event) => {
         setTextareaValue(event.target.value);
@@ -49,18 +52,21 @@ const UpdateReview = ({ showModal, handleClose, id }) => {
                         </Form.Group>
                         <div className='text-center mt-3'>
                             <h5>Your rating </h5>
-                            <StarRating />
+                            <StarRating
+                                value={rating}
+                                exportStar={(star) => setRating(star)}
+                            />
                         </div>
+                        <Modal.Footer>
+                            <Button variant="secondary" onClick={handleClose}>
+                                Cancel
+                            </Button>
+                            <Button variant="primary" style={{ backgroundColor: '#F25151', borderColor: '#F25151' }} onClick={handleOpenSnackbar}>
+                                Post
+                            </Button>
+                        </Modal.Footer>
                     </Form>
                 </Modal.Body>
-                <Modal.Footer>
-                    <Button variant="secondary" onClick={handleClose}>
-                        Cancel
-                    </Button>
-                    <Button variant="primary" style={{ backgroundColor: '#F25151', borderColor: '#F25151' }} onClick={handleOpenSnackbar}>
-                        Post
-                    </Button>
-                </Modal.Footer>
             </Modal>
             <Snackbar
                 open={openSnackbar}
