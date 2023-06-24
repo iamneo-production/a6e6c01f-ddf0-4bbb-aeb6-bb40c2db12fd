@@ -41,7 +41,9 @@ const ReviewModal = ({ showModal, handleClose, id }) => {
                     {/* <div className='d-flex p-3 justify-content-start'> */}
                     <div className='text-center mt-3'>
                         <h5>Your rating </h5>
-                        <StarRating />
+                        <StarRating
+                            exportStar={() => { return }}
+                        />
                     </div>
                 </Modal.Body>
                 <Modal.Footer>

@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
 import { FaStar } from 'react-icons/fa';
 
-const StarRating = () => {
-    const [rating, setRating] = useState(0);
+const StarRating = ({ value = 0, exportStar }) => {
+    const [rating, setRating] = useState(value);
 
     const handleRating = (value) => {
         setRating(value);
+        exportStar(value);
     };
 
     return (
