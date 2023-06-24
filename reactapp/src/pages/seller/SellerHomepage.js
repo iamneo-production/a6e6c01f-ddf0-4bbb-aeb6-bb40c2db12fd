@@ -8,12 +8,14 @@ import AllProducts from "../../components/seller/AllProducts";
 export default function SellerHomePage() {
     return (
         <div>
+
             <SellerNavigationBar/>
             <DashBoard />
             <br/>
             <ProductHeader />
             <AllProducts/>
             <Footer/>
+            
         </div>
     );
 }
