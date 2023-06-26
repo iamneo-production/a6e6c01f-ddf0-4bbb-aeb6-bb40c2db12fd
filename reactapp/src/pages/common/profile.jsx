@@ -150,7 +150,7 @@ export default class Profile extends Component{
                             ><b>Update</b></button>
                             <button className="btn btn-primary" style={{backgroundColor:"#F25151",color:"black"}}
                             onClick={(e)=>this.handleSubmit(e)}
-                            ><b>Cancel</b></button></div> }</h6>
+                            >Cancel</button></div> }</h6>
                             <br />
                         </div>
                     </div>
