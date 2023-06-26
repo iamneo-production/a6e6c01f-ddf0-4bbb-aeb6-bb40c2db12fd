@@ -12,7 +12,7 @@ import Profile from "./pages/common/profile";
 import EditProductPage from "./pages/seller/EditProductPage";
 import AddProductPage from "./pages/seller/AddProductPage";
 import SellerHomePage from "./pages/seller/SellerHomepage";
-import Showuser from "./pages/admin/showUser";
+import Showuser from "./pages/admin/showuser";
 
 
 function App() {
