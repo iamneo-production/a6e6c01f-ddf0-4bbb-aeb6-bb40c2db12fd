@@ -1,10 +1,10 @@
-package com.examly.springapp.config.security;
+package com.example.springapp.config.security;
 
 
-import com.examly.springapp.config.jwt.JwtAuthenticationEntryPoint;
-import com.examly.springapp.config.jwt.JwtRequestFilter;
-import com.examly.springapp.config.jwt.JwtTokenProvider;
-import com.examly.springapp.config.user.UserService;
+import com.example.springapp.config.jwt.JwtAuthenticationEntryPoint;
+import com.example.springapp.config.jwt.JwtRequestFilter;
+import com.example.springapp.config.jwt.JwtTokenProvider;
+import com.example.springapp.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -29,7 +29,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable()
                 .authorizeRequests()
-                .antMatchers("/api/auth/**").permitAll()
+                .antMatchers("/api/auth/**","/product","/purchase/**","/review/**").permitAll()
                 .antMatchers("/api/admin/**").hasRole("ADMIN")
                 .antMatchers("/api/seller/**").hasAnyRole("ADMIN","SELLER")
                 .antMatchers("/api/**").hasAnyRole("ADMIN","SELLER","BUYER")

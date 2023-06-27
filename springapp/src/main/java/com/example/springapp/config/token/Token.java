@@ -1,4 +1,4 @@
-package com.examly.springapp.config.token;
+package com.example.springapp.config.token;
 
 
 import javax.persistence.Entity;

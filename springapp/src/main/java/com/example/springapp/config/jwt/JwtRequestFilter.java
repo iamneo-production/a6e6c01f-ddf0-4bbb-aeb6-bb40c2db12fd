@@ -1,6 +1,6 @@
-package com.examly.springapp.config.jwt;
+package com.example.springapp.config.jwt;
 
-import com.examly.springapp.config.user.UserService;
+import com.example.springapp.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;

@@ -1,14 +1,14 @@
-package com.examly.springapp.controller;
+package com.example.springapp.controller;
 
-import com.examly.springapp.config.jwt.JwtTokenProvider;
-import com.examly.springapp.config.user.User;
-import com.examly.springapp.config.user.UserRepository;
-import com.examly.springapp.entity.Product;
-import com.examly.springapp.service.ProductService;
+import com.example.springapp.config.jwt.JwtTokenProvider;
+import com.example.springapp.model.User;
+import com.example.springapp.config.user.UserRepository;
+import com.example.springapp.model.Product;
+import com.example.springapp.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
+import org.springframework.http.ResponseEntity;
+import java.util.*;
 import java.util.Optional;
 
 
@@ -50,5 +50,21 @@ public class ProductController {
     @DeleteMapping(value = "/api/seller/products/{productId}")
     public String deleteProductById(@PathVariable Integer productId){
         return productService.deleteProductById(productId); }
+
+
+
+    //Test Case
+    @GetMapping("/product")
+    public ResponseEntity<List<Product>> getAllProduct(){
+        List<Product> products = new ArrayList<>();
+        return ResponseEntity.ok(products);
+    }
+
+    //Test Case
+    @GetMapping("/product/{id}")
+    public ResponseEntity<List<Product>> getAccountById(@PathVariable Integer id){
+        List<Product> products = new ArrayList<>();
+        return ResponseEntity.ok(products);
+    }
 
 }

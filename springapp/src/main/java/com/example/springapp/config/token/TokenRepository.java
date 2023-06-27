@@ -1,4 +1,4 @@
-package com.examly.springapp.config.token;
+package com.example.springapp.config.token;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;

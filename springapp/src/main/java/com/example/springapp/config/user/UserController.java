@@ -1,11 +1,12 @@
-package com.examly.springapp.config.user;
+package com.example.springapp.config.user;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
-
+import com.example.springapp.model.User;
 import javax.persistence.PostRemove;
+import com.example.springapp.service.UserService;
 
 @RestController
 public class UserController {

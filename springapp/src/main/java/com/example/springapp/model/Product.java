@@ -1,7 +1,7 @@
-package com.examly.springapp.entity;
+package com.example.springapp.model;
 
 
-import com.examly.springapp.config.user.User;
+import com.example.springapp.model.User;
 
 import javax.persistence.*;
 

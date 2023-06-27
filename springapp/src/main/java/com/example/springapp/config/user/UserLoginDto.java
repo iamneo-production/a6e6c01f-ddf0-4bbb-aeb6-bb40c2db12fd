@@ -1,4 +1,4 @@
-package com.examly.springapp.config.user;
+package com.example.springapp.config.user;
 
 public class UserLoginDto {
     private String email;

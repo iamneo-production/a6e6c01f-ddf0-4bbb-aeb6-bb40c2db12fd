@@ -1,4 +1,4 @@
-package com.examly.springapp.config.user;
+package com.example.springapp.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import org.springframework.security.core.GrantedAuthority;

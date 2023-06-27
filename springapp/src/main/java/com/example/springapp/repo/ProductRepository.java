@@ -1,6 +1,6 @@
-package com.examly.springapp.repo;
+package com.example.springapp.repo;
 
-import com.examly.springapp.entity.Product;
+import com.example.springapp.model.Product;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 

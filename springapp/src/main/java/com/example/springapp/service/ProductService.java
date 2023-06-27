@@ -1,9 +1,9 @@
-package com.examly.springapp.service;
+package com.example.springapp.service;
 
 
-import com.examly.springapp.config.user.User;
-import com.examly.springapp.entity.Product;
-import com.examly.springapp.repo.ProductRepository;
+import com.example.springapp.model.User;
+import com.example.springapp.model.Product;
+import com.example.springapp.repo.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

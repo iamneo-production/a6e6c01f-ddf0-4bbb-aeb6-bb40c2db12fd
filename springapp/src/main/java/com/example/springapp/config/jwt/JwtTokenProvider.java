@@ -1,7 +1,7 @@
-package com.examly.springapp.config.jwt;
+package com.example.springapp.config.jwt;
 
-import com.examly.springapp.config.token.Token;
-import com.examly.springapp.config.token.TokenRepository;
+import com.example.springapp.config.token.Token;
+import com.example.springapp.config.token.TokenRepository;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;

@@ -1,8 +1,9 @@
-package com.examly.springapp.config.user;
+package com.example.springapp.service;
 
-import com.examly.springapp.config.jwt.JwtTokenProvider;
-import com.examly.springapp.config.token.Token;
-import com.examly.springapp.config.token.TokenRepository;
+import com.example.springapp.config.jwt.JwtTokenProvider;
+import com.example.springapp.config.token.Token;
+import com.example.springapp.config.token.TokenRepository;
+import com.example.springapp.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -15,7 +16,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
+import com.example.springapp.config.user.UserRepository;
 @Service
 public class UserService implements UserDetailsService {
     @Autowired
