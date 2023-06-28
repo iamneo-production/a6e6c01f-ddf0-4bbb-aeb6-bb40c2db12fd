@@ -1,0 +1,9 @@
+node_modules/
+done
+
+.classpath
+.project
+.settings/
+reactapp/.idea/
+reactapp/.vscode/
+target/
