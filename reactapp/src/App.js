@@ -15,6 +15,7 @@ import SellerHomePage from "./pages/seller/SellerHomepage";
 import Showuser from "./pages/admin/showuser";
 import CartPage from "./pages/buyer/CartPage";
 import ChangeAddress from "./pages/buyer/ChangeAddress";
+import BuyersAndReviewsPage from "./pages/seller/BuyersAndReviewsPage";
 
 function App() {
   return (
@@ -33,6 +34,7 @@ function App() {
         <Route path="/gotoProductsPage" element={<ProductsPage/>} />
         <Route path="/cart" element={<CartPage/>} />
         <Route path="/changeaddress" element={<ChangeAddress/>} />
+        <Route path="/seller/buyersandreviews" element={<BuyersAndReviewsPage/>} />
       </Routes>
     </Router>
   );
