@@ -12,4 +12,6 @@ public interface ProductRepository extends CrudRepository<Product, Integer> {
     List<Product> findAllByCategory(String cat);
 
     List<Product> findAllBySeller(Integer sellerId);
+
+    List<Product> findByNameContainingIgnoreCase(String name);
 }
