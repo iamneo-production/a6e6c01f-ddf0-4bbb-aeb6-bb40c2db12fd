@@ -16,12 +16,13 @@ public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String name;
+    private String firstName;
+    private String lastName;
     @Column(unique = true,nullable = false)
     private String email;
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    private String phone;
     private String roles;
     private boolean isEnabled=true;
 
@@ -37,24 +38,28 @@ public class User implements UserDetails {
         isEnabled = enabled;
     }
 
-    public String getName() {
-        return name;
+    public String getPhone() {
+        return phone;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setPhone(String phone) {
+        this.phone = phone;
     }
 
-    public String getEmail() {
-        return email;
+    public String getFirstName() {
+        return firstName;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
     }
 
     @Override
@@ -66,6 +71,10 @@ public class User implements UserDetails {
     @Override
     public String getPassword() {
         return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     @Override
@@ -99,5 +108,13 @@ public class User implements UserDetails {
 
     public Long getId() {
         return id;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 }
