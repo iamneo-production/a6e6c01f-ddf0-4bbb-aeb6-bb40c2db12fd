@@ -1,8 +1,29 @@
 import { ReactComponent as Landingpageimg } from '../../assets/Ecommerce web page-pana 1.svg';
 import HeaderBar from '../../components/common/HeaderBar';
 import Footer from '../../components/common/Footer';
+import {useSelector } from 'react-redux';
+import {useNavigate} from "react-router-dom";
 
 export default function LandingPage() {
+
+    const navigate = useNavigate();
+    const signinSuccess = useSelector(state => state.user.signinSuccess)
+    const currentUser = useSelector(state => state.user.currentUser)
+    console.log("success--landing")
+    
+    if (signinSuccess) {
+        console.log("success-login")
+        console.log(currentUser)
+        if (currentUser.roles === 'ADMIN') {
+            navigate("/admin/products");
+        } else if (currentUser.roles === 'SELLER') {
+            console.log("success-seller")
+            navigate("/seller/home");
+        } else if (currentUser.roles === 'BUYER') {
+            navigate("/home");
+        }
+    }
+
     return (
         <div>
             <HeaderBar/>
