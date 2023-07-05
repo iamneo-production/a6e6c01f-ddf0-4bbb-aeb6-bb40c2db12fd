@@ -54,6 +54,8 @@ export const userSlice = createSlice({
                 roles:'',
                 userId:''
             }
+                state.token = null
+        
         }
         
     },
