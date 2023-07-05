@@ -1,30 +1,77 @@
-import { useState } from 'react';
+import { useState,useRef } from 'react';
 import Offcanvas from 'react-bootstrap/Offcanvas';
 import { useDispatch, useSelector } from 'react-redux';
 import { signupUser } from '../../features/userSlice';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { OverlayTrigger, Tooltip } from 'react-bootstrap';
+import { BsInfoCircle } from 'react-icons/bs';
 
 export default function SignupForm(props) {
 
     const [inputValue, setInputValue] = useState({ firstName: '', lastName: '', email: '', phone: '', password: '', roles: 'BUYER' });
     const dispatch = useDispatch()
     const signupSuccess = useSelector(state => state.user.signupSuccess)
+    const nameValidation = new RegExp('^[A-Za-z\\s]+$')
+    const emailValidation = new RegExp('^[a-z][a-z0-9]+(@gmail.com)$')
+    const passwordValidation = new RegExp('^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d).{5,}$')
+    const phonenoValidation = new RegExp('^[6-9]\\d{9}$')
+    const tooltipRef = useRef(null);
+
     const handleSignup = () => {
+
         if ((inputValue.firstName === '') || (inputValue.lastName === '') || (inputValue.email === '') || (inputValue.phone === '') || (inputValue.password === '')) {
             toast.error('Fill out all fields !', {
                 position: toast.POSITION.TOP_CENTER
             });
         }
-        else {
-            console.log(inputValue);
-            console.log("-----------------")
-            dispatch(signupUser(inputValue))
-            console.log("Signedup--",signupSuccess)
-            setInputValue({ firstName: '', lastName: '', email: '', address: '', phone: '', password: '', roles: 'BUYER' })
-            props.onHide()
-        }
 
+        else {
+            if (nameValidation.test(inputValue.firstName)) {
+                if (nameValidation.test(inputValue.lastName)) {
+                    if (emailValidation.test(inputValue.email)) {
+                        if (passwordValidation.test(inputValue.password)) {
+                            if (phonenoValidation.test(inputValue.phone)) {
+                                console.log((nameValidation).test(inputValue.firstName))
+                                alert("Matched")
+                                console.log(inputValue);
+                                console.log("-----------------")
+                                dispatch(signupUser(inputValue))
+                                console.log("Signedup--", signupSuccess)
+                                setInputValue({ firstName: '', lastName: '', email: '', address: '', phone: '', password: '', roles: 'BUYER' })
+                                props.onHide()
+                            }
+                            else {
+                                toast.error('Enter a valid phone number!', {
+                                    position: toast.POSITION.TOP_CENTER
+                                });
+                            }
+                        }
+                        else {
+                            toast.error('Enter a valid password!', {
+                                position: toast.POSITION.TOP_CENTER
+                            });
+                        }
+                    }
+                    else {
+                        toast.error('Enter a valid email!', {
+                            position: toast.POSITION.TOP_CENTER
+                        });
+                    }
+                }
+                else {
+                    toast.error('Enter a valid last name!', {
+                        position: toast.POSITION.TOP_CENTER
+                    });
+                }
+            }
+
+            else {
+                toast.error('Enter a valid first name!', {
+                    position: toast.POSITION.TOP_CENTER
+                });
+            }
+        }
     }
 
     return (
@@ -48,7 +95,20 @@ export default function SignupForm(props) {
                     </div>
                     <div class="mb-3">
                         <p style={{ textAlign: "left" }}> Password</p>
-                        <input type="password" class="form-control" id="exampleFormControlInput1" placeholder="Password" value={inputValue.password} onChange={(e) => { setInputValue({ ...inputValue, password: e.target.value }) }} />
+                        <div className="input-group">
+                            <input type="password" class="form-control" id="exampleFormControlInput1" placeholder="Password" value={inputValue.password} onChange={(e) => { setInputValue({ ...inputValue, password: e.target.value }) }} />
+                            <OverlayTrigger
+                                placement="top"
+                                overlay={<Tooltip id="tooltip">Your password must contain at least one lowercase letter, one uppercase letter, one digit, one special character, and be at least 5 characters long.</Tooltip>}
+                                trigger="click"
+                                rootClose
+                                ref={tooltipRef}
+                            >
+                                <span className="input-group-text" style={{ cursor: 'pointer' }}>
+                                    <BsInfoCircle />
+                                </span>
+                            </OverlayTrigger>
+                        </div>
                     </div>
                     <div class="mb-3">
                         <p style={{ textAlign: "left" }}> Phone</p>
@@ -75,7 +135,9 @@ export default function SignupForm(props) {
                         <button style={{ backgroundColor: "#F25151", color: "black", marginTop: 10 }} type="button" class="btn" onClick={() => handleSignup()}><b>Submit</b></button>
                         <ToastContainer />
                     </div>
-                    <p style={{ marginTop: 8 }}>Already have an account? <a onClick={() => { props.onHide(); props.openSignin() }} style={{ cursor: 'pointer' }} class="text-reset text-decoration-underline"><b>Signin</b></a></p>
+                    <div className="d-flex justify-content-center">
+                        <p style={{ marginTop: 8 }}>Already have an account? <a onClick={() => { props.onHide(); props.openSignin() }} style={{ cursor: 'pointer' }} class="text-reset text-decoration-underline"><b>Signin</b></a></p>
+                    </div>
                 </div>
             </Offcanvas.Body>
         </Offcanvas>
