@@ -1,11 +1,13 @@
 package com.example.springapp.service;
 
+import com.example.springapp.BaseResponseDTO;
 import com.example.springapp.config.jwt.JwtTokenProvider;
 import com.example.springapp.config.token.Token;
 import com.example.springapp.config.token.TokenRepository;
 import com.example.springapp.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -17,6 +19,9 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import com.example.springapp.config.user.UserRepository;
+
+import java.util.Optional;
+
 @Service
 public class UserService implements UserDetailsService {
     @Autowired
@@ -43,7 +48,7 @@ public class UserService implements UserDetailsService {
         return userRepository.findByEmail(email).isPresent();
     }
 
-    public String generateToke(String email,String password){
+    public String generateToken(String email,String password){
         Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(email,password));
         SecurityContextHolder.getContext().setAuthentication(authentication);
         String token = tokenProvider.generateToken(authentication);
@@ -60,9 +65,19 @@ public class UserService implements UserDetailsService {
         return true;
     }
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+    public User loadUserByUsername(String username) throws UsernameNotFoundException {
         return userRepository.findByEmail(username).orElseThrow(() -> new UsernameNotFoundException(""));
     }
 
 
+    public boolean validateToken(String token){
+        return tokenProvider.validateToken(token);
+    }
+
+    public User getUserFromToken(String token){
+        return userRepository.findByEmail(tokenProvider.getUsernameFromToken(token)).orElseThrow();
+    }
+
 }
+
+
