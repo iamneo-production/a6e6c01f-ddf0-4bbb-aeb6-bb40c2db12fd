@@ -8,6 +8,7 @@ import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
 import org.springframework.security.core.Authentication;
+import org.springframework.util.StringUtils;
 
 import java.util.Date;
 
@@ -51,5 +52,12 @@ public class JwtTokenProvider {
                 .parseClaimsJws(token)
                 .getBody();
         return claims.getSubject();
+    }
+
+    public String getTokenFromHeader(String token){
+        if(StringUtils.hasText(token) && token.startsWith("Bearer ")) {
+            return token.substring(7);
+        }
+        return null;
     }
 }
