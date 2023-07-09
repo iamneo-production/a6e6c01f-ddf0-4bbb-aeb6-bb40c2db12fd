@@ -53,10 +53,14 @@ export default function AddProductPage() {
                     </div>
                     <br></br>
 
-                    <label for="exampleFormControlInput1" class="form-label"><b>Categories</b></label>
+                    <label for="exampleFormControlInput1" class="form-label"><b>Product information</b></label>
                     <br></br>
                     <div className="d-flex justify-content-start" style={inputStyle.input}>
                         <div>
+                            <label for="exampleFormControlInput1" class="form-label">Category</label>
+                            <input type="text" placeholder='Product Category' class="form-control" id="exampleFormControlInput1"></input>
+                        </div>
+                        <div style={{ marginLeft: "40px" }}>
                             <label for="exampleFormControlInput1" class="form-label">Brand</label>
                             <input type="text" placeholder='Brand name' class="form-control" id="exampleFormControlInput1"></input>
                         </div>

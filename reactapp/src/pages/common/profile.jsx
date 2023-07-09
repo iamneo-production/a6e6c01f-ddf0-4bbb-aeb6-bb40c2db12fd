@@ -59,11 +59,12 @@ export default class Profile extends Component{
                    <br />
                    <br />
                    <br />
-                    <div className='mid'>
+                    
                         
-                                   <h4> MY PROFILE </h4>
-                                   <h4> Personal Information</h4>  
-                                        
+                   <h3 style={{paddingLeft:"1rem"}}> <b>MY PROFILE</b> </h3>
+                                   <br/>
+                                   <h4 style={{paddingLeft:100}}><b> Personal Information</b></h4>  
+                            <div className='mid'>            
                             <br />
                             
                             
@@ -100,7 +101,8 @@ export default class Profile extends Component{
                                 <option value="Female">Female</option>
                                 
                             </select>
-                            
+
+                            <br />      
                             <br />
                             <h6  > Email</h6>
                             <input 
@@ -139,19 +141,20 @@ export default class Profile extends Component{
                             
                             <h6>
                                 { !this.state.editable ?
-                                <button className="btn btn-primary" 
+                                <button style={{backgroundColor:"#F25151",color:"black",width:"10%"}} className="btn btn-primary" 
                                 onClick={(e)=>this.handleEdit(e)}>
                                 
-                                Edit</button>:
-                                <div style={{display:"grid",gridTemplateColumns:"100px 100px",columnGap:"20px"}}> <button className="btn btn-primary"
+                                <b>Edit </b></button>:
+                                <div style={{display:"grid",gridTemplateColumns:"100px 100px",columnGap:"20px"}}> <button style={{backgroundColor:"#F25151",color:"black"}} className="btn btn-primary"
                             onClick={(e)=>this.handleSubmit(e)}
-                            >Update</button>
-                            <button className="btn btn-primary"
+                            ><b>Update</b></button>
+                            <button className="btn btn-primary" style={{backgroundColor:"#F25151",color:"black"}}
                             onClick={(e)=>this.handleSubmit(e)}
-                            >Cancel</button></div> }</h6>
+                            ><b>Cancel</b></button></div> }</h6>
                             <br />
                         </div>
                     </div>
+                    
             
                                 
             
