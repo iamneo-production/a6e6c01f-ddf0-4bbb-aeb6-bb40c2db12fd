@@ -5,8 +5,10 @@ import com.example.springapp.model.User;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.*;
+import java.io.IOException;
 import java.util.Date;
 
 @Entity
@@ -34,11 +36,11 @@ public class Product {
     @Column(name="colour", nullable = false)
     private String colour;
 
-    @Column(name="imageUrl", nullable = false)
-    private String imageUrl;
+    @Column(name = "image", nullable = false,length = 1048576)
+    private byte[] image;
 
     @ManyToOne
-    @JoinColumn
+    @JoinColumn(name = "seller_id")
     private User seller;
 
 
@@ -54,23 +56,17 @@ public class Product {
     @UpdateTimestamp
     private  Date updatedAt;
 
-    public Product(Integer id, String name, String description, Double price, String category, String imageUrl, User sellerId,String brand,String colour,int quantity) {
-        this.id = id;
+    public Product(String name, String description, Double price, int quantity, String brand, String colour, byte[] image, User seller, String category) {
         this.name = name;
         this.description = description;
         this.price = price;
+        this.quantity = quantity;
+        this.brand = brand;
+        this.colour = colour;
+        this.image = image;
+        this.seller = seller;
         this.category = category;
-        this.imageUrl = imageUrl;
-        this.seller = sellerId;
-        this.brand=brand;
-        this.colour=colour;
-        this.quantity=quantity;
     }
-
-    public Product() {
-
-    }
-
 
     public Integer getId() {
         return id;
@@ -102,14 +98,6 @@ public class Product {
 
     public void setPrice(Double price) {
         this.price = price;
-    }
-
-    public String getImageUrl() {
-        return imageUrl;
-    }
-
-    public void setImageUrl(String imageUrl) {
-        this.imageUrl = imageUrl;
     }
 
     public User getSeller() {
@@ -174,6 +162,14 @@ public class Product {
 
     public void setUpdatedAt(Date updatedAt) {
         this.updatedAt = updatedAt;
+    }
+
+    public byte[] getImage() {
+        return image;
+    }
+
+    public void setImage(MultipartFile image) throws IOException {
+        this.image = image.getBytes();
     }
 }
 

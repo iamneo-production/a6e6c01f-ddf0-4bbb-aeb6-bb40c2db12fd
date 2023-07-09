@@ -1,13 +1,19 @@
 package com.example.springapp.controller;
 
+import com.example.springapp.BaseResponseDTO;
 import com.example.springapp.config.jwt.JwtTokenProvider;
+import com.example.springapp.dto.request.ProductRequestDto;
 import com.example.springapp.model.User;
 import com.example.springapp.config.user.UserRepository;
 import com.example.springapp.model.Product;
 import com.example.springapp.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
 import java.util.*;
 import java.util.Optional;
 
@@ -24,12 +30,14 @@ public class ProductController {
     @Autowired
     UserRepository userRepository;
     @GetMapping(value = "/api/products")
+    @CrossOrigin(origins = "http://localhost:8081/")
     public List<Product> getProducts(@RequestParam(value = "category", required = false) String cat){
 
         return productService.getProducts(cat);
     }
 
     @GetMapping(value = "/api/products/{productId}")
+    @CrossOrigin(origins = "http://localhost:8081/")
     public Optional<Product> getProductById(@PathVariable("productId") Integer productId){
         return productService.getProductById(productId); }
 
@@ -38,12 +46,17 @@ public class ProductController {
         return productService.getProductBySellerId(sellerId); }
 
     @PostMapping(value = "/api/seller/products")
-    public Product createProduct(@RequestHeader(value = "Authorization") String token ,@RequestBody Product product){
-        User user = userRepository.findByEmail(tokenProvider.getUsernameFromToken(token)).orElseThrow();
-        return productService.createProduct(product,user);
+    public ResponseEntity<BaseResponseDTO> createProduct(@RequestHeader(value = "Authorization") String token , @ModelAttribute ProductRequestDto productRequestDto) throws IOException {
+        try{
+            User user = userRepository.findByEmail(tokenProvider.getUsernameFromToken(tokenProvider.getTokenFromHeader(token))).orElseThrow();
+            return ResponseEntity.ok(new BaseResponseDTO("success",productService.createProduct(productRequestDto,user)));
+        }catch (Exception e){
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new BaseResponseDTO("failed"));
+        }
     }
 
     @PutMapping(value = "/api/seller/products")
+    @CrossOrigin(origins = "http://localhost:8081/")
     public Product updateProduct(@RequestBody Product incomingProduct){
         return productService.updateProduct(incomingProduct); }
 
