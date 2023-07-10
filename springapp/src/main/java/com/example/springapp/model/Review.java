@@ -1,6 +1,11 @@
 package com.example.springapp.model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
+
 import javax.persistence.*;
+import java.util.Date;
 
 @Entity
 public class Review {
@@ -13,6 +18,14 @@ public class Review {
     private int rating;
     private String comment;
     private int purchaseId;
+
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    private boolean isDeleted;
+
+    @CreationTimestamp
+    private Date createdAt;
+    @UpdateTimestamp
+    private  Date updatedAt;
 
     // Constructors
 
@@ -84,5 +97,29 @@ public class Review {
 
     public void setPurchaseId(int purchaseId) {
         this.purchaseId = purchaseId;
+    }
+
+    public boolean isDeleted() {
+        return isDeleted;
+    }
+
+    public void setDeleted(boolean deleted) {
+        isDeleted = deleted;
+    }
+
+    public Date getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(Date createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public Date getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(Date updatedAt) {
+        this.updatedAt = updatedAt;
     }
 }
