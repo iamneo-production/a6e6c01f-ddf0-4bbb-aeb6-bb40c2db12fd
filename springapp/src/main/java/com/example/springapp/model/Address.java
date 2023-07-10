@@ -1,6 +1,6 @@
 package com.example.springapp.model;
 
-import com.example.springapp.model.User;
+
 import com.fasterxml.jackson.annotation.JsonProperty;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -9,18 +9,25 @@ import javax.persistence.*;
 import java.util.Date;
 
 @Entity
-public class Purchase {
+public class Address {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-
-    private int productId; // Foreign key for Product
 
     @ManyToOne
     @JoinColumn(name = "buyer_id")
     private User buyer;
 
-    private Date purchaseDate;
+    private int flat_no;
+
+    private String area;
+
+    private String city;
+
+    private String state;
+
+    private int pincode;
 
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private boolean isDeleted;
@@ -30,33 +37,12 @@ public class Purchase {
     @UpdateTimestamp
     private  Date updatedAt;
 
-    // Constructors
-
-    public Purchase() {
-    }
-
-    public Purchase(int productId, User buyerId, Date purchaseDate) {
-        this.productId = productId;
-        this.buyer = buyerId;
-        this.purchaseDate = purchaseDate;
-    }
-
-    // Getters and setters
-
     public int getId() {
         return id;
     }
 
     public void setId(int id) {
         this.id = id;
-    }
-
-    public int getProductId() {
-        return productId;
-    }
-
-    public void setProductId(int productId) {
-        this.productId = productId;
     }
 
     public User getBuyer() {
@@ -67,12 +53,44 @@ public class Purchase {
         this.buyer = buyer;
     }
 
-    public Date getPurchaseDate() {
-        return purchaseDate;
+    public int getFlat_no() {
+        return flat_no;
     }
 
-    public void setPurchaseDate(Date purchaseDate) {
-        this.purchaseDate = purchaseDate;
+    public void setFlat_no(int flat_no) {
+        this.flat_no = flat_no;
+    }
+
+    public String getArea() {
+        return area;
+    }
+
+    public void setArea(String area) {
+        this.area = area;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    public String getState() {
+        return state;
+    }
+
+    public void setState(String state) {
+        this.state = state;
+    }
+
+    public int getPincode() {
+        return pincode;
+    }
+
+    public void setPincode(int pincode) {
+        this.pincode = pincode;
     }
 
     public boolean isDeleted() {
