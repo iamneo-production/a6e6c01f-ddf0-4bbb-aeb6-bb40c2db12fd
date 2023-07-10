@@ -18,9 +18,7 @@ import CartPage from "./pages/buyer/CartPage";
 import ChangeAddress from "./pages/buyer/ChangeAddress";
 import BuyersAndReviewsPage from "./pages/seller/BuyersAndReviewsPage";
 import OrderPlacedPage from "./pages/buyer/OrderPlacedPage";
-import CheckoutPage from "./pages/buyer/CheckoutPage";
 import {useSelector } from 'react-redux';
-import SellerQA from "./pages/seller/SellerQA";
 
 function App() {
   return (
@@ -41,8 +39,6 @@ function App() {
         <Route path="/changeaddress" element={<ChangeAddress/>} />
         <Route path="/seller/buyersandreviews" element={<BuyersAndReviewsPage/>} />
         <Route path="/orderplaced" element={<OrderPlacedPage/>} />
-        <Route path="/checkout" element={<CheckoutPage/>} />
-        <Route path="/qa" element={<SellerQA/>}/>
       </Routes>
     </Router>
   );
