@@ -31,21 +31,36 @@ public class ProductController {
     UserRepository userRepository;
     @GetMapping(value = "/api/products")
     @CrossOrigin(origins = "http://localhost:8081/")
-    public List<Product> getProducts(@RequestParam(value = "category", required = false) String cat){
+    public List<Product> getProducts(){
 
-        return productService.getProducts(cat);
+        return productService.getAllProducts();
     }
 
-    @GetMapping(value = "/api/products/{productId}")
-    @CrossOrigin(origins = "http://localhost:8081/")
-    public Optional<Product> getProductById(@PathVariable("productId") Integer productId){
-        return productService.getProductById(productId); }
+    @GetMapping(value = "/api/products/")
+    public ResponseEntity<BaseResponseDTO> getProductById(@RequestParam String productId) {
+        try {
+            return ResponseEntity.ok(new BaseResponseDTO("success", productService.getProductById(Integer.parseInt(productId))));
+        } catch (Exception e) {
+            return ResponseEntity.internalServerError().body(new BaseResponseDTO("failed"));
+        }
+    }
+
+    @GetMapping(value = "/api/products/category/")
+    public ResponseEntity<BaseResponseDTO> getProductByCategory(@RequestParam String category){
+        try{
+            List<Product> products = productService.getProductByCategory(category);
+            return ResponseEntity.ok(new BaseResponseDTO("success", products));
+        }catch(Exception e){
+            return ResponseEntity.internalServerError().body(new BaseResponseDTO("failed"));
+        }
+    }
 
     @GetMapping(value = "/api/products/{sellerId}")
     public List<Product> getProductBySellerId(@PathVariable("sellerId") Integer sellerId){
         return productService.getProductBySellerId(sellerId); }
 
     @PostMapping(value = "/api/seller/products")
+    @CrossOrigin(origins = "http://localhost:8081/")
     public ResponseEntity<BaseResponseDTO> createProduct(@RequestHeader(value = "Authorization") String token , @ModelAttribute ProductRequestDto productRequestDto) throws IOException {
         try{
             User user = userRepository.findByEmail(tokenProvider.getUsernameFromToken(tokenProvider.getTokenFromHeader(token))).orElseThrow();
