@@ -55,8 +55,8 @@ public class ProductService {
     }
 
     // Get Product by Id
-    public Optional<Product> getProductById(Integer productId){
-        return productRepository.findById(productId);
+    public Product getProductById(Integer productId){
+        return productRepository.findById(productId).orElseThrow();
     }
 
     // Update Product
@@ -77,5 +77,13 @@ public class ProductService {
 
     public List<Product> searchProducts(String query) {
         return productRepository.findByNameContainingIgnoreCase(query);
+    }
+
+    public List<Product> getAllProducts() {
+        return productRepository.findAll();
+    }
+
+    public List<Product> getProductByCategory(String category) {
+        return productRepository.findAllByCategory(category);
     }
 }

@@ -74,7 +74,7 @@ export default function AddProductPage() {
                         </div>
                         <div style={{ marginLeft: "40px" }}>
                             <label for="exampleFormControlInput1" class="form-label">color</label>
-                            <input type="text" onChange={(e)=> setFormValue({...formValue,color:e.target.value})} placeholder='Product Color' class="form-control" id="exampleFormControlInput1"></input>
+                            <input type="text" onChange={(e)=> setFormValue({...formValue,colour:e.target.value})} placeholder='Product Color' class="form-control" id="exampleFormControlInput1"></input>
                             <br></br>
                         </div>
                     </div>
