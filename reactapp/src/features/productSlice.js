@@ -1,5 +1,5 @@
 import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
-import {createProduct, getProduct,getProductById} from "../api/productService";
+import {createProduct,deleteProductById, getProduct,getProductById} from "../api/productService";
 
 export const addProduct =
     createAsyncThunk('product/addProduct',async (body)=>{
@@ -35,6 +35,19 @@ export const fetchProduct =
             return err.response.date
         })
     })
+
+    export const deleteProduct =
+    createAsyncThunk('product/deleteProduct',async (body)=>{
+        return  deleteProductById(
+            body.token,
+            body.productId
+        ).then((res) =>{
+            return res.data
+        }).catch((err) =>{
+            return err.response.date
+        })
+    })
+
 
 
 const productSlice = createSlice({
@@ -75,7 +88,7 @@ const productSlice = createSlice({
             if(action.payload.message ==="success"){
                 state.allProductList = action.payload.data
                 console.log("Product fetched")
-                console.log(state.productList)
+                console.log(state.allProductList)
             }else {
                 console.log(action.payload.message)
             }
@@ -101,6 +114,23 @@ const productSlice = createSlice({
         },
         [fetchProductById.rejected]:(state)=>{
             state.fetchProductInProcess = false
+            console.log("Product fetch failed")
+        },
+        [fetchProduct.rejected]:(state)=>{
+            state.fetchProductInProcess = false
+            console.log("Product fetch failed")
+        },
+        [deleteProduct.pending]:(state) => {
+            console.log("pending")
+        },
+        [deleteProduct.fulfilled]:(state,action) =>{
+            if(action.payload.message ==="success"){
+                console.log("Product deleted")
+            }else {
+                console.log(action.payload)
+            }
+        },
+        [deleteProduct.rejected]:(state)=>{
             console.log("Product fetch failed")
         },
     }

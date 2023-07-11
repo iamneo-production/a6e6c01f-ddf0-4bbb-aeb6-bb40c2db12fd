@@ -65,10 +65,10 @@ public class ProductService {
     }
 
     // Delete Product by Id
-    public String deleteProductById(Integer productId) {
+    public void deleteProductById(Integer productId) {
+        System.out.println(".....");
+        System.out.println(productId);
         productRepository.deleteById(productId);
-
-        return "Deleted Successfully";
     }
 
     public List<Product> getProductBySellerId(Integer sellerId) {
