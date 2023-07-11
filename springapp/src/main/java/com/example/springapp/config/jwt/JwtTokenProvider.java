@@ -31,17 +31,11 @@ public class JwtTokenProvider {
     }
 
     public boolean validateToken(String token) {
-        // Validate the JWT token's signature and expiration
-        Token validToken = tokenRepository.findByToken(token);
-        if(!validToken.isExpired()) {
-            try {
-                Jwts.parser().setSigningKey("secret").parseClaimsJws(token);
-                return true;
-            } catch (Exception ex) {
-                throw new AuthenticationCredentialsNotFoundException("JWT was expired or incorrect");
-            }
-        }else {
-            return false;
+        try {
+            Jwts.parser().setSigningKey("secret").parseClaimsJws(token);
+            return true;
+        } catch (Exception ex) {
+            throw new AuthenticationCredentialsNotFoundException("JWT was expired or incorrect");
         }
     }
 

@@ -23,3 +23,10 @@ export async function getProduct(token){
         headers: { Authorization: `Bearer ${token}` }
     })
 }
+
+
+export async function getProductById(token,productId){
+    return await axios.get(`${baseUrl}/products/product-detail?productId=${productId}`,{
+        headers: { Authorization: `Bearer ${token}` }
+    })
+}
