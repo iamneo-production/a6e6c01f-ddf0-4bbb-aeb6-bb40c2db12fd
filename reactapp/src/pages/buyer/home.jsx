@@ -4,6 +4,9 @@ import "././home.css";
 import Card from '../../components/buyer/Card';
 import cardData from '../../components/buyer/CardData';
 import Footer from '../../components/common/Footer';
+import {useDispatch, useSelector} from "react-redux";
+import {useEffect} from "react";
+import {fetchProduct} from "../../features/productSlice";
 
 
 
@@ -11,7 +14,12 @@ import Footer from '../../components/common/Footer';
 
 
 export default function HomePage(){
-
+  const allProductList = useSelector(state => state.product.allProductList)
+  const token = useSelector(state => state.user.token)
+  const dispatch = useDispatch()
+  useEffect(() =>{
+      dispatch(fetchProduct({token:token}))
+  },[])
 
 return(
         <div className='home'>
@@ -81,7 +89,7 @@ return(
           <section class="container">
     <h2 class="text-center mb-4">Featured Products</h2>
     <div class="row">
-      <Card details={cardData}/>
+      <Card ProductList={allProductList}/>
     
       
      

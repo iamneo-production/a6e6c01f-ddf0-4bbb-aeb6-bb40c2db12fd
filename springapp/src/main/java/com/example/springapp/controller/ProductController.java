@@ -30,13 +30,16 @@ public class ProductController {
     @Autowired
     UserRepository userRepository;
     @GetMapping(value = "/api/products")
-    @CrossOrigin(origins = "http://localhost:8081/")
-    public List<Product> getProducts(){
-
-        return productService.getAllProducts();
+    public  ResponseEntity<BaseResponseDTO> getProducts(){
+        try {
+            return ResponseEntity.ok(new BaseResponseDTO("success", productService.getAllProducts()));
+        } catch (Exception e) {
+            return ResponseEntity.internalServerError().body(new BaseResponseDTO("failed"));
+        }
     }
 
-    @GetMapping(value = "/api/products/")
+    @GetMapping(value = "/api/products/product-detail")
+    @CrossOrigin(origins = "http://localhost:8081/")
     public ResponseEntity<BaseResponseDTO> getProductById(@RequestParam String productId) {
         try {
             return ResponseEntity.ok(new BaseResponseDTO("success", productService.getProductById(Integer.parseInt(productId))));

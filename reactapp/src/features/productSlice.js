@@ -1,5 +1,5 @@
 import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
-import {createProduct, getProduct} from "../api/productService";
+import {createProduct, getProduct,getProductById} from "../api/productService";
 
 export const addProduct =
     createAsyncThunk('product/addProduct',async (body)=>{
@@ -22,12 +22,33 @@ export const fetchProduct =
         })
     })
 
+    export const fetchProductById =
+    createAsyncThunk('product/fetchProductById',async (body)=>{
+        console.log("from slice")
+        console.log(body)
+        return  getProductById(
+            body.token,
+            body.productId
+        ).then((res) =>{
+            return res.data
+        }).catch((err) =>{
+            return err.response.date
+        })
+    })
+
 
 const productSlice = createSlice({
     name: "product", initialState: {
         addProductInProcess:false,
         fetchProductInProcess:false,
-        productList: []
+        allProductList: [],
+        selectedProduct:'',
+        productDetails:''
+    },
+    reducers:{
+        setSelectedProduct:(state,action) =>{
+            state.selectedProduct = action.payload.productId
+        }
     },
     extraReducers:{
         [addProduct.pending]:(state) => {
@@ -52,8 +73,7 @@ const productSlice = createSlice({
         },
         [fetchProduct.fulfilled]:(state,action) =>{
             if(action.payload.message ==="success"){
-                console.log(state.productList)
-                state.productList = action.payload.data
+                state.allProductList = action.payload.data
                 console.log("Product fetched")
                 console.log(state.productList)
             }else {
@@ -65,10 +85,28 @@ const productSlice = createSlice({
             state.fetchProductInProcess = false
             console.log("Product fetch failed")
         },
+        [fetchProductById.pending]:(state) => {
+            state.fetchProductInProcess = true
+            console.log("pending")
+        },
+        [fetchProductById.fulfilled]:(state,action) =>{
+            if(action.payload.message ==="success"){
+                state.productDetails = action.payload.data
+                console.log("Product fetched")
+                console.log(state.productList)
+            }else {
+                console.log(action.payload.message)
+            }
+            state.fetchProductInProcess =false
+        },
+        [fetchProductById.rejected]:(state)=>{
+            state.fetchProductInProcess = false
+            console.log("Product fetch failed")
+        },
     }
 })
 
-export const {} = productSlice.actions;
+export const {setSelectedProduct} = productSlice.actions;
 
 
 
