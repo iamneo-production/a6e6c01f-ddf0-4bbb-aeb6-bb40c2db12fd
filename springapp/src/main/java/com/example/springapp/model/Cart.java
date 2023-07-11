@@ -1,26 +1,28 @@
 package com.example.springapp.model;
 
-import com.example.springapp.model.User;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
+import javax.persistence.Entity;
 import javax.persistence.*;
 import java.util.Date;
 
+
 @Entity
-public class Purchase {
+public class Cart {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-
-    private int productId; // Foreign key for Product
 
     @ManyToOne
     @JoinColumn(name = "buyer_id")
     private User buyer;
 
-    private Date purchaseDate;
+    @ManyToOne
+    @JoinColumn(name = "product_id")
+    private Product product;
 
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private boolean isDeleted;
@@ -30,18 +32,9 @@ public class Purchase {
     @UpdateTimestamp
     private  Date updatedAt;
 
-    // Constructors
+    private int quantity;
 
-    public Purchase() {
-    }
 
-    public Purchase(int productId, User buyerId, Date purchaseDate) {
-        this.productId = productId;
-        this.buyer = buyerId;
-        this.purchaseDate = purchaseDate;
-    }
-
-    // Getters and setters
 
     public int getId() {
         return id;
@@ -49,14 +42,6 @@ public class Purchase {
 
     public void setId(int id) {
         this.id = id;
-    }
-
-    public int getProductId() {
-        return productId;
-    }
-
-    public void setProductId(int productId) {
-        this.productId = productId;
     }
 
     public User getBuyer() {
@@ -67,12 +52,20 @@ public class Purchase {
         this.buyer = buyer;
     }
 
-    public Date getPurchaseDate() {
-        return purchaseDate;
+    public Product getProduct() {
+        return product;
     }
 
-    public void setPurchaseDate(Date purchaseDate) {
-        this.purchaseDate = purchaseDate;
+    public void setProduct(Product product) {
+        this.product = product;
+    }
+
+    public int getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
     }
 
     public boolean isDeleted() {

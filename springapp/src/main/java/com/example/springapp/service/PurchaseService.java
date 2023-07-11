@@ -54,7 +54,7 @@ public class PurchaseService {
                 Map<String, Object> purchaseMap = new HashMap<>();
                 purchaseMap.put("purchaseId", purchase.getId());
                 purchaseMap.put("productName", product.getName());
-                purchaseMap.put("productImageUrl", product.getImageUrl());
+                //purchaseMap.put("productImageUrl", product.getImageUrl());
                 purchaseMap.put("productPrice", product.getPrice());
                 purchaseMap.put("purchaseDate", purchase.getPurchaseDate());
 

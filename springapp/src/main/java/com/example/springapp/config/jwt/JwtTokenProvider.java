@@ -8,6 +8,7 @@ import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
 import org.springframework.security.core.Authentication;
+import org.springframework.util.StringUtils;
 
 import java.util.Date;
 
@@ -30,17 +31,11 @@ public class JwtTokenProvider {
     }
 
     public boolean validateToken(String token) {
-        // Validate the JWT token's signature and expiration
-        Token validToken = tokenRepository.findByToken(token);
-        if(!validToken.isExpired()) {
-            try {
-                Jwts.parser().setSigningKey("secret").parseClaimsJws(token);
-                return true;
-            } catch (Exception ex) {
-                throw new AuthenticationCredentialsNotFoundException("JWT was expired or incorrect");
-            }
-        }else {
-            return false;
+        try {
+            Jwts.parser().setSigningKey("secret").parseClaimsJws(token);
+            return true;
+        } catch (Exception ex) {
+            throw new AuthenticationCredentialsNotFoundException("JWT was expired or incorrect");
         }
     }
 
@@ -51,5 +46,12 @@ public class JwtTokenProvider {
                 .parseClaimsJws(token)
                 .getBody();
         return claims.getSubject();
+    }
+
+    public String getTokenFromHeader(String token){
+        if(StringUtils.hasText(token) && token.startsWith("Bearer ")) {
+            return token.substring(7);
+        }
+        return null;
     }
 }

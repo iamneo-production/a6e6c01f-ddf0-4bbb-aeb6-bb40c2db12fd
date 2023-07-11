@@ -49,6 +49,7 @@ public class UserController {
     }
 
     @GetMapping("/api/auth/validateToken")
+    @CrossOrigin(origins = "http://localhost:8081/")
     public ResponseEntity<BaseResponseDTO> home(@RequestHeader(value = "Authorization", defaultValue = "") String token) {
         Map<Object,Object> data = new HashMap<>();
         if(userService.validateToken(token)) {
