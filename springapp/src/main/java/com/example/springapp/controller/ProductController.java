@@ -78,9 +78,17 @@ public class ProductController {
     public Product updateProduct(@RequestBody Product incomingProduct){
         return productService.updateProduct(incomingProduct); }
 
-    @DeleteMapping(value = "/api/seller/products/{productId}")
-    public String deleteProductById(@PathVariable Integer productId){
-        return productService.deleteProductById(productId); }
+    @DeleteMapping(value = "/api/seller/product-delete")
+    public ResponseEntity<BaseResponseDTO> deleteProductById(@RequestParam String productId){
+        try{
+            System.out.println(".....");
+            System.out.println(productId);
+            productService.deleteProductById(Integer.parseInt(productId));
+            return ResponseEntity.ok(new BaseResponseDTO("success"));
+        }catch(Exception e){
+            return ResponseEntity.internalServerError().body(new BaseResponseDTO("failed"));
+        }
+    }
 
 
 

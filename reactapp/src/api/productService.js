@@ -30,3 +30,9 @@ export async function getProductById(token,productId){
         headers: { Authorization: `Bearer ${token}` }
     })
 }
+
+export async function deleteProductById(token,productId){
+    return await axios.delete(`${baseUrl}/seller/product-delete?productId=${productId}`,{
+        headers: { Authorization: `Bearer ${token}` }
+    })
+}
