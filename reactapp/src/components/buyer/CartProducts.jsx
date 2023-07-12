@@ -1,7 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import ProductQuantity from './ProductQuantity';
 import CartProductsRemoveModal from './CartProductsRemoveModal';
 import NavigationBar from '../common/NavigationBar';
+import { useNavigate } from "react-router-dom";
+import {MdKeyboardBackspace} from 'react-icons/md';
+import {useDispatch, useSelector} from "react-redux";
+import {fetchCart} from "../../features/cartSlice";
 
 const products = [
     {
@@ -23,27 +27,41 @@ const CartProducts = () => {
     const [showRemove, setShowRemove] = useState(false);
     const handleShowRemoveModal = () => setShowRemove(true);
     const handleHideRemoveModal = () => setShowRemove(false);
+    const navigate = useNavigate();
+    const token = useSelector(state => state.user.token)
+    const dispatch = useDispatch()
+    useEffect(() =>{
+        dispatch(fetchCart({token:token}))
+    },[])
+    const cartList = useSelector(state => state.cart.cartList);
+    const handleGoBack = () => {
+        navigate("/home")
+    };
+
     return (
-        <div><br /><br />
+        <div><br /><br /><br/>
             <NavigationBar />
-            <div><h3 style={{ marginLeft: 10, marginTop: 20 }}><b>CART</b></h3></div><br/>
+            <div className="d-flex flex-row align-items-center">
+                <p className='ms-3' ><MdKeyboardBackspace style={{color:"grey"}} onClick={handleGoBack}/>{" "}<a href="#" style={{color:"grey"}} onClick={handleGoBack}>Back</a></p>
+                <p className='ms-3' style={{fontSize:30}}><b>CART</b></p>
+            </div>
             <div>
                 {
-                    products.map((prod, index) =>
+                    cartList.map((prod, index) =>
                     (
                         <div>
-                            <div style={{ display: 'flex', justifyContent: 'center' }} key={index}>
+                           <div className={"container"} key={index}>
                                 <div className="row ">
-                                    <div className="col-md-2 ms-5  ">
-                                        <img src={prod.image} alt="Card" className=" d-block  " width={155} height={135} />
-                                        <ProductQuantity />
+                                    <div className="col-2">
+                                        <img src={`data:image/jpeg;base64,${prod.product.image}`} alt="Card" className=" d-block  " width={155} height={135} />
+                                        <ProductQuantity cartId ={prod.id} quantity={prod.quantity} />
                                     </div>
-                                    <div className="col-md-9 border  ">
+                                    <div className="col-10 border">
                                         <div className="card-body">
-                                            <h6 className="card-title fw-bold">{prod.name}</h6>
-                                            <p className="card-text text-muted fw-bold">{prod.cost}</p>
+                                            <p className="card-title fw-bold">{prod.product.name}</p>
+                                            <p className="card-text text-muted fw-bold">{prod.product.price}</p>
                                             <button type="button" className="btn btn-danger" style={{ color: "black" }} onClick={() => { handleShowRemoveModal() }}><b>Remove</b></button>
-                                            <CartProductsRemoveModal show={showRemove} handleHideRemoveModal={handleHideRemoveModal}></CartProductsRemoveModal>
+                                            <CartProductsRemoveModal cartId ={prod.id} show={showRemove} handleHideRemoveModal={handleHideRemoveModal}></CartProductsRemoveModal>
                                         </div>
                                     </div>
                                 </div>
