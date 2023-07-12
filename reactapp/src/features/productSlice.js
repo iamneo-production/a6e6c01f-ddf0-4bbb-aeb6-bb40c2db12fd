@@ -1,5 +1,6 @@
 import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
 import {createProduct,deleteProductById, getProduct,getProductById} from "../api/productService";
+import {toast} from "react-toastify";
 
 export const addProduct =
     createAsyncThunk('product/addProduct',async (body)=>{
@@ -70,15 +71,21 @@ const productSlice = createSlice({
         },
         [addProduct.fulfilled]:(state,action) =>{
             if(action.payload.message ==="success"){
-                console.log('Product Added');
+                toast.success('Product Added Successfully', {
+                    position: toast.POSITION.TOP_CENTER
+                });
             }else {
-               console.log('Please try again!!');
+                toast.error('Please try again!!', {
+                    position: toast.POSITION.TOP_CENTER
+                });
             }
             state.addProductInProcess =false
         },
         [addProduct.rejected]:(state)=>{
             state.addProductInProcess = false
-            console.log("Product Create failed");
+            toast.error("Product Create failed", {
+                position: toast.POSITION.TOP_CENTER
+            });
         },
         [fetchProduct.pending]:(state) => {
             state.fetchProductInProcess = true
