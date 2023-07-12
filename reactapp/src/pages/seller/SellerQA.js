@@ -2,15 +2,26 @@ import { useState } from 'react';
 import QAModal from '../../components/seller/QAModal';
 import Footer from '../../components/common/Footer';
 import SellerNavigationBar from '../../components/seller/SellerNavigationBar';
+import { useNavigate } from "react-router-dom";
+import {MdKeyboardBackspace} from 'react-icons/md';
 
 export default function SellerQA() {
     const [qamodal, setQamodal] = useState(false);
     const handleCloseQAModal = () => setQamodal(false);
+    const navigate = useNavigate();
+
+    const handleGoBack = () => {
+        navigate("/seller/home")
+    };
 
     return (
         <div>
             <SellerNavigationBar />
-            <h3 style={{ marginLeft: 10, marginTop: 8 }}><b>Q and A</b></h3>
+            <div className="d-flex flex-row align-items-center">
+                <p className='ms-3' ><MdKeyboardBackspace style={{color:"grey"}} onClick={handleGoBack}/>{" "}<a href="#" style={{color:"grey"}} onClick={handleGoBack}>Back</a></p>
+                <p className='ms-3' style={{fontSize:30}}><b>Q and A</b></p>
+            </div>
+
             <br />
             <div>
                 
