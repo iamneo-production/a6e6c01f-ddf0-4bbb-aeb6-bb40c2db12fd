@@ -1,8 +1,17 @@
-import React from "react";
+import React, {useEffect} from "react";
 import "../../pages/buyer/product.css"
 import {BsChatRightQuoteFill} from 'react-icons/bs';
+import {useDispatch, useSelector} from "react-redux";
+import {fetchProductById} from "../../features/productSlice";
 
 const SingleProduct = () =>{
+  const token = useSelector(state => state.user.token)
+    const productDetails = useSelector(state => state.product.productDetails)
+    const selectedProduct = useSelector(state => state.product.selectedProduct)
+    const dispatch = useDispatch()
+    useEffect( () => {
+        dispatch(fetchProductById({token: token, productId: selectedProduct}))
+    },[])
     return(
         <>
 
@@ -10,16 +19,12 @@ const SingleProduct = () =>{
 <div className="container mt-5">
     <div className="row">
       <div className="col-md-6">
-        <img src={require('../../assets/phone.jpg')} alt="Product Image" class="product-image"/>
+        <img src={`data:image/jpeg;base64,${productDetails.image}`} alt="Product Image" class="product-image"/>
       </div>
       <div className="col-md-6">
-        <h2>Samsung Galaxy S20 FE 5G (Cloud Navy, 8GB RAM, 128GB Storage)</h2> 
-        <p className="text-success fw-bold fs-2">₹40,000</p>
-        <p>Brand	Samsung : Model Name	Samsung M04 <br/>
-           Network Service : Provider	Unlocked for All Carriers <br/>
-           Operating System	Android 12.0 <br/>
-           Cellular Technology	4G 
-        </p>
+        <h2>{productDetails.name}</h2> 
+        <p className="text-success fw-bold fs-2">{`₹${productDetails.price}`}</p>
+        <p>{productDetails.description}</p>
         <form>
 
           

@@ -10,6 +10,7 @@ import java.util.*;
 import com.example.springapp.model.Product;
 
 @RestController
+@CrossOrigin(origins = "http://localhost:8081/")
 public class ReviewController {
     private final ReviewService reviewService;
 

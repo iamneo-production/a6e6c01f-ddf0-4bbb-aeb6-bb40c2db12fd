@@ -15,12 +15,12 @@ export default function LandingPage() {
     if (signinSuccess) {
         console.log("success-login")
         console.log(currentUser)
-        if (currentUser.roles === 'ADMIN') {
+        if (currentUser.roles === 'ROLE_ADMIN') {
             navigate("/admin/products");
-        } else if (currentUser.roles === 'SELLER') {
+        } else if (currentUser.roles === 'ROLE_SELLER') {
             console.log("success-seller")
             navigate("/seller/home");
-        } else if (currentUser.roles === 'BUYER') {
+        } else if (currentUser.roles === 'ROLE_BUYER') {
             navigate("/home");
         }
     }

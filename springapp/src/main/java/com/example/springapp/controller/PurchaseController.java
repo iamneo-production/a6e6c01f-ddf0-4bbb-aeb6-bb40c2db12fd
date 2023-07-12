@@ -16,6 +16,7 @@ import java.util.*;
 import com.example.springapp.model.Product;
 
 @RestController
+@CrossOrigin(origins = "http://localhost:8081/")
 public class PurchaseController {
 
     @Autowired
@@ -48,8 +49,8 @@ public class PurchaseController {
     }
 
     // Test Case
-    @GetMapping("/purchase/buyer/{buyerId}")
-    public ResponseEntity<List<Map<String, Object>>> getPurchaseByBuyerId(@PathVariable int buyerId) {
+    @GetMapping("/purchase/buyer")
+    public ResponseEntity<List<Map<String, Object>>> getPurchaseByBuyerId(@RequestParam("buyerId") int buyerId) {
         List<Map<String, Object>> result = purchaseService.getPurchaseByBuyerId(buyerId);
         return ResponseEntity.ok(result);
     }
