@@ -1,0 +1,5 @@
+.landingPageCard:hover {
+    transition: all 0.3s ease-out;
+    box-shadow: 0px 10px 15px rgba(246, 8, 8, 0.2);
+    top: -10px;
+}

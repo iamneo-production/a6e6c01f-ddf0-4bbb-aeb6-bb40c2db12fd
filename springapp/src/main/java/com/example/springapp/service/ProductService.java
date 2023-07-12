@@ -1,12 +1,14 @@
 package com.example.springapp.service;
 
 
+import com.example.springapp.dto.request.ProductRequestDto;
 import com.example.springapp.model.User;
 import com.example.springapp.model.Product;
 import com.example.springapp.repo.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -36,14 +38,25 @@ public class ProductService {
 
 
     // Create
-    public Product createProduct(Product product, User user){
-        product.setSeller(user);
+    public Product createProduct(ProductRequestDto productRequestDto, User seller) throws IOException {
+        Product product = new Product(
+                productRequestDto.getName(),
+                productRequestDto.getDescription(),
+                productRequestDto.getPrice(),
+                productRequestDto.getQuantity(),
+                productRequestDto.getBrand(),
+                productRequestDto.getColour(),
+                productRequestDto.getImage().getBytes(),
+                seller,
+                productRequestDto.getCategory()
+
+        );
         return productRepository.save(product);
     }
 
     // Get Product by Id
-    public Optional<Product> getProductById(Integer productId){
-        return productRepository.findById(productId);
+    public Product getProductById(Integer productId){
+        return productRepository.findById(productId).orElseThrow();
     }
 
     // Update Product
@@ -52,13 +65,25 @@ public class ProductService {
     }
 
     // Delete Product by Id
-    public String deleteProductById(Integer productId) {
+    public void deleteProductById(Integer productId) {
+        System.out.println(".....");
+        System.out.println(productId);
         productRepository.deleteById(productId);
-
-        return "Deleted Successfully";
     }
 
     public List<Product> getProductBySellerId(Integer sellerId) {
         return productRepository.findAllBySeller(sellerId);
+    }
+
+    public List<Product> searchProducts(String query) {
+        return productRepository.findByNameContainingIgnoreCase(query);
+    }
+
+    public List<Product> getAllProducts() {
+        return productRepository.findAll();
+    }
+
+    public List<Product> getProductByCategory(String category) {
+        return productRepository.findAllByCategory(category);
     }
 }
