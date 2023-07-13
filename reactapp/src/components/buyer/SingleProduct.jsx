@@ -1,13 +1,17 @@
-import React, {useEffect} from "react";
+import React, {useEffect,useState} from "react";
 import "../../pages/buyer/product.css"
 import {BsChatRightQuoteFill} from 'react-icons/bs';
 import {useDispatch, useSelector} from "react-redux";
 import {fetchProductById} from "../../features/productSlice";
+import AskQueryModal from "./AskQueryModal";
 
 const SingleProduct = () =>{
   const token = useSelector(state => state.user.token)
     const productDetails = useSelector(state => state.product.productDetails)
     const selectedProduct = useSelector(state => state.product.selectedProduct)
+    const [queryModal, setQueryModal] = useState(false);
+    const handleCloseQueryModal = () => setQueryModal(false);
+
     const dispatch = useDispatch()
     useEffect( () => {
         dispatch(fetchProductById({token: token, productId: selectedProduct}))
@@ -30,12 +34,12 @@ const SingleProduct = () =>{
           
           <button type="submit" class="btn btn-danger  ">Add to Cart</button>
           <button type="submit" class="btn btn-danger mx-3">Buy Now</button>
-          <button type="submit" class="btn btn-outline-danger "><i className="material-icons" ><BsChatRightQuoteFill /></i> Ask Questions</button>
+          <button onClick={() => setQueryModal(true)} type="submit" class="btn btn-outline-danger "><i className="material-icons" ><BsChatRightQuoteFill /></i> Ask Questions</button>
         </form>
       </div>
     </div>
   </div>
-  
+  <AskQueryModal show={queryModal} onHide={handleCloseQueryModal} />
 
 
 

@@ -1,7 +1,7 @@
 import { useState, useRef } from "react";
 import Offcanvas from 'react-bootstrap/Offcanvas';
 import { FaSearch } from 'react-icons/fa';
-import { MdAccountCircle, MdLogout, MdAddShoppingCart, MdLocationOn, MdMessage, MdReviews } from 'react-icons/md';
+import { MdAccountCircle, MdLogout, MdAddShoppingCart, MdLocationOn, MdMessage, MdReviews, MdHome } from 'react-icons/md';
 import { HiShoppingCart } from 'react-icons/hi';
 import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate } from "react-router-dom";
@@ -16,6 +16,22 @@ export default function NavigationBar() {
 
     function handlePurchaseHistory() {
         navigate("/purchasehistory", { state: { currentUser } });
+    }
+
+    function handleMyProfile() {
+        navigate("/profile", { state: { currentUser } });
+    }
+
+    function handleQA() {
+        navigate("/qa", { state: { currentUser } });
+    }
+
+    function handleChangeAddress() {
+        navigate("/changeaddress", { state: { currentUser } });
+    }
+
+    function handleBuyerHome() {
+        navigate("/home", { state: { currentUser } });
     }
 
     function handleLogout() {
@@ -55,18 +71,18 @@ export default function NavigationBar() {
                                         </Offcanvas.Header>
                                         <Offcanvas.Body>
                                             <div class="list-group list-group-flush">
-                                                <a href="#" class="list-group-item list-group-item-action"><MdAccountCircle style={{ width: 30, height: 20 }} />My Profile</a>
-                                                <a onClick={handlePurchaseHistory} class="list-group-item list-group-item-action"><MdAddShoppingCart style={{ width: 30, height: 20 }} />Purchase History</a>
-                                                <a href="#" class="list-group-item list-group-item-action"><MdLocationOn style={{ width: 30, height: 20 }} />Change Address</a>
-                                                <a href="#" class="list-group-item list-group-item-action"><MdMessage style={{ width: 30, height: 20 }} />Chats</a>
-                                                <a href="#" class="list-group-item list-group-item-action"><MdReviews style={{ width: 30, height: 20 }} />Reviews</a>
+                                                <a onClick={handleBuyerHome} href="#" class="list-group-item list-group-item-action"><MdHome style={{ width: 30, height: 20 }} />Home</a>
+                                                <a onClick={handleMyProfile} href="#" class="list-group-item list-group-item-action"><MdAccountCircle style={{ width: 30, height: 20 }} />My Profile</a>
+                                                <a onClick={handlePurchaseHistory} href="#" class="list-group-item list-group-item-action"><MdAddShoppingCart style={{ width: 30, height: 20 }} />Purchase History</a>
+                                                <a onClick={handleChangeAddress} href="#" class="list-group-item list-group-item-action"><MdLocationOn style={{ width: 30, height: 20 }} />Change Address</a>
+                                                <a onClick={handleQA} href="#" class="list-group-item list-group-item-action"><MdMessage style={{ width: 30, height: 20 }} />Q & A</a>
                                                 <a href="#" class="list-group-item list-group-item-action" onClick={() => handleLogout()}><MdLogout style={{ width: 30, height: 20 }} />Logout</a>
                                             </div>
                                         </Offcanvas.Body>
                                     </Offcanvas>
                                 </li>
                                 <li className="nav-item me-3 me-lg-4">
-                                    <a className="nav-link text-white" href="#"><i className="hi hi-envelope mx-1"><HiShoppingCart style={{ width: 30, height: 20 }} /></i> Cart</a>
+                                    <a className="nav-link text-white" href="#"><i className="hi hi-envelope mx-1"><HiShoppingCart onClick={() =>  navigate("/cart")} style={{ width: 30, height: 20 }} /></i> Cart</a>
                                 </li>
                             </ul>
                         </div>

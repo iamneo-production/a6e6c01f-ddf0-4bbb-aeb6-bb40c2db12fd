@@ -1,4 +1,4 @@
-import { MdAccountCircle,MdCheckCircle,MdMessage,MdLogout } from 'react-icons/md';
+import { MdAccountCircle,MdCheckCircle,MdMessage,MdLogout,MdHome } from 'react-icons/md';
 import Offcanvas from 'react-bootstrap/Offcanvas';
 import { useRef, useState } from 'react';
 import {useSelector,useDispatch } from 'react-redux';
@@ -11,6 +11,18 @@ export default function SellerNavigationBar() {
     const navigate = useNavigate();
     const dispatch = useDispatch() 
     const currentUser = useSelector(state => state.user.currentUser)
+
+    function handleSellerHome() {
+        navigate("/seller/home", { state: { currentUser } });
+    }
+    
+    function handleAddProducts() {
+        navigate("/seller/addproduct", { state: { currentUser } });
+    }
+
+    function handleSellerQA() {
+        navigate("/seller/qa", { state: { currentUser } });
+    }
 
     function handleLogout(){
         dispatch(logout())
@@ -32,9 +44,10 @@ export default function SellerNavigationBar() {
                             </Offcanvas.Header>
                             <Offcanvas.Body>
                                 <div class="list-group list-group-flush">
+                                    <a onClick={handleSellerHome} href="#" class="list-group-item list-group-item-action"><MdHome style={{ width: 30, height: 20 }} />Home</a>
                                     <a href="#" class="list-group-item list-group-item-action"><MdAccountCircle style={{ width: 30, height: 20 }} />My Profile</a>
-                                    <a href="#" class="list-group-item list-group-item-action"><MdCheckCircle style={{ width: 30, height: 20 }} />Add Products</a>
-                                    <a href="#" class="list-group-item list-group-item-action"><MdMessage style={{ width: 30, height: 20 }} />Chats</a>
+                                    <a onClick={handleAddProducts} href="#" class="list-group-item list-group-item-action"><MdCheckCircle style={{ width: 30, height: 20 }} />Add Products</a>
+                                    <a onClick={handleSellerQA} href="#" class="list-group-item list-group-item-action"><MdMessage style={{ width: 30, height: 20 }} />Q & A</a>
                                     <a href="#" class="list-group-item list-group-item-action" onClick={()=>handleLogout()}><MdLogout style={{ width: 30, height: 20 }} />Logout</a>
                                 </div>
                             </Offcanvas.Body>

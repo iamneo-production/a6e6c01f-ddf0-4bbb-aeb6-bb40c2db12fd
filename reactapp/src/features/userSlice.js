@@ -1,5 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { createUserService, loginUserService } from "../api/userService";
+import {toast} from "react-toastify";
 
 export const loginUser =
     createAsyncThunk('user/loginUser', async (body) => {
@@ -89,7 +90,9 @@ export const userSlice = createSlice({
             console.log("Fulfilled")
             if (action.payload.message === "success") {
                 state.signupSuccess = true
-                alert(`Account Create : ${action.payload.message}`)
+                toast('Account Created Successfully', {
+                    position: toast.POSITION.TOP_CENTER
+                });
             } else {
                 alert(action.payload.message)
             }

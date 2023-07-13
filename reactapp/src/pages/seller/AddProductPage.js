@@ -6,6 +6,8 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useDispatch, useSelector } from 'react-redux';
 import { addProduct } from '../../features/productSlice';
+import {MdKeyboardBackspace} from 'react-icons/md';
+import { useNavigate } from "react-router-dom";
 
 export default function AddProductPage() {
     const dispatch = useDispatch()
@@ -14,6 +16,12 @@ export default function AddProductPage() {
     const [formValue,setFormValue] = useState({});
     const [systemimage, setImage] = useState(null)
     const blob = new Blob([formValue.image], { type: 'image/jpeg' });
+    const navigate = useNavigate();
+
+    const handleGoBack = () => {
+        navigate("/seller/home")
+    };
+
     const onImageChange = (event) => {
         if (event.target.files && event.target.files[0]) {
             setFormValue({...formValue,image:event.target.files[0]});
@@ -29,7 +37,11 @@ export default function AddProductPage() {
 
         <div>
             <SellerNavigationBar/>
-            <h3 style={{ marginLeft: 10, marginTop: 8 }}><b>ADD PRODUCT</b></h3>
+            <div className="d-flex flex-row align-items-center">
+                <p className='ms-3' ><MdKeyboardBackspace style={{color:"grey"}} onClick={handleGoBack}/>{" "}<a href="#" style={{color:"grey"}} onClick={handleGoBack}>Back</a></p>
+                <p className='ms-3' style={{fontSize:30}}><b>ADD PRODUCT</b></p>
+            </div>
+
             <br></br>
                 <div style={{ padding: "0px 30px 30px 30px" }}>
                     <label for="exampleFormControlInput1" class="form-label"><b>Image</b></label>

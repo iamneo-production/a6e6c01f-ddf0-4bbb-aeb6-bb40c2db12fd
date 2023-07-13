@@ -24,7 +24,7 @@ export default class showuser extends Component {
   };
 
   handleGotoClick = () => {
-    window.location.href = "/gotoProductsPage";
+    window.location.href = "/admin/products";
   };
 
   render() {

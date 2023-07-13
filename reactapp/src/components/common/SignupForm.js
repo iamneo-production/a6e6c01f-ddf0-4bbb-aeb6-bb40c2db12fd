@@ -33,7 +33,7 @@ export default function SignupForm(props) {
                         if (passwordValidation.test(inputValue.password)) {
                             if (phonenoValidation.test(inputValue.phone)) {
                                 console.log((nameValidation).test(inputValue.firstName))
-                                alert("Matched")
+                                // alert("Matched")
                                 console.log(inputValue);
                                 console.log("-----------------")
                                 dispatch(signupUser(inputValue))
