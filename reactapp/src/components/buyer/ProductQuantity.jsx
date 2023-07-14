@@ -26,7 +26,7 @@ function ProductQuantity(props) {
     }
 
     return (
-        <div className='row ms-1'>
+        <div className='row ms-1'style={{paddingTop:10}} >
            <div onClick={increment} className="col-md-3"><AiOutlinePlusCircle style={{width:22,height:22}}/></div>
             <div className='col-sm-4 border'>{props.quantity}</div>
             <div onClick={decrement} className="col-md-5"><AiOutlineMinusCircle style={{width:22,height:22}}/></div>
