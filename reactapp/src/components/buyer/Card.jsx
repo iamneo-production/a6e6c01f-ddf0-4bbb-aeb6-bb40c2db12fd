@@ -3,6 +3,7 @@ import "../../pages/buyer/home.css"
 import {useNavigate} from "react-router-dom";
 import {useDispatch} from "react-redux";
 import {setSelectedProduct} from "../../features/productSlice";
+import { fetchProduct } from "../../features/productSlice";
 
 const Card =  (props) => {
   const navigate = useNavigate();
@@ -12,6 +13,13 @@ const Card =  (props) => {
         navigate("/product")
     }
 
+    const shortenProductName = (name) => {
+      if (name.length > 70) {
+        return name.slice(0, 70) + "...";
+      }
+      return name;
+    };
+
     return(
         <>
 
@@ -20,13 +28,12 @@ const Card =  (props) => {
                  <div class="card mb-4">
                     <img src={`data:image/jpeg;base64,${value.image}`} class="card-img-top" alt="Product 1"/>
                   <div class="card-body">
-                     <h5 class="card-title">{value.name}</h5>
-                     <h6 class="card-text">₹{value.price}</h6>
-           
+                     <h6 class="card-title">{shortenProductName(value.name)}</h6>
+                     <h6 class="card-text text-success">₹ {value.price.toLocaleString("en-US")}</h6>
                   </div>
                 </div>
                </div>
-               ))};
+               ))}
               
         </>
     )
