@@ -63,7 +63,7 @@ export default function AddProductPage() {
 
                     <label for="exampleFormControlInput1" class="form-label"><b>Product Description</b></label>
                     <div style={inputStyle.input}>
-                        <textarea  onChange={(e)=> setFormValue({...formValue,description:e.target.value})} class="form-control" placeholder='Product description' id="exampleFormControlTextarea1" rows="3"></textarea>
+                        <textarea type="text" onChange={(e)=> setFormValue({...formValue,description:e.target.value})} class="form-control" placeholder='Product description' id="exampleFormControlTextarea1" rows="3" maxLength={1000}></textarea>
                     </div>
                     <br></br>
 
