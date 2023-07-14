@@ -82,7 +82,7 @@ export default function NavigationBar() {
                                     </Offcanvas>
                                 </li>
                                 <li className="nav-item me-3 me-lg-4">
-                                    <a className="nav-link text-white" href="#"><i className="hi hi-envelope mx-1"><HiShoppingCart onClick={() =>  navigate("/cart")} style={{ width: 30, height: 20 }} /></i> Cart</a>
+                                    <a className="nav-link text-white" href="#" onClick={() =>  navigate("/cart")}><i className="hi hi-envelope mx-1"><HiShoppingCart style={{ width: 30, height: 20 }} /></i> Cart</a>
                                 </li>
                             </ul>
                         </div>
