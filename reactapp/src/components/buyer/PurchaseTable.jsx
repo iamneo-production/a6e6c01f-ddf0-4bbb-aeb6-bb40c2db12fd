@@ -4,6 +4,7 @@ import ReviewModal from './ReviewModal';
 import ViewReviewModal from './ViewReview';
 import { Pagination } from '@mui/material';
 import { pageSetter } from './PageSetter';
+import { ReactComponent as PurchaseEmpty } from '../../assets/PurchaseEmpty.svg';
 import moment from 'moment';
 
 const PurchaseTable = ({ data, handleRefresh }) => {
@@ -28,6 +29,16 @@ const PurchaseTable = ({ data, handleRefresh }) => {
 
     return (
         <div className='w-100 h5'>
+            {data.length === 0 ? (
+                <div style={{ display: "flex", alignItems: "center", justifyContent: "center" ,marginTop:-15}} >
+                    <div style={{ width: 400, height: 400 }}>
+                        <div style={{ display: "flex", alignItems: "center", justifyContent: "center" }}>
+                            <h5 style={{ color: "grey" }}><b>Didn't purchased yet !</b></h5>
+                        </div>
+                        <PurchaseEmpty />
+                    </div>
+                </div>
+            ) : (
             <Table>
                 <thead>
                     <tr>
@@ -98,7 +109,7 @@ const PurchaseTable = ({ data, handleRefresh }) => {
                         )}
                 </tbody>
             </Table>
-
+            )}
             <ReviewModal
                 purchaseId={purchaseId}
                 showModal={reviewModal}
@@ -117,6 +128,7 @@ const PurchaseTable = ({ data, handleRefresh }) => {
             />
 
             <div className='d-flex flex-row justify-content-center'>
+            {data.length > 0 ? (
                 <Pagination
                     page={page}
                     onChange={(event, value) => {
@@ -126,6 +138,7 @@ const PurchaseTable = ({ data, handleRefresh }) => {
                     count={Math.ceil(data.length / tableLines)}
                     variant='outlined'
                 />
+            ):<div></div>}
             </div>
         </div>
     );
