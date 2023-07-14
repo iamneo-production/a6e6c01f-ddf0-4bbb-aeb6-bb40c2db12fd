@@ -5,6 +5,7 @@ import NavigationBar from '../common/NavigationBar';
 import { useNavigate } from "react-router-dom";
 import {MdKeyboardBackspace} from 'react-icons/md';
 import {useDispatch, useSelector} from "react-redux";
+import { ReactComponent as AddToCart } from '../../assets/AddToCart.svg';
 import {fetchCart} from "../../features/cartSlice";
 
 const products = [
@@ -25,8 +26,12 @@ const products = [
 
 const CartProducts = () => {
     const [showRemove, setShowRemove] = useState(false);
-    const handleShowRemoveModal = () => setShowRemove(true);
     const handleHideRemoveModal = () => setShowRemove(false);
+    const [selected,setSelected] = useState(null)
+    const handleShowRemoveModal = (id) => {
+        setSelected(id)
+        setShowRemove(true)
+    };
     const navigate = useNavigate();
     const token = useSelector(state => state.user.token)
     const dispatch = useDispatch()
@@ -34,6 +39,10 @@ const CartProducts = () => {
         dispatch(fetchCart({token:token}))
     },[])
     const cartList = useSelector(state => state.cart.cartList);
+
+    const handleBuyNow=()=>{
+        navigate("/checkout")
+    }
     const handleGoBack = () => {
         navigate("/home")
     };
@@ -45,6 +54,17 @@ const CartProducts = () => {
                 <p className='ms-3' ><MdKeyboardBackspace style={{color:"grey"}} onClick={handleGoBack}/>{" "}<a href="#" style={{color:"grey"}} onClick={handleGoBack}>Back</a></p>
                 <p className='ms-3' style={{fontSize:30}}><b>CART</b></p>
             </div>
+            {cartList.length === 0 ? (
+                <div style={{ display: "flex", alignItems: "center", justifyContent: "center" }}>
+                    <div style={{ width: 400, height: 400 }}>
+                        <div style={{ display: "flex", alignItems: "center", justifyContent: "center" }}>
+                            <h5 style={{ color: "grey" }}><b>No products added yet</b></h5>
+                        </div>
+                        <AddToCart />
+                    </div>
+                </div>
+            ) : (
+            <div>
             <div>
                 {
                     cartList.map((prod, index) =>
@@ -59,9 +79,8 @@ const CartProducts = () => {
                                     <div className="col-10 border">
                                         <div className="card-body">
                                             <p className="card-title fw-bold">{prod.product.name}</p>
-                                            <p className="card-text text-muted fw-bold">{prod.product.price}</p>
-                                            <button type="button" className="btn btn-danger" style={{ color: "black" }} onClick={() => { handleShowRemoveModal() }}><b>Remove</b></button>
-                                            <CartProductsRemoveModal cartId ={prod.id} show={showRemove} handleHideRemoveModal={handleHideRemoveModal}></CartProductsRemoveModal>
+                                            <p className="card-text text-muted fw-bold">{`₹ ${prod.product.price.toLocaleString("en-US")}`}</p>
+                                            <button type="button" className="btn btn-danger" style={{ color: "black" }} onClick={() => { handleShowRemoveModal(prod.id) }}><b>Remove</b></button>
                                         </div>
                                     </div>
                                 </div>
@@ -69,10 +88,14 @@ const CartProducts = () => {
                         </div>
                     ))
                 }
+                <CartProductsRemoveModal cartId ={selected} show={showRemove} handleHideRemoveModal={handleHideRemoveModal}></CartProductsRemoveModal>
             </div>
             <div className="d-flex justify-content-center">
-                <button className="btn btn-danger mt-3" style={{ color: "black" }}><b>Buy Now</b></button>
+                <button className="btn btn-danger mt-3" style={{ color: "black" }} onClick={handleBuyNow}><b>Buy Now</b></button>
             </div><br />
+            </div>
+            )}
+            <br /> 
         </div>
     );
 };
