@@ -48,7 +48,7 @@ public class ProductController {
         }
     }
 
-    @GetMapping(value = "/api/products/category/")
+    @GetMapping(value = "/api/products/category")
     public ResponseEntity<BaseResponseDTO> getProductByCategory(@RequestParam String category){
         try{
             List<Product> products = productService.getProductByCategory(category);
@@ -108,9 +108,9 @@ public class ProductController {
 
 
     //Search API
-    @GetMapping("/search")
-    public List<Product> searchProducts(@RequestParam String query) {
-        return productService.searchProducts(query);
+    @GetMapping("/api/search")
+    public ResponseEntity<BaseResponseDTO> searchProducts(@RequestParam String query) {
+        return ResponseEntity.ok(new BaseResponseDTO("success",productService.searchProducts(query)));
     }
 
 }
