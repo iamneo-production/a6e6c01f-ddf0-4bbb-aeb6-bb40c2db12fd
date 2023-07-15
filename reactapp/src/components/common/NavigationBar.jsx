@@ -6,12 +6,14 @@ import { HiShoppingCart } from 'react-icons/hi';
 import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate } from "react-router-dom";
 import { logout } from "../../features/userSlice";
+import {setSearchQuery} from "../../features/productSlice";
 
 export default function NavigationBar() {
     const [showDropDown, setShowDropDown] = useState(false);
     const target = useRef(null);
     const navigate = useNavigate();
     const dispatch = useDispatch()
+    const [search,setSearch] = useState('');
     const currentUser = useSelector(state => state.user.currentUser)
 
     function handlePurchaseHistory() {
@@ -39,6 +41,11 @@ export default function NavigationBar() {
 
         navigate("/")
     }
+    async function handleSearch() {
+        console.log("search-query",search)
+        await dispatch(setSearchQuery({searchQuery:search}));
+        navigate('/search')
+    }
     return (
         <div>
 
@@ -52,9 +59,9 @@ export default function NavigationBar() {
                         </div>
                         <div className="col-md-7">
                             <div class="input-group">
-                                <input type="text" class="form-control" placeholder="Search" aria-describedby="basic-addon2" />
+                                <input onChange={(e) => setSearch(e.target.value)} type="text" class="form-control" placeholder="Search" aria-describedby="basic-addon2" />
                                 <div class="input-group-append">
-                                    <button class="btn btn-outline-secondary" type="button"><i className="md md-envelope mx-1"> <FaSearch style={{ justifyContent: "center", height: 20, paddingBottom: "5px" }} /></i></button>
+                                    <button onClick={() => handleSearch()} class="btn btn-outline-secondary" type="button"><i className="md md-envelope mx-1"> <FaSearch style={{ justifyContent: "center", height: 20, paddingBottom: "5px" }} /></i></button>
                                 </div>
                             </div>
 
