@@ -21,6 +21,9 @@ import OrderPlacedPage from "./pages/buyer/OrderPlacedPage";
 import {useSelector } from 'react-redux';
 import SellerQA from '../../reactapp/src/pages/seller/SellerQA';
 import CheckoutPage from "./pages/buyer/CheckoutPage";
+import ParticularProductsPage  from "./pages/buyer/ParticularProductsPage";
+import ProductCategoryPage from "./pages/buyer/ProductCategoryPage";
+import ProductSearchPage from "./pages/buyer/ProductSearchPage";
 
 function App() {
   return (
@@ -43,7 +46,9 @@ function App() {
         <Route path="/orderplaced" element={<OrderPlacedPage/>} />
         <Route path="/seller/qa" element={<SellerQA/>} />
         <Route path="/checkout" element={<CheckoutPage/>} />
-
+        <Route path="/products" element={<ParticularProductsPage/>} />
+        <Route path="/category" element={<ProductCategoryPage/>} />
+        <Route path="/search" element={<ProductSearchPage/>} />
       </Routes>
     </Router>
   );
