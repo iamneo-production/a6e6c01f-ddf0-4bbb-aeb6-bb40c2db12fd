@@ -1,5 +1,5 @@
 import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
-import {createProduct,deleteProductById, getProduct,getProductById} from "../api/productService";
+import {createProduct,deleteProductById, getProduct,getProductById,getProductBySellerId,getProductBySearch,getProductByCategory} from "../api/productService";
 import {toast} from "react-toastify";
 
 export const addProduct =
@@ -8,7 +8,7 @@ export const addProduct =
         ).then((res) =>{
             return res.data
         }).catch((err) =>{
-            return err.response.date
+            return err.response.data
         })
     })
 
@@ -19,7 +19,7 @@ export const fetchProduct =
         ).then((res) =>{
             return res.data
         }).catch((err) =>{
-            return err.response.date
+            return err.response.data
         })
     })
 
@@ -33,7 +33,7 @@ export const fetchProduct =
         ).then((res) =>{
             return res.data
         }).catch((err) =>{
-            return err.response.date
+            return err.response.data
         })
     })
 
@@ -45,9 +45,45 @@ export const fetchProduct =
         ).then((res) =>{
             return res.data
         }).catch((err) =>{
-            return err.response.date
+            return err.response.data
         })
     })
+
+    export const getSellerProducts =
+    createAsyncThunk('product/getSellerProducts',async (body)=>{
+        return  getProductBySellerId(
+            body.token,
+            body.sellerId
+        ).then((res) =>{
+            return res.data
+        }).catch((err) =>{
+            return err.response.data
+        })
+    })
+
+    export const fetchProductByQuery =
+        createAsyncThunk('product/fetchProductByQuery', async (body) => {
+            return getProductBySearch(
+                body.token,
+                body.query
+            ).then((res) => {
+                return res.data
+            }).catch((err) => {
+                return err.response.data
+            })
+        })
+
+    export const fetchProductByCategory =
+        createAsyncThunk('product/fetchProductByCategory', async (body) => {
+            return getProductByCategory(
+                body.token,
+                body.category
+            ).then((res) => {
+                return res.data
+            }).catch((err) => {
+                return err.response.data
+            })
+        })
 
 
 
@@ -55,13 +91,25 @@ const productSlice = createSlice({
     name: "product", initialState: {
         addProductInProcess:false,
         fetchProductInProcess:false,
+        fetchSellerProductInProcess:false,
         allProductList: [],
+        sellerProductsList:[],
         selectedProduct:'',
-        productDetails:''
+        productDetails:'',
+        searchProductResult:[],
+        categoryProductResult:[],
+        selectedCategory:'',
+        searchQuery:'',
     },
     reducers:{
         setSelectedProduct:(state,action) =>{
             state.selectedProduct = action.payload.productId
+        },
+        setSelectedCategory:(state, action) =>{
+            state.selectedCategory = action.payload.category
+        },
+        setSearchQuery:(state, action) =>{
+            state.searchQuery = action.payload.searchQuery
         }
     },
     extraReducers:{
@@ -140,10 +188,62 @@ const productSlice = createSlice({
         [deleteProduct.rejected]:(state)=>{
             console.log("Product fetch failed")
         },
+        [getSellerProducts.pending]:(state) => {
+            state.fetchSellerProductInProcess = true
+            console.log("pending")
+        },
+        [getSellerProducts.fulfilled]:(state,action) =>{
+            if(action.payload.message ==="success"){
+                state.sellerProductsList = action.payload.data
+                console.log("Product fetched")
+                console.log(state.sellerProductsList)
+            }else {
+                console.log(action.payload.message)
+            }
+            state.fetchSellerProductInProcess =false
+        },
+        [getSellerProducts.rejected]:(state)=>{
+            state.fetchSellerProductInProcess = false
+            console.log("Product fetch failed")
+        },
+        [fetchProductByQuery.pending]:(state) => {
+            state.fetchProductInProcess = true
+            console.log("pending")
+        },
+        [fetchProductByQuery.fulfilled]:(state,action) =>{
+            console.log("fetchProductByQuery-",action.payload.data);
+            if(action.payload.message ==="success"){
+                state.searchProductResult = action.payload.data
+            }else {
+                console.log(action.payload.message)
+            }
+            state.fetchProductInProcess =false
+        },
+        [fetchProductByQuery.rejected]:(state)=>{
+            state.fetchProductInProcess = false
+            console.log("Product fetch failed")
+        },
+        [fetchProductByCategory.pending]:(state) => {
+            state.fetchProductInProcess = true
+            console.log("pending")
+        },
+        [fetchProductByCategory.fulfilled]:(state,action) =>{
+            if(action.payload.message ==="success"){
+                state.categoryProductResult = action.payload.data
+                console.log("Product fetched")
+            }else {
+                console.log(action.payload.message)
+            }
+            state.fetchProductInProcess =false
+        },
+        [fetchProductByCategory.rejected]:(state)=>{
+            state.fetchProductInProcess = false
+            console.log("Product fetch failed")
+        },
     }
 })
 
-export const {setSelectedProduct} = productSlice.actions;
+export const {setSelectedProduct,setSelectedCategory,setSearchQuery} = productSlice.actions;
 
 
 
