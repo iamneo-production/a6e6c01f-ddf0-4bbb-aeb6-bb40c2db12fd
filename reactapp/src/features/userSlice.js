@@ -18,7 +18,7 @@ export const signupUser =
     createAsyncThunk('user/signupUser', async (body) => {
         return createUserService(body.firstName, body.lastName, body.email, body.password, body.phone, body.roles)
             .then((res) => {
-                console.log(res)
+                console.log(res.data)
                 return res.data
             }).catch((err) => {
                 console.log(err)
@@ -76,7 +76,9 @@ export const userSlice = createSlice({
                 state.currentUser.id = action.payload.data.currentUser.id
                 state.signinSuccess = true
             } else {
-                alert(action.payload.message)
+                toast.error(action.payload.message, {
+                    position: toast.POSITION.TOP_CENTER
+                });
             }
         },
         [loginUser.rejected]: (state) => {
@@ -94,7 +96,10 @@ export const userSlice = createSlice({
                     position: toast.POSITION.TOP_CENTER
                 });
             } else {
-                alert(action.payload.message)
+                toast.error(action.payload.message, {
+                    position: toast.POSITION.TOP_CENTER
+                });
+                //alert(action.payload.message)
             }
         },
         [signupUser.rejected]: (state) => {
