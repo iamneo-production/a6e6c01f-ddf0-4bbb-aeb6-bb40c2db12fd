@@ -1,9 +1,12 @@
-import {Link} from 'react-router-dom';
+import {useNavigate} from 'react-router-dom';
 import NavigationBar from '../../components/common/NavigationBar';
 import "././home.css";
 import Card from '../../components/buyer/Card';
 import cardData from '../../components/buyer/CardData';
 import Footer from '../../components/common/Footer';
+import {useDispatch, useSelector} from "react-redux";
+import {useEffect} from "react";
+import {fetchProduct, setSelectedCategory} from "../../features/productSlice";
 
 
 
@@ -11,8 +14,19 @@ import Footer from '../../components/common/Footer';
 
 
 export default function HomePage(){
+  const allProductList = useSelector(state => state.product.allProductList)
+  const token = useSelector(state => state.user.token)
+  const navigate = useNavigate();
+  const dispatch = useDispatch()
+  useEffect(() =>{
+      dispatch(fetchProduct({token:token}))
+  },[])
 
-
+  async function handleCategorySelect(category) {
+    console.log("Clicked--handleCategorySelect");
+    await dispatch(setSelectedCategory({category: category}))
+    navigate("/category")
+  }
 return(
         <div className='home'>
           
@@ -27,30 +41,30 @@ return(
               <ul className="navbar-nav justify-content-between w-100">
                 <li className="nav-item ">
                 
-                  <a className="nav-link" href="#">Fashion</a>
+                <span className="nav-link" style={{cursor:"pointer"}}>Fashion</span>
                 </li>
                 <li className="nav-item">
-                  <a className="nav-link" href="#">Mobile Phones</a>
-                </li>
-                <li className="nav-item">
-                  
-                  <a className="nav-link" href="#">Ornaments</a>
+                <span  onClick={() => handleCategorySelect('Mobile')} style={{cursor:"pointer"}} className="nav-link">Mobile Phones</span>
                 </li>
                 <li className="nav-item">
                   
-                  <a className="nav-link" href="#">Skin Care</a>
+                <span className="nav-link" style={{cursor:"pointer"}}>Ornaments</span>
                 </li>
                 <li className="nav-item">
                   
-                  <a className="nav-link" href="#">Footware</a>
+                  <span className="nav-link" style={{cursor:"pointer"}}>Skin Care</span>
                 </li>
                 <li className="nav-item">
                   
-                  <a className="nav-link" href="#">Backpack</a>
+                <span className="nav-link" style={{cursor:"pointer"}}>Footware</span>
                 </li>
                 <li className="nav-item">
                   
-                  <a className="nav-link" href="#">Laptop</a>
+                <span className="nav-link" style={{cursor:"pointer"}}>Backpack</span>
+                </li>
+                <li className="nav-item">
+                  
+                <span className="nav-link" onClick={() => handleCategorySelect('Laptop')} style={{cursor:"pointer"}}>Laptop</span>
                 </li>
         
               </ul>
@@ -81,7 +95,7 @@ return(
           <section class="container">
     <h2 class="text-center mb-4">Featured Products</h2>
     <div class="row">
-      <Card details={cardData}/>
+      <Card ProductList={allProductList}/>
     
       
      

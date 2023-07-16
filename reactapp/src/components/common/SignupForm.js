@@ -33,7 +33,7 @@ export default function SignupForm(props) {
                         if (passwordValidation.test(inputValue.password)) {
                             if (phonenoValidation.test(inputValue.phone)) {
                                 console.log((nameValidation).test(inputValue.firstName))
-                                alert("Matched")
+                                // alert("Matched")
                                 console.log(inputValue);
                                 console.log("-----------------")
                                 dispatch(signupUser(inputValue))
@@ -117,13 +117,13 @@ export default function SignupForm(props) {
                     <div style={{ marginTop: 8 }}>
                         <p style={{ textAlign: "left" }} >Type</p>
                         <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1" checked={inputValue.roles === "SELLER"} onChange={() => { setInputValue({ ...inputValue, roles: "SELLER" }) }} />
+                            <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1" checked={inputValue.roles === "ROLE_SELLER"} onChange={() => { setInputValue({ ...inputValue, roles: "ROLE_SELLER" }) }} />
                             <label class="form-check-label" htmlFor="flexRadioDefault1">
                                 Seller
                             </label>
                         </div>
                         <div class="form-check form-check-inline text-start">
-                            <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2" checked={inputValue.roles === "BUYER"} onChange={() => { setInputValue({ ...inputValue, roles: "BUYER" }) }} />
+                            <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2" checked={inputValue.roles === "ROLE_BUYER"} onChange={() => { setInputValue({ ...inputValue, roles: "ROLE_BUYER" }) }} />
                             <label class="form-check-label" htmlFor="flexRadioDefault2">
                                 Buyer
                             </label>

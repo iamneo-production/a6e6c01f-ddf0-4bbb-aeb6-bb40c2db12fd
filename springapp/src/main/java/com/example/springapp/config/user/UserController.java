@@ -22,10 +22,15 @@ public class UserController {
     @PostMapping("/api/auth/register")
     @CrossOrigin(origins = "http://localhost:8081/")
     public BaseResponseDTO createUser(@RequestBody User newUser){
-        if(userService.createUser(newUser)){
-            return new BaseResponseDTO("success");
-        }else {
-            return new BaseResponseDTO("failed");
+        if(userService.checkUserNameExistsForSignup(newUser.getEmail())){
+            return new BaseResponseDTO("Already have an account");
+        }
+        else {
+            if (userService.createUser(newUser)) {
+                return new BaseResponseDTO("success");
+            } else {
+                return new BaseResponseDTO("failed");
+            }
         }
     }
 
@@ -44,11 +49,12 @@ public class UserController {
                 return new BaseResponseDTO("password invalid");
             }
         }else {
-            return new BaseResponseDTO("user not exist");
+            return new BaseResponseDTO("Account not exist");
         }
     }
 
     @GetMapping("/api/auth/validateToken")
+    @CrossOrigin(origins = "http://localhost:8081/")
     public ResponseEntity<BaseResponseDTO> home(@RequestHeader(value = "Authorization", defaultValue = "") String token) {
         Map<Object,Object> data = new HashMap<>();
         if(userService.validateToken(token)) {

@@ -48,6 +48,10 @@ public class UserService implements UserDetailsService {
         return userRepository.findByEmail(email).isPresent();
     }
 
+    public boolean checkUserNameExistsForSignup(String email){
+        return userRepository.findByEmail(email).isPresent();
+    }
+
     public String generateToken(String email,String password){
         Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(email,password));
         SecurityContextHolder.getContext().setAuthentication(authentication);

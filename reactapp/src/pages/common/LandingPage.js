@@ -4,23 +4,38 @@ import HeaderBar from '../../components/common/HeaderBar';
 import Footer from '../../components/common/Footer';
 import {useSelector } from 'react-redux';
 import {useNavigate} from "react-router-dom";
+import 'react-toastify/dist/ReactToastify.css';
+import {useEffect} from "react";
 
 export default function LandingPage() {
 
     const navigate = useNavigate();
+    const token = useSelector(state => state.user.token)
     const signinSuccess = useSelector(state => state.user.signinSuccess)
     const currentUser = useSelector(state => state.user.currentUser)
     console.log("success--landing")
-
+    useEffect(() =>{
+        if (token !== null) {
+            console.log(currentUser)
+            if (currentUser.roles === 'ROLE_ADMIN') {
+                navigate("/admin/products");
+            } else if (currentUser.roles === 'ROLE_SELLER') {
+                console.log("success-seller")
+                navigate("/seller/home");
+            } else if (currentUser.roles === 'ROLE_BUYER') {
+                navigate("/home");
+            }
+        }
+    },[])
     if (signinSuccess) {
         console.log("success-login")
         console.log(currentUser)
-        if (currentUser.roles === 'ADMIN') {
+        if (currentUser.roles === 'ROLE_ADMIN') {
             navigate("/admin/products");
-        } else if (currentUser.roles === 'SELLER') {
+        } else if (currentUser.roles === 'ROLE_SELLER') {
             console.log("success-seller")
             navigate("/seller/home");
-        } else if (currentUser.roles === 'BUYER') {
+        } else if (currentUser.roles === 'ROLE_BUYER') {
             navigate("/home");
         }
     }
