@@ -37,8 +37,8 @@ export async function deleteProductById(token,productId){
     })
 }
 
-export async function getProductBySellerId(token,sellerId){
-    return await axios.get(`${baseUrl}/products?id=${sellerId}`,{
+export async function getProductBySellerId(token){
+    return await axios.get(`${baseUrl}/products/seller`,{
         headers: { Authorization: `Bearer ${token}` }
     })
 }
