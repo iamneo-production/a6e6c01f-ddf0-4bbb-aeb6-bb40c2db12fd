@@ -3,7 +3,7 @@ import Offcanvas from 'react-bootstrap/Offcanvas';
 import { useRef, useState } from 'react';
 import {useNavigate} from "react-router-dom";
 import {useDispatch,useSelector } from 'react-redux';
-import { logout } from '../../features/userSlice';
+import {logout} from "../../features/logoutSlice";
 
 export default function AdminNavigationBar() {
     const [showDropDown, setShowDropDown] = useState(false);

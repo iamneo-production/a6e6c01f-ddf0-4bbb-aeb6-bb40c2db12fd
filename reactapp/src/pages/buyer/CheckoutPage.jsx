@@ -10,6 +10,9 @@ import { fetchAddress } from '../../features/addressSlice';
 import { MdKeyboardBackspace } from 'react-icons/md';
 import { useNavigate } from 'react-router-dom';
 import OrderPlaceModal from '../../components/buyer/OrderPlaceModal';
+import {createPurchase} from "../../api/purchaseService";
+
+
 
 export default function CheckoutPage() {
     const token = useSelector((state) => state.user.token);
@@ -43,6 +46,7 @@ export default function CheckoutPage() {
     }, 0);
 
     const totalAmount = totalPrice + deliveryCharge;
+
 
     return (
         <div>
@@ -310,7 +314,7 @@ export default function CheckoutPage() {
             </div>
             <br />
             <br />
-            <OrderPlaceModal show={showOrderPopup} handleHideRemoveModal={handleHideRemoveModal} />
+            <OrderPlaceModal cartList={cartList} show={showOrderPopup} handleHideRemoveModal={handleHideRemoveModal} />
             <Footer />
         </div>
     );

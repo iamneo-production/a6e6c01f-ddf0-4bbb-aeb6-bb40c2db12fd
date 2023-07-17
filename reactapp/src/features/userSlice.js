@@ -45,18 +45,6 @@ export const userSlice = createSlice({
         signup: (state, actions) => {
             console.log(actions.payload)
 
-        },
-        logout: (state) => {
-            state.currentUser = {
-                firstName: '',
-                lastName: '',
-                email: '',
-                phone: '',
-                roles: '',
-                id: ''
-            }
-            state.token = null
-
         }
 
     },
@@ -110,7 +98,7 @@ export const userSlice = createSlice({
 })
 
 
-export const { signup, logout } = userSlice.actions
+export const { signup } = userSlice.actions
 
 export const userReducer = userSlice.reducer
 
