@@ -3,6 +3,8 @@ package com.example.springapp.controller;
 import com.example.springapp.BaseResponseDTO;
 import com.example.springapp.config.jwt.JwtTokenProvider;
 import com.example.springapp.dto.request.ProductRequestDto;
+import com.example.springapp.dto.response.SellerDashboardResponse;
+import com.example.springapp.model.Purchase;
 import com.example.springapp.model.QA;
 import com.example.springapp.model.User;
 import com.example.springapp.config.user.UserRepository;
@@ -99,7 +101,12 @@ public class ProductController {
         }
     }
 
-
+    @GetMapping("/api/seller/dashboard")
+    public ResponseEntity<BaseResponseDTO> getProductDashboard(@RequestHeader(value = "Authorization", defaultValue = "") String token) {
+        User user = userRepository.findByEmail(tokenProvider.getUsernameFromToken(tokenProvider.getTokenFromHeader(token))).orElseThrow();
+        Map<String, Object> data = productService.getProductDashboard(user.getId());
+        return ResponseEntity.ok(new BaseResponseDTO("success",data));
+    }
 
     //Test Case
     @GetMapping("/product")

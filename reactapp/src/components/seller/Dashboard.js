@@ -3,32 +3,6 @@ import axios from "axios";
 import {baseUrl} from "../../api/config";
 import {useSelector} from "react-redux";
 
-const products = [
-    {
-        name: "TOTAL REVENUE",
-        value: "RS 44000"
-    },
-    {
-        name: "TOTAL PRODUCTS",
-        value: "114"
-    },
-    {
-        name: "SOLD PRODUCTS",
-        value: "20"
-    },
-    {
-        name: "UNSOLD PRODUCTS",
-        value: "20"
-    },
-    {
-        name: "OUT OF STOCK",
-        value: "10"
-    },
-    {
-        name: "TOTAL BUYERS",
-        value: "100"
-    },
-];
 
 export default function DashBoard() {
     const [data,setData] = useState({

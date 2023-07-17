@@ -3,6 +3,7 @@ package com.example.springapp.service;
 
 import com.example.springapp.config.user.UserRepository;
 import com.example.springapp.dto.request.ProductRequestDto;
+import com.example.springapp.dto.response.SellerDashboardResponse;
 import com.example.springapp.model.User;
 import com.example.springapp.model.Product;
 import com.example.springapp.repo.ProductRepository;
@@ -10,9 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 public class ProductService {
@@ -89,5 +88,26 @@ public class ProductService {
 
     public List<Product> getProductByCategory(String category) {
         return productRepository.findAllByCategory(category);
+    }
+
+    
+    public Map<String, Object> getProductDashboard(Long id) {
+        List<Object[]> queryResult = productRepository.getSellerDashboard(id);
+        Map<String, Object> response = mapToSellerDashboardResponse(queryResult);
+        return response;
+    }
+
+    public Map<String, Object> mapToSellerDashboardResponse(List<Object[]> queryResult) {
+        Object[] row = queryResult.get(0); // Assuming there is only one row in the result
+        Map<String, Object> result = new LinkedHashMap<>();
+
+        result.put("total_revenue", row[0]);
+        result.put("total_no_products", row[1]);
+        result.put("sold_products", row[2]);
+        result.put("unsold_products", row[3]);
+        result.put("out_of_stock_products", row[4]);
+        result.put("total_customers", row[5]);
+
+        return result;
     }
 }
