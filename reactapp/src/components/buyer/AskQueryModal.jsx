@@ -1,10 +1,18 @@
 import React, { useState } from 'react';
 import { Button, Modal, Form } from 'react-bootstrap';
+import {useDispatch, useSelector} from "react-redux";
+import {addQA} from "../../features/qaSlice";
 
 
 const AskQueryModal = (props) => {
+    const dispatch = useDispatch()
     const [textareaValue, setTextareaValue] = useState('');
-
+    const token = useSelector(state => state.user.token)
+    async function handleSubmit() {
+        await dispatch(addQA({token: token, productId: props.productId, question: textareaValue}))
+        setTextareaValue('')
+        props.onHide()
+    }
     const handleTextareaChange = (event) => {
         setTextareaValue(event.target.value);
     };
@@ -30,7 +38,7 @@ const AskQueryModal = (props) => {
                     <Button variant="secondary" onClick={props.onHide}>
                         Cancel
                     </Button>
-                    <Button variant="primary" style={{ backgroundColor: '#F25151', borderColor: '#F25151' }}>
+                    <Button onClick={() => handleSubmit()} variant="primary" style={{ backgroundColor: '#F25151', borderColor: '#F25151' }}>
                         Submit
                     </Button>
                 </Modal.Footer>
