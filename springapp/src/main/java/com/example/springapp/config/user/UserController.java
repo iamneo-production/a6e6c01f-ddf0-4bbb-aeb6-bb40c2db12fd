@@ -10,6 +10,7 @@ import com.example.springapp.service.UserService;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.List;
 
 
 @RestController
@@ -62,6 +63,28 @@ public class UserController {
             return ResponseEntity.ok(new BaseResponseDTO("success",data));
         }
         return new ResponseEntity<>(new BaseResponseDTO("failed",data), HttpStatus.UNAUTHORIZED);
+    }
+    //Get all users
+    @GetMapping(value= "/api/auth/user")
+    @CrossOrigin(origins = "http://localhost:8081/")
+    public List<User> getAllUser(){
+        return userService.findallUser();        
+    }
+    
+    
+    //Get user by id
+    @GetMapping(value = "/api/auth/user/{email}")
+    @CrossOrigin(origins = "http://localhost:8081/")
+    public List<User> getUserById(@PathVariable("email") String email){
+        return userService.getUsersById(email);
+    }
+
+    
+    //Update user details
+    @PutMapping(value = "/api/auth/user/{email}")
+    @CrossOrigin(origins = "http://localhost:8081/")
+    public User updateUser(@RequestBody User incomingUser){
+         return userService.updateUser(incomingUser); 
     }
     
 }
