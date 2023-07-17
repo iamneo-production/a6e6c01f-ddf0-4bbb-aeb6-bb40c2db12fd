@@ -6,10 +6,12 @@ import storage from "redux-persist/lib/storage";
 import {cartReducer} from "./features/cartSlice";
 import { addressReducer } from "./features/addressSlice";
 import {qaReducer} from "./features/qaSlice";
+import {purchaseReducer} from "./features/purchaseSlice";
 
 const persistConfig = {
     key: "root",
     storage,
+    blacklist: ["logout"],
 };
 
 const rootReducer = combineReducers({
@@ -17,10 +19,16 @@ const rootReducer = combineReducers({
     product:productReducer,
     cart:cartReducer,
     address:addressReducer,
-    qa:qaReducer
+    qa:qaReducer,
+    purchase:purchaseReducer
 });
 
-const persistedReducer = persistReducer(persistConfig, rootReducer);
+const persistedReducer = persistReducer(persistConfig, (state, action) => {
+    if (action.type === "logout/logout") {
+        state = rootReducer(undefined, action);
+    }
+    return rootReducer(state, action);
+});
 
 const store = configureStore({
     reducer: persistedReducer,

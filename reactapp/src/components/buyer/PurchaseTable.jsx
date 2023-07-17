@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import { Table, Button } from 'react-bootstrap';
 import ReviewModal from './ReviewModal';
 import ViewReviewModal from './ViewReview';
@@ -6,6 +6,8 @@ import { Pagination } from '@mui/material';
 import { pageSetter } from './PageSetter';
 import { ReactComponent as PurchaseEmpty } from '../../assets/PurchaseEmpty.svg';
 import moment from 'moment';
+import {useDispatch, useSelector} from "react-redux";
+import {fetchPurchase} from "../../features/purchaseSlice";
 
 const PurchaseTable = ({ data, handleRefresh }) => {
     const [reviewModal, setReviewModal] = useState(false);
@@ -15,7 +17,12 @@ const PurchaseTable = ({ data, handleRefresh }) => {
     const [start, setStart] = useState(0);
     const [stop, setStop] = useState(tableLines);
     const [page, setPage] = useState(1);
-
+    const token = useSelector((state) => state.user.token);
+    const dispatch = useDispatch();
+    useEffect(()=>{
+        dispatch(fetchPurchase({token:token}))
+    },[])
+    const purchaseList = useSelector((state) => state.purchase.purchaseList);
     const handlePageChange = (pageNumber) => {
         const { start, stop } = pageSetter(pageNumber, tableLines);
         setStart(start);
@@ -29,7 +36,7 @@ const PurchaseTable = ({ data, handleRefresh }) => {
 
     return (
         <div className='w-100 h5'>
-            {data.length === 0 ? (
+            {purchaseList.length === 0 ? (
                 <div style={{ display: "flex", alignItems: "center", justifyContent: "center" ,marginTop:-15}} >
                     <div style={{ width: 400, height: 400 }}>
                         <div style={{ display: "flex", alignItems: "center", justifyContent: "center" }}>
@@ -51,32 +58,25 @@ const PurchaseTable = ({ data, handleRefresh }) => {
                     </tr>
                 </thead>
                 <tbody>
-                    {data.length !== 0 &&
-                        data.slice(start, stop).map(
-                            ({
-                                purchaseId,
-                                productImageUrl,
-                                comment,
-                                productName,
-                                productPrice,
-                                purchaseDate,
-                            }) => (
-                                <tr key={purchaseId}>
-                                    <td>{purchaseId}</td>
+                    {purchaseList.length !== 0 &&
+                        purchaseList.slice(start, stop).map(
+                            (value, index) => (
+                                <tr key={index}>
+                                    <td>{value.id}</td>
                                     <td>
                                         <img
                                             height={80}
                                             width={80}
-                                            src={productImageUrl}
+                                            src={`data:image/jpeg;base64,${value.productId.image}`}
                                             alt=''
                                             srcSet=''
                                         />
                                     </td>
-                                    <td style={{ width: '650px' }}>{productName}</td>
-                                    <td>{productPrice}</td>
-                                    <td>{moment(purchaseDate).format('LLL')}</td>
+                                    <td style={{ width: '650px' }}>{value.productId.name}</td>
+                                    <td>{value.productId.price}</td>
+                                    <td>{moment(value.purchaseDate).format('LLL')}</td>
                                     <td>
-                                        {comment === null ? (
+                                        {value.id === null ? (
                                             <div className='d-flex flex-row justify-content-end'>
                                                 <Button
                                                     style={{
@@ -128,14 +128,14 @@ const PurchaseTable = ({ data, handleRefresh }) => {
             />
 
             <div className='d-flex flex-row justify-content-center'>
-            {data.length > 0 ? (
+            {purchaseList.length > 0 ? (
                 <Pagination
                     page={page}
                     onChange={(event, value) => {
                         setPage(value);
                         handlePageChange(value);
                     }}
-                    count={Math.ceil(data.length / tableLines)}
+                    count={Math.ceil(purchaseList.length / tableLines)}
                     variant='outlined'
                 />
             ):<div></div>}
