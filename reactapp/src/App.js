@@ -23,6 +23,7 @@ import SellerQA from '../../reactapp/src/pages/seller/SellerQA';
 import CheckoutPage from "./pages/buyer/CheckoutPage";
 import ProductCategoryPage from "./pages/buyer/ProductCategoryPage";
 import ProductSearchPage from "./pages/buyer/ProductSearchPage";
+import BuyerQA from "./pages/buyer/BuyerQA";
 
 function App() {
   return (
@@ -47,6 +48,7 @@ function App() {
         <Route path="/checkout" element={<CheckoutPage/>} />
         <Route path="/category" element={<ProductCategoryPage/>} />
         <Route path="/search" element={<ProductSearchPage/>} />
+        <Route path="/qa" element={<BuyerQA/>} />
       </Routes>
     </Router>
   );

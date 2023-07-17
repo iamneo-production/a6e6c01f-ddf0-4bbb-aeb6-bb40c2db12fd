@@ -1,6 +1,7 @@
 package com.example.springapp.service;
 
 
+import com.example.springapp.config.user.UserRepository;
 import com.example.springapp.dto.request.ProductRequestDto;
 import com.example.springapp.model.User;
 import com.example.springapp.model.Product;
@@ -18,6 +19,9 @@ public class ProductService {
 
     @Autowired
     private ProductRepository productRepository;
+
+    @Autowired
+    private UserRepository userRepository;
 
     // Get
     public List<Product> getProducts(String cat){
@@ -71,8 +75,8 @@ public class ProductService {
         productRepository.deleteById(productId);
     }
 
-    public List<Product> getProductBySellerId(Integer sellerId) {
-        return productRepository.findAllBySeller(sellerId);
+    public List<Product> getProductBySeller(User user) {
+        return productRepository.findAllBySeller(user);
     }
 
     public List<Product> searchProducts(String query) {
