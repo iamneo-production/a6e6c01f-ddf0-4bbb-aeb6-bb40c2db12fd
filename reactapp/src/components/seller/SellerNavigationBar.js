@@ -3,7 +3,7 @@ import Offcanvas from 'react-bootstrap/Offcanvas';
 import { useRef, useState } from 'react';
 import {useSelector,useDispatch } from 'react-redux';
 import {useNavigate} from "react-router-dom";
-import { logout } from "../../features/userSlice";
+import {logout} from "../../features/logoutSlice";
 
 export default function SellerNavigationBar() {
     const [showDropDown, setShowDropDown] = useState(false);
