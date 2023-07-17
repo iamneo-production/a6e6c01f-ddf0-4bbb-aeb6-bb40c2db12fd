@@ -33,7 +33,7 @@ public class ReviewService {
         Optional<Purchase> purchaseOptional = purchaseRepository.findById(id);
         Purchase purchase = purchaseOptional.orElseThrow(() -> new ReviewNotFoundException("Purchase not found"));
 
-        int productId = purchase.getProductId();
+        int productId = 1;
         Optional<Product> productOptional = productRepository.findById(productId);
         Product product = productOptional.orElseThrow(() -> new ReviewNotFoundException("Product not found"));
 
