@@ -39,12 +39,18 @@ const AllProducts = () => {
                             <div className="row">
                                 <div className="col-2 d-flex flex-column align-items-center">
                                     <img src={`data:image/jpeg;base64,${prod.image}`} alt="Card" className="d-block " width={155} height={135} />
+                                    {prod.quantity < 1 ? 
+                                    <span className="card-text fw-bold " style={{ fontSize: 14 }}><span style={{ color: "#F25151" }}>Out of Stock</span></span> 
+                                    : <span className="card-text fw-bold " style={{ fontSize: 14 }}><span style={{ color: "grey" }}>Stock left:</span><span className='text-success'>{` ${prod.quantity}`}</span></span>}
                                 </div>
 
                                 <div className="col-10 border">
                                     <div className="card-body">
                                         <h6 className="card-title fw-bold">{prod.name}</h6>
-                                        <p className="text-success fw-bold fs-8">{`₹ ${prod.price.toLocaleString("en-US")}`}</p>
+                                        <div className="d-flex align-items-center pb-3">
+                                            <span className="text-success fw-bold fs-8" style={{ marginRight: "10px" }}>{`₹ ${prod.price.toLocaleString("en-US")}`}</span>
+                                            
+                                        </div>
                                         <div className=' btn btn-light border d-inline  px-2 py-2 mb-3 fw-bold fs-6'>Buyers</div>
                                         <div className=' btn btn-light border d-inline ms-3 px-2 py-2 mb-3 fw-bold fs-6'>Edit</div>
                                         <div className=' btn btn-light border d-inline float-end px-2 py-2 mb-3 bg-danger fw-bold'>Remove</div>
