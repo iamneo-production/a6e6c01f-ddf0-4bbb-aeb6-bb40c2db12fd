@@ -5,8 +5,8 @@ import { MdAccountCircle, MdLogout, MdAddShoppingCart, MdLocationOn, MdMessage, 
 import { HiShoppingCart } from 'react-icons/hi';
 import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate } from "react-router-dom";
-import { logout } from "../../features/userSlice";
 import {setSearchQuery} from "../../features/productSlice";
+import {logout} from "../../features/logoutSlice";
 
 export default function NavigationBar() {
     const [showDropDown, setShowDropDown] = useState(false);
@@ -37,8 +37,7 @@ export default function NavigationBar() {
     }
 
     function handleLogout() {
-        dispatch(logout())
-
+        dispatch(logout());
         navigate("/")
     }
     async function handleSearch() {

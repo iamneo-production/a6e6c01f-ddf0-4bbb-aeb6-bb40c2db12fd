@@ -52,8 +52,7 @@ export const fetchProduct =
     export const getSellerProducts =
     createAsyncThunk('product/getSellerProducts',async (body)=>{
         return  getProductBySellerId(
-            body.token,
-            body.sellerId
+            body.token
         ).then((res) =>{
             return res.data
         }).catch((err) =>{

@@ -14,11 +14,15 @@ public class Purchase {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    private int productId; // Foreign key for Product
+    @ManyToOne
+    @JoinColumn(name = "product_id")
+    private Product product; // Foreign key for Product
 
     @ManyToOne
     @JoinColumn(name = "buyer_id")
     private User buyer;
+
+    private int quantity;
 
     private Date purchaseDate;
 
@@ -35,13 +39,22 @@ public class Purchase {
     public Purchase() {
     }
 
-    public Purchase(int productId, User buyerId, Date purchaseDate) {
-        this.productId = productId;
-        this.buyer = buyerId;
+    public Purchase(Product product, User buyer, Date purchaseDate) {
+        this.product = product;
+        this.buyer = buyer;
         this.purchaseDate = purchaseDate;
     }
 
     // Getters and setters
+
+
+    public int getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
+    }
 
     public int getId() {
         return id;
@@ -51,12 +64,12 @@ public class Purchase {
         this.id = id;
     }
 
-    public int getProductId() {
-        return productId;
+    public Product getProductId() {
+        return product;
     }
 
-    public void setProductId(int productId) {
-        this.productId = productId;
+    public void setProductId(Product product) {
+        this.product = product;
     }
 
     public User getBuyer() {

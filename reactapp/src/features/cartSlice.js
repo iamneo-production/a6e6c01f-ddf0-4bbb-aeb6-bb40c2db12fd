@@ -9,7 +9,7 @@ export const addCart =
         ).then((res) =>{
             return res.data
         }).catch((err) =>{
-            return err.response.date
+            return err.response.data
         })
     })
 
@@ -20,7 +20,7 @@ export const updateCart =
         ).then((res) =>{
             return res.data
         }).catch((err) =>{
-            return err.response.date
+            return err.response.data
         })
     })
 
@@ -31,7 +31,7 @@ export const removeCart =
         ).then((res) =>{
             return res.data
         }).catch((err) =>{
-            return err.response.date
+            return err.response.data
         })
     })
 
@@ -42,7 +42,7 @@ export const fetchCart =
         ).then((res) =>{
             return res.data
         }).catch((err) =>{
-            return err.response.date
+            return err.response.data
         })
     })
 

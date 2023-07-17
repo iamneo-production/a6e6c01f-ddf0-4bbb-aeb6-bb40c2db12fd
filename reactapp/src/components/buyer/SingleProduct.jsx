@@ -40,8 +40,9 @@ const SingleProduct = () =>{
         <img src={`data:image/jpeg;base64,${productDetails.image}`} alt="Product Image" class="product-image"/>
       </div>
       <div className="col-md-6">
-        <h2>{productDetails.name}</h2> 
-        <p className="text-success fw-bold fs-2">{`₹ ${productDetails.price.toLocaleString("en-US")}`}</p>
+        <h4>{productDetails.name}</h4> 
+        <p className="text-success fw-bold fs-3">{`₹ ${productDetails?.price?.toLocaleString("en-US")}`}</p>
+        <p className=" fw-bold ">Description:</p>
         <p>{productDetails.description}</p>
           <button onClick={() => handleAddToCart()} class="btn btn-danger  ">Add to Cart</button>
           <button type="submit" class="btn btn-danger mx-3">Buy Now</button>
@@ -49,7 +50,7 @@ const SingleProduct = () =>{
       </div>
     </div>
   </div>
-  <AskQueryModal show={queryModal} onHide={handleCloseQueryModal} />
+  <AskQueryModal productId={productDetails.id} show={queryModal} onHide={handleCloseQueryModal} />
 
 
 
