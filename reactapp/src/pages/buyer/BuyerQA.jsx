@@ -1,72 +1,55 @@
 import React, {useEffect, useState} from 'react';
-import QAModal from '../../components/seller/QAModal';
+import { MdKeyboardBackspace } from 'react-icons/md';
 import Footer from '../../components/common/Footer';
-import SellerNavigationBar from '../../components/seller/SellerNavigationBar';
 import { useNavigate } from "react-router-dom";
-import {MdKeyboardBackspace} from 'react-icons/md';
+import NavigationBar from '../../components/common/NavigationBar';
+import {fetchQAByBuyer} from "../../features/qaSlice";
 import {useDispatch, useSelector} from "react-redux";
-import {fetchQABySeller} from "../../features/qaSlice";
 
-export default function SellerQA() {
-    const [qamodal, setQamodal] = useState(false);
-    const [selectedItem,setSelectedItem] = useState({});
-    const handleCloseQAModal = () => setQamodal(false);
+export default function BuyerQA() {
     const navigate = useNavigate();
     const token = useSelector(state => state.user.token)
-    const sellerId = useSelector(state => state.user.currentUser.id)
     const dispatch = useDispatch()
-    useEffect( () => {
-        dispatch(fetchQABySeller({token: token, sellerId:sellerId }))
+    useEffect(() =>{
+        dispatch(fetchQAByBuyer({token:token}))
     },[])
-    const qaSellerList = useSelector(state => state.qa.qaSellerList)
+    const qaBuyerList = useSelector(state => state.qa.qaBuyerList)
     const handleGoBack = () => {
-        navigate("/seller/home")
+        navigate("/home")
     };
-
-    function handleopenAnswer(element){
-        setSelectedItem(element)
-        setQamodal(true)
-    }
 
     return (
         <div>
-            <SellerNavigationBar />
+            <NavigationBar /><br /><br /><br />
             <div className="d-flex flex-row align-items-center">
-                <p className='ms-3' ><MdKeyboardBackspace style={{color:"grey"}} onClick={handleGoBack}/>{" "}<a href="#" style={{color:"grey"}} onClick={handleGoBack}>Back</a></p>
-                <p className='ms-3' style={{fontSize:30}}><b>Q and A</b></p>
+                <p className='ms-3' ><MdKeyboardBackspace style={{ color: "grey" }} onClick={handleGoBack} />{" "}<a href="#" style={{ color: "grey" }} onClick={handleGoBack}>Back</a></p>
+                <p className='ms-3' style={{ fontSize: 30 }}><b>Q and A</b></p>
             </div>
-
             <br />
             <div>
-                
+
                 <div className="container">
-                    {qaSellerList.map((value, index) => (
+                    {qaBuyerList.map((value, index) =>(
                         <div className="card mb-3">
                             <div className="card-body">
                                 <h6 className="card-title"><b>{value.product.name}</b></h6>
-                                <div>
-                                    <div className="d-flex align-items-center">
-                                        <div>
-                                            <p>
-                                                <span className="badge bg-light text-dark">Q :</span>
-                                                {`  ${value.question}`}
-                                            </p>
-                                        </div>
-                                    </div>
-                                    {value.status === 'Answered' &&  <p>
-                                        <span className="badge bg-light text-dark">A :  </span>
+                                <p className="card-text">
+                                    <span className="badge bg-light text-dark">Q :</span>
+                                    {`  ${value.question}`}
+                                </p>
+                                {value.status === 'Answered' &&  <p>
+                                    <span className="badge bg-light text-dark">A :  </span>
                                     {`  ${value.answer}`}
                                 </p>}
-                                </div>
                                 {value.status === 'Unanswered' ?
                                     <div className="d-flex justify-content-start">
                                         <button
                                             type="submit"
                                             className="btn btn-danger"
                                             style={{ backgroundColor: '#B1DFB8', color: 'black', width: 100, border: "1px solid #000" }}
-                                            onClick={() => handleopenAnswer(value)}
+
                                         >
-                                            <b>Answer</b>
+                                            <b>Open</b>
                                         </button>
                                     </div>
                                     :
@@ -74,20 +57,19 @@ export default function SellerQA() {
                                         <button
                                             type="submit"
                                             className="btn btn-danger"
-                                            disabled={value.status === 'Answered'}
                                             style={{ backgroundColor: '#FFB4AF', color: 'black', width: 100, border: "1px solid #000" }}
-                                            onClick={() => handleopenAnswer(value)}
+
                                         >
                                             <b>Closed</b>
                                         </button>
                                     </div>
                                 }
+
                             </div>
                         </div>
                     ))}
                 </div>
             </div><br /><br />
-            <QAModal element={selectedItem} show={qamodal} onHide={handleCloseQAModal} />
             <Footer />
         </div>
     );
