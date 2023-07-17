@@ -35,7 +35,7 @@ export default function ProductPage(){
 
     
     <span>&nbsp;&nbsp;</span>
-    <h4>Q & A</h4>
+    <h4>Questions and Answers</h4>
     <span>&nbsp;&nbsp;</span>
 
 
