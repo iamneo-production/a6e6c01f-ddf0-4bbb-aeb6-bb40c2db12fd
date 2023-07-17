@@ -21,6 +21,10 @@ import org.springframework.stereotype.Service;
 import com.example.springapp.config.user.UserRepository;
 
 import java.util.Optional;
+import java.util.List;
+import org.springframework.web.server.ResponseStatusException;
+import org.springframework.http.HttpStatus;
+
 
 @Service
 public class UserService implements UserDetailsService {
@@ -81,6 +85,38 @@ public class UserService implements UserDetailsService {
     public User getUserFromToken(String token){
         return userRepository.findByEmail(tokenProvider.getUsernameFromToken(token)).orElseThrow();
     }
+
+    //Get all user
+    public  List<User> findallUser(){
+        return userRepository.findUser();
+    }
+    
+    // Get User by Id
+    public List<User> getUsersById(String email){
+        return userRepository.findByUserid(email);
+    }
+    // Update User
+    
+    public UserService(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
+
+    public User updateUser(User incomingUser) {
+        Optional<User> optionalUser = userRepository.findByEmail(incomingUser.getEmail());
+        if (optionalUser.isPresent()) {
+            User existingUser = optionalUser.get();
+            existingUser.setFirstName(incomingUser.getFirstName());
+            existingUser.setLastName(incomingUser.getLastName());
+            existingUser.setPassword(passwordEncoder.encode(incomingUser.getPassword()));
+            existingUser.setPhone(incomingUser.getPhone());
+            existingUser.setRoles(incomingUser.getRoles());
+
+            return userRepository.save(existingUser);
+        } else {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found");
+        }
+    }
+
 
 }
 
