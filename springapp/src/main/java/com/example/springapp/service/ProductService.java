@@ -110,4 +110,22 @@ public class ProductService {
 
         return result;
     }
+
+    public List<Map<String, Object>> getProductReviews(int productId) {
+        return convertProductReviews(productRepository.getProductReviews(productId));
+    }
+
+    public List<Map<String, Object>> convertProductReviews(List<Object[]> queryResult) {
+        List<Map<String, Object>> result = new ArrayList<>();
+        for (Object[] o: queryResult
+        ) {
+            Map<String, Object> temp = new LinkedHashMap<>();
+            temp.put("customer_name", o[0]);
+            temp.put("comment", o[1]);
+            temp.put("rating", o[2]);
+            temp.put("updated_at", o[3]);
+            result.add(temp);
+        }
+        return result;
+    }
 }
