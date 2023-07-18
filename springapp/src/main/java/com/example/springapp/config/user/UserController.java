@@ -74,18 +74,18 @@ public class UserController {
     
     
     //Get user by id
-    @GetMapping(value = "/api/auth/user/{email}")
+    @GetMapping(value = "/api/auth/user/{id}")
     @CrossOrigin(origins = "http://localhost:8081/")
-    public List<User> getUserById(@PathVariable("email") String email){
-        return userService.getUsersById(email);
+    public List<User> getUserById(@PathVariable("id") Integer id){
+        return userService.getUsersById(id);
     }
 
     
     //Update user details
-    @PutMapping(value = "/api/auth/user/{email}")
+    @PutMapping(value = "/api/auth/user/{id}")
     @CrossOrigin(origins = "http://localhost:8081/")
-    public User updateUser(@RequestBody User incomingUser){
-         return userService.updateUser(incomingUser); 
+    public User updateUser(@PathVariable Long id,@RequestBody User incomingUser){
+         return userService.updateUser(id,incomingUser); 
     }
     
 }
