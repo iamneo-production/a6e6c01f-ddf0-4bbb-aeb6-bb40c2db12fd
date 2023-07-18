@@ -1,85 +1,292 @@
-import React, { useState } from 'react';
-import { SellerData } from "../../components/seller/DummySellerData";
+import React, { useState, useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import SellerNavigationBar from '../../components/seller/SellerNavigationBar';
 import Footer from '../../components/common/Footer';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { fetchProductById, updateProduct } from '../../features/productSlice';
+
+import { MdKeyboardBackspace } from 'react-icons/md';
+import { useNavigate, useParams } from 'react-router-dom';
 
 export default function EditProductPage() {
-    const inputStyle = { input: { paddingLeft: "30px" } };
-    const [systemimage, setImage] = useState(null)
-    const onImageChange = (event) => {
-        if (event.target.files && event.target.files[0]) {
-            setImage(URL.createObjectURL(event.target.files[0]));
-        }
+  const dispatch = useDispatch();
+  const token = useSelector((state) => state.user.token);
+  const productDetails = useSelector((state) => state.product.productDetails);
+  const { productId } = useParams();
+  const navigate = useNavigate();
+
+  const [formValue, setFormValue] = useState({
+    name: '',
+    description: '',
+    price: '',
+    category: '',
+    brand: '',
+    colour: '',
+    quantity: '',
+    image: null,
+  });
+  const [systemImage, setSystemImage] = useState(null);
+  const inputStyle = { input: { paddingLeft: "30px" } };
+  useEffect(() => {
+    dispatch(fetchProductById({ token, productId }));
+  }, [dispatch, token, productId]);
+
+  useEffect(() => {
+    if (productDetails) {
+      setFormValue({
+        ...formValue,
+        name: productDetails.name || '',
+        description: productDetails.description || '',
+        price: productDetails.price || '',
+        category: productDetails.category || '',
+        brand: productDetails.brand || '',
+        colour: productDetails.colour || '',
+        quantity: productDetails.quantity || '',
+      });
+      const imageSrc = `data:image/jpeg;base64,${productDetails.image}`;
+        setSystemImage(imageSrc);
+      }
+  }, [productDetails]);
+
+  const handleGoBack = () => {
+    navigate('/seller/home');
+  };
+
+  const onImageChange = (event) => {
+    if (event.target.files && event.target.files[0]) {
+      const reader = new FileReader();
+      reader.onload = () => {
+        setFormValue({ ...formValue, image: event.target.files[0] });
+        setSystemImage(reader.result);
+      };
+      reader.readAsDataURL(event.target.files[0]);
     }
-    const notify = () => toast("Product has been updated successfully.");
+  };
 
-    return (
+ const handleSubmit = () => {
+  const updatedProduct = {
+    name: formValue.name,
+    description: formValue.description,
+    price: parseFloat(formValue.price),
+    category: formValue.category,
+    brand: formValue.brand,
+    colour: formValue.colour,
+    quantity: parseInt(formValue.quantity),
+    image: formValue.image,
+  };
 
-        <div>
-            <SellerNavigationBar/>
-            <h3 style={{ marginLeft: 10, marginTop: 8 }}><b>EDIT PRODUCT</b></h3>
-            <br></br>
-            {SellerData.map(({ id, image, name, price, productDescription, category1, category2, quantity }) => (
-                <div style={{ padding: "0px 30px 30px 30px" }}>
+  // Check if any field has been modified
+  const hasFieldChanges = Object.keys(updatedProduct).some(
+    (key) => updatedProduct[key] !== productDetails[key]
+  );
 
-                    <label for="exampleFormControlInput1" class="form-label"><b>Image</b></label>
-                    <div style={inputStyle.input}>
-                        <div class="card" style={{ display: "flex", alignItems: "center", justifyContent: "center" }}>
-                            <div class="card-body">
-                                <img style={{ paddingTop: "5px" }} height={80} width={80} alt="preview image" src={systemimage} /><br></br>
-                            </div>
-                        </div>
-                        <input style={{ marginTop: 20 }} type="file" onChange={onImageChange} className="filetype" />
-                    </div>
-                    <br></br>
+  // Check if the image has been modified
+  const hasImageChanges = formValue.image !== null;
 
-                    <label for="exampleFormControlInput1" class="form-label"><b>Product Name</b></label>
-                    <div style={inputStyle.input} >
-                        <input type="text" defaultValue={name} class="form-control" id="exampleFormControlInput1"></input>
-                    </div>
-                    <br></br>
+  if (hasFieldChanges || hasImageChanges) {
+    dispatch(updateProduct({ token, productId, updatedProduct }))
+      .then(() => {
+        toast.success('Product updated successfully', {
+          position: toast.POSITION.TOP_CENTER,
+        });
+      })
+      .catch(() => {
+        toast.error('Failed to update product', {
+          position: toast.POSITION.TOP_CENTER,
+        });
+      });
+  } else {
+    toast.info('No changes detected', {
+      position: toast.POSITION.TOP_CENTER,
+    });
+  }
+};
 
-                    <label for="exampleFormControlInput1" class="form-label"><b>Product Description</b></label>
-                    <div style={inputStyle.input}>
-                        <textarea class="form-control" id="exampleFormControlTextarea1" rows="3">{productDescription}</textarea>
-                    </div>
-                    <br></br>
+  
 
-                    <label for="exampleFormControlInput1" class="form-label"><b>Price</b></label>
-                    <div style={inputStyle.input}>
-                        <input type="text" defaultValue={price} class="form-control" id="exampleFormControlInput1"></input>
-                    </div>
-                    <br></br>
+  return (
+    <div>
+      <SellerNavigationBar />
+      <div className="d-flex flex-row align-items-center">
+        <p className="ms-3">
+          <MdKeyboardBackspace style={{ color: 'grey' }} onClick={handleGoBack} />
+          {' '}
+          <a href="#" style={{ color: 'grey' }} onClick={handleGoBack}>
+            Back
+          </a>
+        </p>
+        <p className="ms-3" style={{ fontSize: 30 }}>
+          <b>EDIT PRODUCT</b>
+        </p>
+      </div>
 
-                    <label for="exampleFormControlInput1" class="form-label"><b>Categories</b></label>
-                    <br></br>
-                    <div className="d-flex justify-content-start" style={inputStyle.input}>
-                        <div>
-                            <label for="exampleFormControlInput1" class="form-label">Brand</label>
-                            <input type="text" defaultValue={category1} class="form-control" id="exampleFormControlInput1"></input>
-                        </div>
-                        <div style={{ marginLeft: "40px" }}>
-                            <label for="exampleFormControlInput1" class="form-label">color</label>
-                            <input type="text" defaultValue={category2} class="form-control" id="exampleFormControlInput1"></input>
-                            <br></br>
-                        </div>
-                    </div>
-
-                    <label for="exampleFormControlInput1" class="form-label"><b>Quantity</b></label>
-                    <div style={inputStyle.input}>
-                        <input type="text" defaultValue={quantity} class="form-control" id="exampleFormControlInput1"></input>
-                    </div>
-                    <br></br>
-
-                    <div style={{ display: "flex", alignItems: "center", justifyContent: "center" }}>
-                        <button onClick={() => {notify()}} type="submit" class="btn btn-danger" style={{ backgroundColor: "#F25151", color: "black", width: 200 }}><b>Submit</b></button>
-                        <ToastContainer />
-                    </div>
-                </div>
-            ))}
-            <Footer/>
+      <br />
+      <div style={{ padding: '0px 30px 30px 30px' }}>
+        <label htmlFor="exampleFormControlInput1" className="form-label">
+          <b>Image</b>
+        </label>
+        <div style={inputStyle.input}>
+          <div
+            className="card"
+            style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+          >
+            <div className="card-body">
+              {systemImage ? (
+                <img
+                  style={{ paddingTop: '5px' }}
+                  height={300}
+                  width={300}
+                  alt="preview image"
+                  src={systemImage}
+                />
+              ) : (
+                <p></p>
+              )}
+              <br />
+            </div>
+          </div>
+          <input
+            style={{ marginTop: 20 }}
+            type="file"
+            onChange={onImageChange}
+            className="filetype"
+          />
         </div>
-    )
+        <br />
+
+        <label htmlFor="exampleFormControlInput1" className="form-label">
+          <b>Product Name</b>
+        </label>
+        <div style={inputStyle.input}>
+          <input
+            onChange={(e) => setFormValue({ ...formValue, name: e.target.value })}
+            type="text"
+            placeholder="Product name"
+            className="form-control"
+            id="exampleFormControlInput1"
+            value={formValue.name}
+          />
+        </div>
+        <br />
+
+        <label htmlFor="exampleFormControlInput1" className="form-label">
+          <b>Product Description</b>
+        </label>
+        <div style={inputStyle.input}>
+          <textarea
+            onChange={(e) => setFormValue({ ...formValue, description: e.target.value })}
+            className="form-control"
+            placeholder="Product description"
+            id="exampleFormControlTextarea1"
+            rows="3"
+            value={formValue.description}
+          ></textarea>
+        </div>
+        <br />
+
+        <label htmlFor="exampleFormControlInput1" className="form-label">
+          <b>Price</b>
+        </label>
+        <div style={inputStyle.input}>
+          <input
+            type="text"
+            onChange={(e) => setFormValue({ ...formValue, price: e.target.value })}
+            placeholder="Price"
+            className="form-control"
+            id="exampleFormControlInput1"
+            value={formValue.price}
+          />
+        </div>
+        <br />
+        <label for="exampleFormControlInput1" class="form-label"><b>Product information</b></label>
+        <br></br>
+        <div className="d-flex justify-content-start" style={inputStyle.input}>
+         <div>
+        <label htmlFor="exampleFormControlInput1" className="form-label">
+          <b>Category</b>
+        </label>
+        
+        <div>
+          <input
+            type="text"
+            onChange={(e) => setFormValue({ ...formValue, category: e.target.value })}
+            placeholder="Category"
+            className="form-control"
+            id="exampleFormControlInput1"
+            value={formValue.category}
+          />
+        </div>
+        </div> 
+        
+        <br />
+        <div style={{ marginLeft: "40px" }}>
+
+        <label htmlFor="exampleFormControlInput1" className="form-label">
+          <b>Brand</b>
+        </label>
+        <div >
+          <input
+            type="text"
+            onChange={(e) => setFormValue({ ...formValue, brand: e.target.value })}
+            placeholder="Brand"
+            className="form-control"
+            id="exampleFormControlInput1"
+            value={formValue.brand}
+          />
+        </div>
+        </div>
+        <br />
+        <div style={{ marginLeft: "40px" }}>
+
+        <label htmlFor="exampleFormControlInput1" className="form-label">
+          <b>Colour</b>
+        </label>
+        <div>
+          <input
+            type="text"
+            onChange={(e) => setFormValue({ ...formValue, colour: e.target.value })}
+            placeholder="Colour"
+            className="form-control"
+            id="exampleFormControlInput1"
+            value={formValue.colour}
+          />
+        </div>
+        </div>
+        </div>
+        <br />
+
+        <label htmlFor="exampleFormControlInput1" className="form-label">
+          <b>Quantity</b>
+        </label>
+        <div style={inputStyle.input}>
+          <input
+            type="text"
+            onChange={(e) => setFormValue({ ...formValue, quantity: e.target.value })}
+            placeholder="Quantity"
+            className="form-control"
+            id="exampleFormControlInput1"
+            value={formValue.quantity}
+          />
+        </div>
+        <br />
+
+        <div style={{ display: "flex", alignItems: "center", justifyContent: "center" }}>
+          <button
+            type="button"
+            
+            className="btn btn-danger"
+            style={{ backgroundColor: "#F25151", color: "black", width: 200 }}
+            onClick={handleSubmit}
+            disabled={!formValue.name || !formValue.price || !formValue.quantity}
+          >
+            Save Changes
+          </button>
+        </div>
+      </div>
+
+      <ToastContainer />
+      <Footer />
+    </div>
+  );
 }
