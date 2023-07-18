@@ -92,8 +92,8 @@ public class UserService implements UserDetailsService {
     }
     
     // Get User by Id
-    public List<User> getUsersById(String email){
-        return userRepository.findByUserid(email);
+    public List<User> getUsersById(Integer id){
+        return userRepository.findByUserid(id);
     }
     // Update User
     
@@ -101,8 +101,8 @@ public class UserService implements UserDetailsService {
         this.userRepository = userRepository;
     }
 
-    public User updateUser(User incomingUser) {
-        Optional<User> optionalUser = userRepository.findByEmail(incomingUser.getEmail());
+    public User updateUser(Long id,User incomingUser) {
+        Optional<User> optionalUser = userRepository.findById(id);
         if (optionalUser.isPresent()) {
             User existingUser = optionalUser.get();
             existingUser.setFirstName(incomingUser.getFirstName());
