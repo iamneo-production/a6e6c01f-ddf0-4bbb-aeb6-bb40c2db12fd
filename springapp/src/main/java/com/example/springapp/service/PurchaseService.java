@@ -73,7 +73,7 @@ public class PurchaseService {
                 purchaseMap.put("purchaseDate", purchase.getPurchaseDate());
 
                 // Retrieve review details
-                List<Review> reviews = reviewRepository.findByPurchaseId(purchase.getId());
+                List<Review> reviews = reviewRepository.findByPurchaseId((long)purchase.getId());
                 if (!reviews.isEmpty()) {
                     Review review = reviews.get(0); // Assuming the list contains only one review per purchaseId
                     purchaseMap.put("comment", review.getComment());

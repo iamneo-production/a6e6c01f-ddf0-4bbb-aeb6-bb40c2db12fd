@@ -108,6 +108,12 @@ public class ProductController {
         return ResponseEntity.ok(new BaseResponseDTO("success",data));
     }
 
+    @GetMapping("/api/product/reviews")
+    public ResponseEntity<BaseResponseDTO> getProductReviews(@RequestParam String productId) {
+        List<Map<String, Object>> data = productService.getProductReviews(Integer.parseInt(productId));
+        return ResponseEntity.ok(new BaseResponseDTO("success",data));
+    }
+
     //Test Case
     @GetMapping("/product")
     public ResponseEntity<List<Product>> getAllProduct(){

@@ -33,4 +33,12 @@ public interface ProductRepository extends JpaRepository<Product, Integer> {
             + "WHERE p.seller_id = :sellerId AND p.is_deleted = 0",
             nativeQuery = true)
     List<Object[]> getSellerDashboard(@Param("sellerId") Long sellerId);
+
+
+    @Query(value = "SELECT (concat(u.first_name, ' ', u.last_name)) AS customer_name, r.comment, r.rating, r.updated_at " +
+            "FROM review AS r " +
+            "INNER JOIN product AS p ON r.product_id = p.id " +
+            "INNER JOIN user AS u ON r.buyer_id = u.id " +
+            "WHERE p.id = ?1",nativeQuery = true)
+    List<Object[]> getProductReviews(int productId);
 }
