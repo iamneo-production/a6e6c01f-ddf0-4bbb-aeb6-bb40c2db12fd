@@ -23,6 +23,7 @@ const PurchaseTable = ({ data, handleRefresh }) => {
         dispatch(fetchPurchase({token:token}))
     },[])
     const purchaseList = useSelector((state) => state.purchase.purchaseList);
+    console.log(purchaseList)
     const handlePageChange = (pageNumber) => {
         const { start, stop } = pageSetter(pageNumber, tableLines);
         setStart(start);
@@ -53,6 +54,7 @@ const PurchaseTable = ({ data, handleRefresh }) => {
                         <th className='text-secondary'>Image</th>
                         <th className='text-secondary'>Name</th>
                         <th className='text-secondary'>Price (₹)</th>
+                        <th className='text-secondary'>Quantity</th>
                         <th className='text-secondary'>Order Date & Time</th>
                         <th className='text-secondary text-end'>Write a review</th>
                     </tr>
@@ -72,11 +74,12 @@ const PurchaseTable = ({ data, handleRefresh }) => {
                                             srcSet=''
                                         />
                                     </td>
-                                    <td style={{ width: '650px' }}>{value.productId.name}</td>
-                                    <td>{value.productId.price}</td>
-                                    <td>{moment(value.purchaseDate).format('LLL')}</td>
+                                    <td style={{ width: '400px' }}><h6>{value.productId.name}</h6></td>
+                                    <td><h6 className='text-success'>{value.productId.price}</h6></td>
+                                    <td ><h6>{value.quantity}</h6></td>
+                                    <td><h6>{moment(value.purchaseDate).format('LLL')}</h6></td>
                                     <td>
-                                        {value.id === null ? (
+                                        {!value.reviewed ? (
                                             <div className='d-flex flex-row justify-content-end'>
                                                 <Button
                                                     style={{
@@ -84,7 +87,7 @@ const PurchaseTable = ({ data, handleRefresh }) => {
                                                         borderColor: '#F25151',
                                                     }}
                                                     onClick={() => {
-                                                        handleAddReview(purchaseId)
+                                                        handleAddReview(value.id)
                                                     }}
                                                 >
                                                     Add review
@@ -95,7 +98,7 @@ const PurchaseTable = ({ data, handleRefresh }) => {
                                                 <Button
                                                     style={{ backgroundColor: 'white', borderColor: '#F25151', color: '#F25151' }}
                                                     onClick={() => {
-                                                        setPurchaseId(purchaseId);
+                                                        setPurchaseId(value.id);
                                                         setViewReviewModal(true)
                                                     }}
                                                 >
@@ -121,12 +124,11 @@ const PurchaseTable = ({ data, handleRefresh }) => {
                 }}
             />
 
-            <ViewReviewModal
+            {viewReviewModal && <ViewReviewModal
                 purchaseId={purchaseId}
                 showModal={viewReviewModal}
                 handleClose={() => setViewReviewModal(false)}
-            />
-
+            />}
             <div className='d-flex flex-row justify-content-center'>
             {purchaseList.length > 0 ? (
                 <Pagination
