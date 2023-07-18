@@ -11,7 +11,6 @@ const ViewReviewModal = ({ showModal, handleClose, purchaseId }) => {
     const [load, setLoad] = useState(false);
     const [data, setData] = useState([]);
     const [rating, setRating] = useState(null); // Updated to null initially
-
     const getData = async () => {
         try {
             const res = await GET_REVIEWS_BY_PURCHASE(purchaseId);
@@ -32,7 +31,6 @@ const ViewReviewModal = ({ showModal, handleClose, purchaseId }) => {
     }, [showModal, purchaseId]);
 
     const handleUpdateClick = () => {
-        handleClose()
         setShowUpdateModal(true);
     };
 
@@ -91,6 +89,7 @@ const ViewReviewModal = ({ showModal, handleClose, purchaseId }) => {
                     showModal={showUpdateModal}
                     handleClose={(flag) => {
                         handleUpdateClose()
+                        handleClose()
                         if (!flag) return
                         // success snackbar 
                     }}

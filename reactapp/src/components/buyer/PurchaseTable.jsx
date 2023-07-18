@@ -1,10 +1,13 @@
-import React, { useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import { Table, Button } from 'react-bootstrap';
 import ReviewModal from './ReviewModal';
 import ViewReviewModal from './ViewReview';
 import { Pagination } from '@mui/material';
 import { pageSetter } from './PageSetter';
+import { ReactComponent as PurchaseEmpty } from '../../assets/PurchaseEmpty.svg';
 import moment from 'moment';
+import {useDispatch, useSelector} from "react-redux";
+import {fetchPurchase} from "../../features/purchaseSlice";
 
 const PurchaseTable = ({ data, handleRefresh }) => {
     const [reviewModal, setReviewModal] = useState(false);
@@ -14,7 +17,13 @@ const PurchaseTable = ({ data, handleRefresh }) => {
     const [start, setStart] = useState(0);
     const [stop, setStop] = useState(tableLines);
     const [page, setPage] = useState(1);
-
+    const token = useSelector((state) => state.user.token);
+    const dispatch = useDispatch();
+    useEffect(()=>{
+        dispatch(fetchPurchase({token:token}))
+    },[])
+    const purchaseList = useSelector((state) => state.purchase.purchaseList);
+    console.log(purchaseList)
     const handlePageChange = (pageNumber) => {
         const { start, stop } = pageSetter(pageNumber, tableLines);
         setStart(start);
@@ -28,6 +37,16 @@ const PurchaseTable = ({ data, handleRefresh }) => {
 
     return (
         <div className='w-100 h5'>
+            {purchaseList.length === 0 ? (
+                <div style={{ display: "flex", alignItems: "center", justifyContent: "center" ,marginTop:-15}} >
+                    <div style={{ width: 400, height: 400 }}>
+                        <div style={{ display: "flex", alignItems: "center", justifyContent: "center" }}>
+                            <h5 style={{ color: "grey" }}><b>Didn't purchased yet !</b></h5>
+                        </div>
+                        <PurchaseEmpty />
+                    </div>
+                </div>
+            ) : (
             <Table>
                 <thead>
                     <tr>
@@ -35,37 +54,32 @@ const PurchaseTable = ({ data, handleRefresh }) => {
                         <th className='text-secondary'>Image</th>
                         <th className='text-secondary'>Name</th>
                         <th className='text-secondary'>Price (₹)</th>
+                        <th className='text-secondary'>Quantity</th>
                         <th className='text-secondary'>Order Date & Time</th>
                         <th className='text-secondary text-end'>Write a review</th>
                     </tr>
                 </thead>
                 <tbody>
-                    {data.length !== 0 &&
-                        data.slice(start, stop).map(
-                            ({
-                                purchaseId,
-                                productImageUrl,
-                                comment,
-                                productName,
-                                productPrice,
-                                purchaseDate,
-                            }) => (
-                                <tr key={purchaseId}>
-                                    <td>{purchaseId}</td>
+                    {purchaseList.length !== 0 &&
+                        purchaseList.slice(start, stop).map(
+                            (value, index) => (
+                                <tr key={index}>
+                                    <td>{value.id}</td>
                                     <td>
                                         <img
                                             height={80}
                                             width={80}
-                                            src={productImageUrl}
+                                            src={`data:image/jpeg;base64,${value.productId.image}`}
                                             alt=''
                                             srcSet=''
                                         />
                                     </td>
-                                    <td style={{ width: '650px' }}>{productName}</td>
-                                    <td>{productPrice}</td>
-                                    <td>{moment(purchaseDate).format('LLL')}</td>
+                                    <td style={{ width: '400px' }}><h6>{value.productId.name}</h6></td>
+                                    <td><h6 className='text-success'>{value.productId.price}</h6></td>
+                                    <td ><h6>{value.quantity}</h6></td>
+                                    <td><h6>{moment(value.purchaseDate).format('LLL')}</h6></td>
                                     <td>
-                                        {comment === null ? (
+                                        {!value.reviewed ? (
                                             <div className='d-flex flex-row justify-content-end'>
                                                 <Button
                                                     style={{
@@ -73,7 +87,7 @@ const PurchaseTable = ({ data, handleRefresh }) => {
                                                         borderColor: '#F25151',
                                                     }}
                                                     onClick={() => {
-                                                        handleAddReview(purchaseId)
+                                                        handleAddReview(value.id)
                                                     }}
                                                 >
                                                     Add review
@@ -84,7 +98,7 @@ const PurchaseTable = ({ data, handleRefresh }) => {
                                                 <Button
                                                     style={{ backgroundColor: 'white', borderColor: '#F25151', color: '#F25151' }}
                                                     onClick={() => {
-                                                        setPurchaseId(purchaseId);
+                                                        setPurchaseId(value.id);
                                                         setViewReviewModal(true)
                                                     }}
                                                 >
@@ -98,7 +112,7 @@ const PurchaseTable = ({ data, handleRefresh }) => {
                         )}
                 </tbody>
             </Table>
-
+            )}
             <ReviewModal
                 purchaseId={purchaseId}
                 showModal={reviewModal}
@@ -110,22 +124,23 @@ const PurchaseTable = ({ data, handleRefresh }) => {
                 }}
             />
 
-            <ViewReviewModal
+            {viewReviewModal && <ViewReviewModal
                 purchaseId={purchaseId}
                 showModal={viewReviewModal}
                 handleClose={() => setViewReviewModal(false)}
-            />
-
+            />}
             <div className='d-flex flex-row justify-content-center'>
+            {purchaseList.length > 0 ? (
                 <Pagination
                     page={page}
                     onChange={(event, value) => {
                         setPage(value);
                         handlePageChange(value);
                     }}
-                    count={Math.ceil(data.length / tableLines)}
+                    count={Math.ceil(purchaseList.length / tableLines)}
                     variant='outlined'
                 />
+            ):<div></div>}
             </div>
         </div>
     );

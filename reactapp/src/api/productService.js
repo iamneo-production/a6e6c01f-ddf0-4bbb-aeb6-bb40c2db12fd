@@ -36,3 +36,21 @@ export async function deleteProductById(token,productId){
         headers: { Authorization: `Bearer ${token}` }
     })
 }
+
+export async function getProductBySellerId(token){
+    return await axios.get(`${baseUrl}/products/seller`,{
+        headers: { Authorization: `Bearer ${token}` }
+    })
+}
+
+export async function getProductBySearch(token,query){
+    return await axios.get(`${baseUrl}/search?query=${query}`,{
+        headers: { Authorization: `Bearer ${token}` }
+    })
+}
+
+export async function getProductByCategory(token,category){
+    return await axios.get(`${baseUrl}/products/category?category=${category}`,{
+        headers: { Authorization: `Bearer ${token}` }
+    })
+}

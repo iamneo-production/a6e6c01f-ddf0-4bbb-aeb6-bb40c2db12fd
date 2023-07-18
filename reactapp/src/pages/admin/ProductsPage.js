@@ -2,10 +2,12 @@ import React, { useEffect,useState } from 'react';
 import { Table } from 'react-bootstrap';
 import { TableData } from '../../components/buyer/DummyTableData';
 import AdminNavigationBar from "../../components/admin/AdminNavigationBar";
+import { ReactComponent as Empty } from '../../assets/Empty.svg';
 import ProductsRemoveModal from '../../components/admin/ProductsRemoveModal';
 import Footer from '../../components/common/Footer';
 import {useDispatch, useSelector} from "react-redux";
 import {fetchProduct} from "../../features/productSlice";
+import { useNavigate } from "react-router-dom";
 
 export default function ProductsPage() {
     const [showRemove, setShowRemove] = useState(false);
@@ -17,6 +19,12 @@ export default function ProductsPage() {
     const allProductList = useSelector(state => state.product.allProductList)
     const token = useSelector(state => state.user.token)
     const dispatch = useDispatch()
+    const navigate = useNavigate();
+
+    const handleGoToUser = () => {
+        navigate("/showuser")
+    };
+
     useEffect(() =>{
         dispatch(fetchProduct({token:token}))
     },[])
@@ -31,10 +39,20 @@ export default function ProductsPage() {
             <AdminNavigationBar />
             <div className="d-flex justify-content-between">
                 <h3 style={{ marginLeft: 10, marginTop: 8 }}><b>PRODUCTS</b></h3>
-                <button type="button" class="btn btn-primary" style={{ margin: "8px 10px", backgroundColor: "#B6D3FF", color: "black" }}><b>Go to users</b></button>
+                <button onClick={handleGoToUser} type="button" class="btn btn-primary" style={{ margin: "8px 10px", backgroundColor: "#B6D3FF", color: "black" }}><b>Go to users</b></button>
             </div>
             <br></br>
             <div style={{ padding: "0px 50px 50px 50px" }}>
+                {allProductList.length === 0 ? (
+                    <div style={{ display: "flex", alignItems: "center", justifyContent: "center" }} >
+                        <div style={{ width: 400, height: 400 }}>
+                            <div style={{ display: "flex", alignItems: "center", justifyContent: "center" }}>
+                                <h5 style={{ color: "grey" }}><b>No products added yet</b></h5>
+                            </div>
+                            <Empty />
+                        </div>
+                    </div>
+                ) : (
                 <Table>
                     <thead>
                         <tr>
@@ -68,6 +86,7 @@ export default function ProductsPage() {
                         ))}
                     </tbody>
                 </Table>
+                )}
             </div>
             <Footer/>
         </div>

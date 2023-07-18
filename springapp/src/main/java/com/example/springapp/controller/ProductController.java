@@ -3,6 +3,9 @@ package com.example.springapp.controller;
 import com.example.springapp.BaseResponseDTO;
 import com.example.springapp.config.jwt.JwtTokenProvider;
 import com.example.springapp.dto.request.ProductRequestDto;
+import com.example.springapp.dto.response.SellerDashboardResponse;
+import com.example.springapp.model.Purchase;
+import com.example.springapp.model.QA;
 import com.example.springapp.model.User;
 import com.example.springapp.config.user.UserRepository;
 import com.example.springapp.model.Product;
@@ -48,7 +51,7 @@ public class ProductController {
         }
     }
 
-    @GetMapping(value = "/api/products/category/")
+    @GetMapping(value = "/api/products/category")
     public ResponseEntity<BaseResponseDTO> getProductByCategory(@RequestParam String category){
         try{
             List<Product> products = productService.getProductByCategory(category);
@@ -58,9 +61,17 @@ public class ProductController {
         }
     }
 
-    @GetMapping(value = "/api/products/{sellerId}")
-    public List<Product> getProductBySellerId(@PathVariable("sellerId") Integer sellerId){
-        return productService.getProductBySellerId(sellerId); }
+    @GetMapping(value = "/api/products/seller")
+    public ResponseEntity<BaseResponseDTO> getProductBySellerId(@RequestHeader(value = "Authorization", defaultValue = "") String token){
+        try{
+            User user = userRepository.findByEmail(tokenProvider.getUsernameFromToken(tokenProvider.getTokenFromHeader(token))).orElseThrow();
+            List<Product> sellerProductList = productService.getProductBySeller(user);
+            return ResponseEntity.ok(new BaseResponseDTO("success",sellerProductList));
+        }catch (Exception e){
+            return ResponseEntity.internalServerError().body(new BaseResponseDTO("failed"));
+        }
+        //return productService.getProductBySellerId(sellerId);
+    }
 
     @PostMapping(value = "/api/seller/products")
     @CrossOrigin(origins = "http://localhost:8081/")
@@ -90,7 +101,18 @@ public class ProductController {
         }
     }
 
+    @GetMapping("/api/seller/dashboard")
+    public ResponseEntity<BaseResponseDTO> getProductDashboard(@RequestHeader(value = "Authorization", defaultValue = "") String token) {
+        User user = userRepository.findByEmail(tokenProvider.getUsernameFromToken(tokenProvider.getTokenFromHeader(token))).orElseThrow();
+        Map<String, Object> data = productService.getProductDashboard(user.getId());
+        return ResponseEntity.ok(new BaseResponseDTO("success",data));
+    }
 
+    @GetMapping("/api/product/reviews")
+    public ResponseEntity<BaseResponseDTO> getProductReviews(@RequestParam String productId) {
+        List<Map<String, Object>> data = productService.getProductReviews(Integer.parseInt(productId));
+        return ResponseEntity.ok(new BaseResponseDTO("success",data));
+    }
 
     //Test Case
     @GetMapping("/product")
@@ -108,9 +130,9 @@ public class ProductController {
 
 
     //Search API
-    @GetMapping("/search")
-    public List<Product> searchProducts(@RequestParam String query) {
-        return productService.searchProducts(query);
+    @GetMapping("/api/search")
+    public ResponseEntity<BaseResponseDTO> searchProducts(@RequestParam String query) {
+        return ResponseEntity.ok(new BaseResponseDTO("success",productService.searchProducts(query)));
     }
 
 }

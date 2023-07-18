@@ -5,13 +5,15 @@ import { MdAccountCircle, MdLogout, MdAddShoppingCart, MdLocationOn, MdMessage, 
 import { HiShoppingCart } from 'react-icons/hi';
 import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate } from "react-router-dom";
-import { logout } from "../../features/userSlice";
+import {setSearchQuery} from "../../features/productSlice";
+import {logout} from "../../features/logoutSlice";
 
 export default function NavigationBar() {
     const [showDropDown, setShowDropDown] = useState(false);
     const target = useRef(null);
     const navigate = useNavigate();
     const dispatch = useDispatch()
+    const [search,setSearch] = useState('');
     const currentUser = useSelector(state => state.user.currentUser)
 
     function handlePurchaseHistory() {
@@ -35,9 +37,13 @@ export default function NavigationBar() {
     }
 
     function handleLogout() {
-        dispatch(logout())
-
+        dispatch(logout());
         navigate("/")
+    }
+    async function handleSearch() {
+        console.log("search-query",search)
+        await dispatch(setSearchQuery({searchQuery:search}));
+        navigate('/search')
     }
     return (
         <div>
@@ -52,9 +58,9 @@ export default function NavigationBar() {
                         </div>
                         <div className="col-md-7">
                             <div class="input-group">
-                                <input type="text" class="form-control" placeholder="Search" aria-describedby="basic-addon2" />
+                                <input onChange={(e) => setSearch(e.target.value)} type="text" class="form-control" placeholder="Search" aria-describedby="basic-addon2" />
                                 <div class="input-group-append">
-                                    <button class="btn btn-outline-secondary" type="button"><i className="md md-envelope mx-1"> <FaSearch style={{ justifyContent: "center", height: 20, paddingBottom: "5px" }} /></i></button>
+                                    <button onClick={() => handleSearch()} class="btn btn-outline-secondary" type="button"><i className="md md-envelope mx-1"> <FaSearch style={{ justifyContent: "center", height: 20, paddingBottom: "5px" }} /></i></button>
                                 </div>
                             </div>
 
@@ -82,7 +88,7 @@ export default function NavigationBar() {
                                     </Offcanvas>
                                 </li>
                                 <li className="nav-item me-3 me-lg-4">
-                                    <a className="nav-link text-white" href="#"><i className="hi hi-envelope mx-1"><HiShoppingCart onClick={() =>  navigate("/cart")} style={{ width: 30, height: 20 }} /></i> Cart</a>
+                                    <a className="nav-link text-white" href="#" onClick={() =>  navigate("/cart")}><i className="hi hi-envelope mx-1"><HiShoppingCart style={{ width: 30, height: 20 }} /></i> Cart</a>
                                 </li>
                             </ul>
                         </div>

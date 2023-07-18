@@ -1,18 +1,32 @@
-import { useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import QAModal from '../../components/seller/QAModal';
 import Footer from '../../components/common/Footer';
 import SellerNavigationBar from '../../components/seller/SellerNavigationBar';
 import { useNavigate } from "react-router-dom";
 import {MdKeyboardBackspace} from 'react-icons/md';
+import {useDispatch, useSelector} from "react-redux";
+import {fetchQABySeller} from "../../features/qaSlice";
 
 export default function SellerQA() {
     const [qamodal, setQamodal] = useState(false);
+    const [selectedItem,setSelectedItem] = useState({});
     const handleCloseQAModal = () => setQamodal(false);
     const navigate = useNavigate();
-
+    const token = useSelector(state => state.user.token)
+    const sellerId = useSelector(state => state.user.currentUser.id)
+    const dispatch = useDispatch()
+    useEffect( () => {
+        dispatch(fetchQABySeller({token: token, sellerId:sellerId }))
+    },[])
+    const qaSellerList = useSelector(state => state.qa.qaSellerList)
     const handleGoBack = () => {
         navigate("/seller/home")
     };
+
+    function handleopenAnswer(element){
+        setSelectedItem(element)
+        setQamodal(true)
+    }
 
     return (
         <div>
@@ -26,27 +40,54 @@ export default function SellerQA() {
             <div>
                 
                 <div className="container">
-                    <div className="card">
-                        <div className="card-body">
-                            <h6 className="card-title"><b>Samsung Galaxy M04 Light Green4GB RAM, 64GB Storage | Upto 8GB RAM with RAM Plus 5000 mAh Battery | 13MP Dual Camera</b></h6>
-                            <p className="card-text">Q: What is the weight?</p>
-
-                            <div className="d-flex justify-content-start">
-                                <button
-                                    type="submit"
-                                    className="btn btn-danger"
-                                    style={{ backgroundColor: '#B1DFB8', color: 'black', width: 100, border: "1px solid #000" }}
-                                    onClick={() => setQamodal(true)}
-                                >
-                                    <b>Answer</b>
-                                </button>
+                    {qaSellerList.map((value, index) => (
+                        <div className="card mb-3">
+                            <div className="card-body">
+                                <h6 className="card-title"><b>{value.product.name}</b></h6>
+                                <div>
+                                    <div className="d-flex align-items-center">
+                                        <div>
+                                            <p>
+                                                <span className="badge bg-light text-dark">Q :</span>
+                                                {`  ${value.question}`}
+                                            </p>
+                                        </div>
+                                    </div>
+                                    {value.status === 'Answered' &&  <p>
+                                        <span className="badge bg-light text-dark">A :  </span>
+                                    {`  ${value.answer}`}
+                                </p>}
+                                </div>
+                                {value.status === 'Unanswered' ?
+                                    <div className="d-flex justify-content-start">
+                                        <button
+                                            type="submit"
+                                            className="btn btn-danger"
+                                            style={{ backgroundColor: '#B1DFB8', color: 'black', width: 100, border: "1px solid #000" }}
+                                            onClick={() => handleopenAnswer(value)}
+                                        >
+                                            <b>Answer</b>
+                                        </button>
+                                    </div>
+                                    :
+                                    <div className="d-flex justify-content-start">
+                                        <button
+                                            type="submit"
+                                            className="btn btn-danger"
+                                            disabled={value.status === 'Answered'}
+                                            style={{ backgroundColor: '#FFB4AF', color: 'black', width: 100, border: "1px solid #000" }}
+                                            onClick={() => handleopenAnswer(value)}
+                                        >
+                                            <b>Closed</b>
+                                        </button>
+                                    </div>
+                                }
                             </div>
                         </div>
-                    </div>
-
+                    ))}
                 </div>
             </div><br /><br />
-            <QAModal show={qamodal} onHide={handleCloseQAModal} />
+            <QAModal element={selectedItem} show={qamodal} onHide={handleCloseQAModal} />
             <Footer />
         </div>
     );

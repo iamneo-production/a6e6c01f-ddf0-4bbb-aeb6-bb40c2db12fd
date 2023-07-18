@@ -1,4 +1,5 @@
 import axios from "axios";
+import {baseUrl} from "./config";
 const baseURL = "http://localhost:8080";
 
 export function getPurchaseByBuyerId(buyerId) {
@@ -10,4 +11,20 @@ export function getPurchaseByBuyerId(buyerId) {
   return axios(config);
 }
 
+
+
+export async function createPurchase(token,body){
+  return await axios.post(`${baseUrl}/purchase`,{
+    "cartIds":body.cartIds
+  },{
+    headers: { Authorization: `Bearer ${token}`}
+  })
+}
+
+
+export async function getPurchaseByBuyer(token){
+  return await axios.get(`${baseUrl}/purchase/buyer`,{
+    headers: { Authorization: `Bearer ${token}` }
+  })
+}
 
