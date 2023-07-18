@@ -11,7 +11,7 @@ const QA = () => {
     useEffect( () => {
         console.log("selectedProduct",selectedProduct)
         dispatch(fetchQAByProduct({token: token, productId: selectedProduct}))
-    })
+    },[])
 
     return (
         <>
