@@ -4,8 +4,10 @@ package com.example.springapp.service;
 import com.example.springapp.config.user.UserRepository;
 import com.example.springapp.dto.request.ProductRequestDto;
 import com.example.springapp.dto.response.SellerDashboardResponse;
+import com.example.springapp.model.Cart;
 import com.example.springapp.model.User;
 import com.example.springapp.model.Product;
+import com.example.springapp.repo.CartRepository;
 import com.example.springapp.repo.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,6 +20,9 @@ public class ProductService {
 
     @Autowired
     private ProductRepository productRepository;
+
+    @Autowired
+    private CartRepository cartRepository;
 
     @Autowired
     private UserRepository userRepository;
@@ -90,6 +95,12 @@ public class ProductService {
         Product product = productRepository.findById(productId).orElseThrow();
         product.setDeleted(true);
         productRepository.save(product);
+        List<Cart> cartList = cartRepository.findAllByProduct(product);
+        for (Cart c: cartList
+             ) {
+            c.setDeleted(true);
+            cartRepository.save(c);
+        }
     }
 
     public List<Product> getProductBySeller(User user) {
@@ -97,7 +108,7 @@ public class ProductService {
     }
 
     public List<Product> searchProducts(String query) {
-        return productRepository.findByNameContainingIgnoreCase(query);
+        return productRepository.findByNameContainingIgnoreCaseAndIsDeletedFalse(query);
     }
 
     public List<Product> getAllProducts() {
@@ -105,7 +116,7 @@ public class ProductService {
     }
 
     public List<Product> getProductByCategory(String category) {
-        return productRepository.findAllByCategory(category);
+        return productRepository.findAllByCategoryAndIsDeletedFalse(category);
     }
 
     
