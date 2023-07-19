@@ -79,6 +79,12 @@ public class ProductService {
         return productRepository.save(existingProduct);
     }
 
+    public Product updateProductImage(int productId,ProductRequestDto productRequestDto) throws IOException {
+        Product existingProduct = productRepository.findById(productId).orElseThrow();
+        existingProduct.setImage(productRequestDto.getImage());
+        return productRepository.save(existingProduct);
+    }
+
     // Delete Product by Id
     public void deleteProductById(Integer productId) {
         Product product = productRepository.findById(productId).orElseThrow();

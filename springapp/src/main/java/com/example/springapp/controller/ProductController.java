@@ -148,8 +148,20 @@ public class ProductController {
             existingProduct.setBrand(productRequestDto.getBrand());
             existingProduct.setColour(productRequestDto.getColour());
             existingProduct.setCategory(productRequestDto.getCategory());
-
+            existingProduct.setImage(productRequestDto.getImage());
             Product updatedProduct = productService.updateProduct(existingProduct);
+            return ResponseEntity.ok(new BaseResponseDTO("success", updatedProduct));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new BaseResponseDTO("failed"));
+        }
+    }
+
+    @PutMapping(value = "/api/seller/product/update-image/{productId}")
+    @CrossOrigin(origins = "http://localhost:8081/")
+    public ResponseEntity<BaseResponseDTO> updateProductImage(@PathVariable("productId") Integer productId,
+                                                         @ModelAttribute ProductRequestDto productRequestDto) throws IOException {
+        try {
+            Product updatedProduct = productService.updateProductImage(productId,productRequestDto);
             return ResponseEntity.ok(new BaseResponseDTO("success", updatedProduct));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new BaseResponseDTO("failed"));
