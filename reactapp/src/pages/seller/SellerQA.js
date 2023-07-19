@@ -1,5 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import QAModal from '../../components/seller/QAModal';
+import { ReactComponent as QA } from '../../../src/assets/QA.svg';
 import Footer from '../../components/common/Footer';
 import SellerNavigationBar from '../../components/seller/SellerNavigationBar';
 import { useNavigate } from "react-router-dom";
@@ -40,7 +41,17 @@ export default function SellerQA() {
             <div>
                 
                 <div className="container">
-                    {qaSellerList.map((value, index) => (
+                    {qaSellerList.length === 0 ? (
+                        <div style={{ display: "flex", alignItems: "center", justifyContent: "center" }} >
+                            <div style={{ width: 400, height: 400 }}>
+                                <div style={{ display: "flex", alignItems: "center", justifyContent: "center" }}>
+                                    <h5 style={{ color: "grey" }}><b>No query asked yet</b></h5>
+                                </div>
+                                <QA />
+                            </div>
+                        </div>
+                     ) : 
+                    qaSellerList.map((value, index) => (
                         <div className="card mb-3">
                             <div className="card-body">
                                 <h6 className="card-title"><b>{value.product.name}</b></h6>

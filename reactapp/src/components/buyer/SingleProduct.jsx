@@ -44,9 +44,20 @@ const SingleProduct = () =>{
         <p className="text-success fw-bold fs-3">{`₹ ${productDetails?.price?.toLocaleString("en-US")}`}</p>
         <p className=" fw-bold ">Description:</p>
         <p>{productDetails.description}</p>
+        {productDetails.quantity <= 0 ? (
+          <>
+           <p style={{color:"red"}}><b>OUT OF STOCK</b></p>
+           <button onClick={() => handleAddToCart()} class="btn btn-danger  " disabled>Add to Cart</button>
+           <button type="submit" class="btn btn-danger mx-3" disabled>Buy Now</button>
+           <button onClick={() => setQueryModal(true)} type="submit" class="btn btn-outline-danger "><i className="material-icons" ><BsChatRightQuoteFill /></i> Ask Questions</button>
+          </>
+        ):(
+          <>
           <button onClick={() => handleAddToCart()} class="btn btn-danger  ">Add to Cart</button>
           <button type="submit" class="btn btn-danger mx-3">Buy Now</button>
           <button onClick={() => setQueryModal(true)} type="submit" class="btn btn-outline-danger "><i className="material-icons" ><BsChatRightQuoteFill /></i> Ask Questions</button>
+          </>
+        )}
       </div>
     </div>
   </div>

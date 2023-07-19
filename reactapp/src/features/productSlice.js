@@ -1,5 +1,5 @@
 import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
-import {createProduct,deleteProductById, getProduct,getProductById,getProductBySellerId,getProductBySearch,getProductByCategory} from "../api/productService";
+import {createProduct,deleteProductById, getProduct,getProductById,getProductBySellerId,getProductBySearch,getProductByCategory,updateProductById} from "../api/productService";
 import {toast} from "react-toastify";
 
 export const addProduct =
@@ -83,6 +83,18 @@ export const fetchProduct =
                 return err.response.data
             })
         })
+
+        export const updateProduct = createAsyncThunk(
+            'product/updateProduct',
+            async ({ token, productId, updatedProduct }) => {
+              try {
+                const response = await updateProductById(token, productId, updatedProduct);
+                return response.data;
+              } catch (error) {
+                throw error;
+              }
+            }
+        );
 
 
 
@@ -238,6 +250,10 @@ const productSlice = createSlice({
         [fetchProductByCategory.rejected]:(state)=>{
             state.fetchProductInProcess = false
             console.log("Product fetch failed")
+        },
+        [updateProduct.fulfilled]: (state, action) => {
+            // Assuming the response data includes the updated product details
+            state.productDetails = action.payload;
         },
     }
 })

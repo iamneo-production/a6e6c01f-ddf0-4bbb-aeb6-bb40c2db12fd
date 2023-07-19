@@ -40,6 +40,13 @@ export default function NavigationBar() {
         dispatch(logout());
         navigate("/")
     }
+
+    function handleKeyPress(event) {
+        if (event.key === "Enter") {
+            handleSearch();
+        }
+    }
+
     async function handleSearch() {
         console.log("search-query",search)
         await dispatch(setSearchQuery({searchQuery:search}));
@@ -58,7 +65,7 @@ export default function NavigationBar() {
                         </div>
                         <div className="col-md-7">
                             <div class="input-group">
-                                <input onChange={(e) => setSearch(e.target.value)} type="text" class="form-control" placeholder="Search" aria-describedby="basic-addon2" />
+                                <input onChange={(e) => setSearch(e.target.value)} onKeyPress={handleKeyPress} type="text" class="form-control" placeholder="Search" aria-describedby="basic-addon2" />
                                 <div class="input-group-append">
                                     <button onClick={() => handleSearch()} class="btn btn-outline-secondary" type="button"><i className="md md-envelope mx-1"> <FaSearch style={{ justifyContent: "center", height: 20, paddingBottom: "5px" }} /></i></button>
                                 </div>

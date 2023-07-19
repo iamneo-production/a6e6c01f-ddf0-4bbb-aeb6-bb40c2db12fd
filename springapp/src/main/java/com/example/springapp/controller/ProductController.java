@@ -3,6 +3,8 @@ package com.example.springapp.controller;
 import com.example.springapp.BaseResponseDTO;
 import com.example.springapp.config.jwt.JwtTokenProvider;
 import com.example.springapp.dto.request.ProductRequestDto;
+import com.example.springapp.dto.response.SellerDashboardResponse;
+import com.example.springapp.model.Purchase;
 import com.example.springapp.model.QA;
 import com.example.springapp.model.User;
 import com.example.springapp.config.user.UserRepository;
@@ -99,7 +101,18 @@ public class ProductController {
         }
     }
 
+    @GetMapping("/api/seller/dashboard")
+    public ResponseEntity<BaseResponseDTO> getProductDashboard(@RequestHeader(value = "Authorization", defaultValue = "") String token) {
+        User user = userRepository.findByEmail(tokenProvider.getUsernameFromToken(tokenProvider.getTokenFromHeader(token))).orElseThrow();
+        Map<String, Object> data = productService.getProductDashboard(user.getId());
+        return ResponseEntity.ok(new BaseResponseDTO("success",data));
+    }
 
+    @GetMapping("/api/product/reviews")
+    public ResponseEntity<BaseResponseDTO> getProductReviews(@RequestParam String productId) {
+        List<Map<String, Object>> data = productService.getProductReviews(Integer.parseInt(productId));
+        return ResponseEntity.ok(new BaseResponseDTO("success",data));
+    }
 
     //Test Case
     @GetMapping("/product")
@@ -120,6 +133,27 @@ public class ProductController {
     @GetMapping("/api/search")
     public ResponseEntity<BaseResponseDTO> searchProducts(@RequestParam String query) {
         return ResponseEntity.ok(new BaseResponseDTO("success",productService.searchProducts(query)));
+    }
+
+    @PutMapping(value = "/api/seller/products/{productId}")
+    @CrossOrigin(origins = "http://localhost:8081/")
+    public ResponseEntity<BaseResponseDTO> updateProduct(@PathVariable("productId") Integer productId,
+                                                         @ModelAttribute ProductRequestDto productRequestDto) throws IOException {
+        try {
+            Product existingProduct = productService.getProductById(productId);
+            existingProduct.setName(productRequestDto.getName());
+            existingProduct.setDescription(productRequestDto.getDescription());
+            existingProduct.setPrice(productRequestDto.getPrice());
+            existingProduct.setQuantity(productRequestDto.getQuantity());
+            existingProduct.setBrand(productRequestDto.getBrand());
+            existingProduct.setColour(productRequestDto.getColour());
+            existingProduct.setCategory(productRequestDto.getCategory());
+
+            Product updatedProduct = productService.updateProduct(existingProduct);
+            return ResponseEntity.ok(new BaseResponseDTO("success", updatedProduct));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new BaseResponseDTO("failed"));
+        }
     }
 
 }
