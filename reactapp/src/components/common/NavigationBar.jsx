@@ -6,10 +6,12 @@ import { HiShoppingCart } from 'react-icons/hi';
 import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate } from "react-router-dom";
 import {setSearchQuery} from "../../features/productSlice";
-import {logout} from "../../features/logoutSlice";
+import LogOutModal from './LogOutModal';
 
 export default function NavigationBar() {
     const [showDropDown, setShowDropDown] = useState(false);
+    const [showLogoutModal, setShowLogoutModal] = useState(false);
+    const handleHideRemoveModal = () => setShowLogoutModal(false);
     const target = useRef(null);
     const navigate = useNavigate();
     const dispatch = useDispatch()
@@ -36,9 +38,9 @@ export default function NavigationBar() {
         navigate("/home", { state: { currentUser } });
     }
 
-    function handleLogout() {
-        dispatch(logout());
-        navigate("/")
+    async function handleLogout() {
+        await setShowLogoutModal(!showLogoutModal);
+        setShowDropDown(!showDropDown);
     }
 
     function handleKeyPress(event) {
@@ -98,6 +100,7 @@ export default function NavigationBar() {
                                     <a className="nav-link text-white" href="#" onClick={() =>  navigate("/cart")}><i className="hi hi-envelope mx-1"><HiShoppingCart style={{ width: 30, height: 20 }} /></i> Cart</a>
                                 </li>
                             </ul>
+                            <LogOutModal show={showLogoutModal} handleHideRemoveModal={handleHideRemoveModal}/>
                         </div>
                     </div>
                 </div>
