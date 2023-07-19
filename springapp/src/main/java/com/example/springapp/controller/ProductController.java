@@ -92,8 +92,6 @@ public class ProductController {
     @DeleteMapping(value = "/api/seller/product-delete")
     public ResponseEntity<BaseResponseDTO> deleteProductById(@RequestParam String productId){
         try{
-            System.out.println(".....");
-            System.out.println(productId);
             productService.deleteProductById(Integer.parseInt(productId));
             return ResponseEntity.ok(new BaseResponseDTO("success"));
         }catch(Exception e){
