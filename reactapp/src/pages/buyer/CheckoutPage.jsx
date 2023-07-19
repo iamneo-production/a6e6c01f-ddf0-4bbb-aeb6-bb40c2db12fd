@@ -181,9 +181,9 @@ export default function CheckoutPage() {
                     <div>
                         {cartList.map((prod, index) => (
                             <div key={index}>
-                                <div style={{ display: 'flex', justifyContent: 'center' }}>
+                                <div className="container" >
                                     <div className="row">
-                                        <div className="col-md-2 ms-5">
+                                        <div className="col-2">
                                             <img
                                                 src={`data:image/jpeg;base64,${prod.product.image}`}
                                                 alt="Card"
@@ -192,7 +192,7 @@ export default function CheckoutPage() {
                                                 height={135}
                                             />
                                         </div>
-                                        <div className="col-md-9 border">
+                                        <div className="col-10 border">
                                             <div className="card-body">
                                                 <h6 className="card-title fw-bold">{prod.product.name}</h6>
                                                 <span className="card-text text-muted fw-bold">{`₹ ${prod.product.price.toLocaleString(

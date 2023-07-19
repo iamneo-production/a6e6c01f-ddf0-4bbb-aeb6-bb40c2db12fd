@@ -16,7 +16,8 @@ const QA = () => {
     return (
         <>
         <div class="mb-4 pb-4 border-bottom">
-            {qaList.map((value,index) =>(
+            {qaList.length === 0 ? (<p style={{color:"grey"}}>Be the first to ask queries</p>) :
+            qaList.map((value,index) =>(
                 <div>
                     {value.status === 'Answered' &&
                         <div>
