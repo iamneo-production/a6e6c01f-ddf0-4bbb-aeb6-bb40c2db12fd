@@ -54,3 +54,22 @@ export async function getProductByCategory(token,category){
         headers: { Authorization: `Bearer ${token}` }
     })
 }
+
+export async function updateProductById(token, productId, updatedProduct) {
+    const formData = new FormData();
+  
+    Object.entries(updatedProduct).forEach(([key, value]) => {
+      if (key === 'image' && value instanceof File) {
+        formData.append(key, value, value.name);
+      } else {
+        formData.append(key, value);
+      }
+    });
+  
+    return await axios.put(`${baseUrl}/seller/products/${productId}`, formData, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        'Content-Type': 'multipart/form-data',
+      },
+    });
+  }

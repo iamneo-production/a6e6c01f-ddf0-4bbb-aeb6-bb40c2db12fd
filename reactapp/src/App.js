@@ -35,7 +35,7 @@ function App() {
         <Route path="/purchasehistory" element={<PurchaseHistory/>}/>
         <Route path="/admin/products" element={<ProductsPage/>}/>
         <Route path="/profile" element={<Profile/>} />
-        <Route path="/seller/editproduct" element={<EditProductPage/>}/>
+        <Route path="/seller/editproduct/:productId" element={<RequireAuth role={'ROLE_SELLER'}><EditProductPage/></RequireAuth>} />
         <Route path="/seller/addproduct" element={<RequireAuth role={'ROLE_SELLER'}><AddProductPage/></RequireAuth>}/>
         <Route path="/showuser" element={<Showuser/>} />
         <Route path="/seller/home" element={<RequireAuth role={'ROLE_SELLER'}><SellerHomePage/></RequireAuth>}/>

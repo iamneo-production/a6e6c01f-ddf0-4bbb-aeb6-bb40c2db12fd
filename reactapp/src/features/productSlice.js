@@ -84,6 +84,18 @@ export const fetchProduct =
             })
         })
 
+        export const updateProduct = createAsyncThunk(
+            'product/updateProduct',
+            async ({ token, productId, updatedProduct }) => {
+              try {
+                const response = await updateProductById(token, productId, updatedProduct);
+                return response.data;
+              } catch (error) {
+                throw error;
+              }
+            }
+        );
+
 
 
 const productSlice = createSlice({
@@ -238,6 +250,10 @@ const productSlice = createSlice({
         [fetchProductByCategory.rejected]:(state)=>{
             state.fetchProductInProcess = false
             console.log("Product fetch failed")
+        },
+        [updateProduct.fulfilled]: (state, action) => {
+            // Assuming the response data includes the updated product details
+            state.productDetails = action.payload;
         },
     }
 })

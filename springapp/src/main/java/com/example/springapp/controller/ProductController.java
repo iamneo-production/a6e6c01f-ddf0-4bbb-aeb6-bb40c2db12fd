@@ -135,4 +135,25 @@ public class ProductController {
         return ResponseEntity.ok(new BaseResponseDTO("success",productService.searchProducts(query)));
     }
 
+    @PutMapping(value = "/api/seller/products/{productId}")
+    @CrossOrigin(origins = "http://localhost:8081/")
+    public ResponseEntity<BaseResponseDTO> updateProduct(@PathVariable("productId") Integer productId,
+                                                         @ModelAttribute ProductRequestDto productRequestDto) throws IOException {
+        try {
+            Product existingProduct = productService.getProductById(productId);
+            existingProduct.setName(productRequestDto.getName());
+            existingProduct.setDescription(productRequestDto.getDescription());
+            existingProduct.setPrice(productRequestDto.getPrice());
+            existingProduct.setQuantity(productRequestDto.getQuantity());
+            existingProduct.setBrand(productRequestDto.getBrand());
+            existingProduct.setColour(productRequestDto.getColour());
+            existingProduct.setCategory(productRequestDto.getCategory());
+
+            Product updatedProduct = productService.updateProduct(existingProduct);
+            return ResponseEntity.ok(new BaseResponseDTO("success", updatedProduct));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new BaseResponseDTO("failed"));
+        }
+    }
+
 }
