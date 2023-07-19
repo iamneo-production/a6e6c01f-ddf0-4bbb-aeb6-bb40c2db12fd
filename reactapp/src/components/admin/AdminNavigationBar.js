@@ -3,19 +3,21 @@ import Offcanvas from 'react-bootstrap/Offcanvas';
 import { useRef, useState } from 'react';
 import {useNavigate} from "react-router-dom";
 import {useDispatch,useSelector } from 'react-redux';
-import {logout} from "../../features/logoutSlice";
+import LogOutModal from '../common/LogOutModal';
 
 export default function AdminNavigationBar() {
     const [showDropDown, setShowDropDown] = useState(false);
+    const [showLogoutModal, setShowLogoutModal] = useState(false);
+    const handleHideRemoveModal = () => setShowLogoutModal(false);
     const navigate = useNavigate();
     const target = useRef(null);
     const dispatch = useDispatch() 
     const currentUser = useSelector(state => state.user.currentUser)
 
-    function handleLogout(){
-        dispatch(logout())
-        navigate("/")
-    } 
+    async function handleLogout() {
+        await setShowLogoutModal(!showLogoutModal);
+        setShowDropDown(!showDropDown);
+    }
 
     return (
         <div>
@@ -41,6 +43,7 @@ export default function AdminNavigationBar() {
                             </Offcanvas.Body>
                         </Offcanvas>
                     </div>
+                    <LogOutModal show={showLogoutModal} handleHideRemoveModal={handleHideRemoveModal}/>
                 </div>
             </nav>
         </div>
