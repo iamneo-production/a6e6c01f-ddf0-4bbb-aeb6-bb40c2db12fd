@@ -36,12 +36,18 @@ export const purchaseSlice = createSlice({
             console.log("Purchase Add pending")
         },
         [addPurchase.fulfilled]:(state,action) =>{
-            if(action.payload.message ==="success"){
-                toast.success('Order Placed ', {
-                    position: toast.POSITION.TOP_CENTER
-                });
+            if(action.payload !== undefined){
+                if(action.payload.message ==="success"){
+                    toast.success('Order Placed ', {
+                        position: toast.POSITION.TOP_CENTER
+                    });
+                }else {
+                    toast.error('Please try again!!', {
+                        position: toast.POSITION.TOP_CENTER
+                    });
+                }
             }else {
-                toast.error('Please try again!!', {
+                toast.error("Try again after sometime", {
                     position: toast.POSITION.TOP_CENTER
                 });
             }
@@ -56,11 +62,17 @@ export const purchaseSlice = createSlice({
             console.log("pending")
         },
         [fetchPurchase.fulfilled]:(state,action) =>{
-            if(action.payload.message ==="success"){
-                state.purchaseList = action.payload.data
-                console.log("Purchase fetched")
+            if(action.payload !== undefined){
+                if(action.payload.message ==="success"){
+                    state.purchaseList = action.payload.data
+                    console.log("Purchase fetched")
+                }else {
+                    console.log(action.payload.message)
+                }
             }else {
-                console.log(action.payload.message)
+                toast.error("Try again after sometime", {
+                    position: toast.POSITION.TOP_CENTER
+                });
             }
         },
         [fetchPurchase.rejected]:(state)=>{
