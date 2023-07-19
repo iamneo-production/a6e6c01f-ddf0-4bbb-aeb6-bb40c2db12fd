@@ -61,8 +61,8 @@ const AllProducts = () => {
                                             <span className="text-success fw-bold fs-8" style={{ marginRight: "10px" }}>{`₹ ${prod.price.toLocaleString("en-US")}`}</span>
                                             
                                         </div>
-                                        <div className=' btn btn-light border d-inline  px-2 py-2 mb-3 fw-bold fs-6'>Buyers</div>
-                                        <div className=' btn btn-light border d-inline ms-3 px-2 py-2 mb-3 fw-bold fs-6'>Edit</div>
+                                        <div className=' btn btn-light border d-inline  px-2 py-2 mb-3 fw-bold fs-6' onClick={() => navigate(`/seller/buyersandreviews/${prod.id}`)}>Buyers</div>
+                                        <div className=' btn btn-light border d-inline ms-3 px-2 py-2 mb-3 fw-bold fs-6'onClick={() => navigate(`/seller/editproduct/${prod.id}`)}>Edit</div>
                                         <div className=' btn btn-light border d-inline float-end px-2 py-2 mb-3 bg-danger fw-bold'>Remove</div>
                                     </div>
                                 </div>

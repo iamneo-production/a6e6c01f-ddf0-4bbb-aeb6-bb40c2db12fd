@@ -1,10 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, {useState, useEffect, useRef} from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import SellerNavigationBar from '../../components/seller/SellerNavigationBar';
 import Footer from '../../components/common/Footer';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { fetchProductById, updateProduct } from '../../features/productSlice';
+import {fetchProductById, updateProduct, updateProductImage} from '../../features/productSlice';
 
 import { MdKeyboardBackspace } from 'react-icons/md';
 import { useNavigate, useParams } from 'react-router-dom';
@@ -55,12 +55,7 @@ export default function EditProductPage() {
 
   const onImageChange = (event) => {
     if (event.target.files && event.target.files[0]) {
-      const reader = new FileReader();
-      reader.onload = () => {
-        setFormValue({ ...formValue, image: event.target.files[0] });
-        setSystemImage(reader.result);
-      };
-      reader.readAsDataURL(event.target.files[0]);
+      dispatch(updateProductImage({token:token,productId:productId,image:event.target.files[0]}))
     }
   };
 
@@ -72,8 +67,7 @@ export default function EditProductPage() {
     category: formValue.category,
     brand: formValue.brand,
     colour: formValue.colour,
-    quantity: parseInt(formValue.quantity),
-    image: formValue.image,
+    quantity: parseInt(formValue.quantity)
   };
 
   // Check if any field has been modified
@@ -81,10 +75,7 @@ export default function EditProductPage() {
     (key) => updatedProduct[key] !== productDetails[key]
   );
 
-  // Check if the image has been modified
-  const hasImageChanges = formValue.image !== null;
-
-  if (hasFieldChanges || hasImageChanges) {
+  if (hasFieldChanges) {
     dispatch(updateProduct({ token, productId, updatedProduct }))
       .then(() => {
         toast.success('Product updated successfully', {
@@ -103,6 +94,11 @@ export default function EditProductPage() {
   }
 };
 
+  const fileInputRef = useRef(null);
+
+  const handleEditImageButtonClick = () => {
+    fileInputRef.current.click();
+  };
   
 
   return (
@@ -146,12 +142,18 @@ export default function EditProductPage() {
               <br />
             </div>
           </div>
-          <input
-            style={{ marginTop: 20 }}
-            type="file"
-            onChange={onImageChange}
-            className="filetype"
-          />
+          <div className="mt-3 mb-3">
+            <div>
+              <input
+                  type="file"
+                  accept="image/*"
+                  style={{ display: 'none' }}
+                  ref={fileInputRef}
+                  onChange={onImageChange}
+              />
+              <button style={{backgroundColor:"#F25151"}} type="button" className="btn btn-light" onClick={handleEditImageButtonClick}>Change Image</button>
+            </div>
+          </div>
         </div>
         <br />
 

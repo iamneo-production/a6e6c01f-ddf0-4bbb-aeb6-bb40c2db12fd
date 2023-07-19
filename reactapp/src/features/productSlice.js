@@ -1,5 +1,15 @@
 import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
-import {createProduct,deleteProductById, getProduct,getProductById,getProductBySellerId,getProductBySearch,getProductByCategory,updateProductById} from "../api/productService";
+import {
+    createProduct,
+    deleteProductById,
+    getProduct,
+    getProductById,
+    getProductBySellerId,
+    getProductBySearch,
+    getProductByCategory,
+    updateProductById,
+    updateProductImageById
+} from "../api/productService";
 import {toast} from "react-toastify";
 
 export const addProduct =
@@ -95,6 +105,17 @@ export const fetchProduct =
               }
             }
         );
+
+export const updateProductImage =
+    createAsyncThunk('product/updateProductImage', async (body) => {
+        return updateProductImageById(
+            body.token, body.productId, body.image
+        ).then((res) => {
+            return res.data
+        }).catch((err) => {
+            return err.response.data
+        })
+    })
 
 
 
@@ -290,7 +311,11 @@ const productSlice = createSlice({
         },
         [updateProduct.fulfilled]: (state, action) => {
             // Assuming the response data includes the updated product details
-            state.productDetails = action.payload;
+            state.productDetails = action.payload.data;
+        },
+        [updateProductImage.fulfilled]: (state, action) => {
+            // Assuming the response data includes the updated product details
+            state.productDetails = action.payload.data;
         },
     }
 })
