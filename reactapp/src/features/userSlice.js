@@ -38,6 +38,8 @@ export const userSlice = createSlice({
             id: ''
         },
         token: null,
+        signupInProgress:false,
+        signinInProgress:false,
         signinSuccess: false,
         signupSuccess: false
     },
@@ -50,6 +52,7 @@ export const userSlice = createSlice({
     },
     extraReducers: {
         [loginUser.pending]: (state) => {
+            state.signinInProgress = true
             console.log("pending")
         },
         [loginUser.fulfilled]: (state, action) => {
@@ -68,13 +71,16 @@ export const userSlice = createSlice({
                     position: toast.POSITION.TOP_CENTER
                 });
             }
+            state.signinInProgress = false
         },
         [loginUser.rejected]: (state) => {
             console.log("login  failed")
             alert("login failed,Try again")
+            state.signinInProgress = false
         },
         [signupUser.pending]: (state) => {
             console.log("pending")
+            state.signupInProgress = true
         },
         [signupUser.fulfilled]: (state, action) => {
             console.log("Fulfilled")
@@ -89,10 +95,12 @@ export const userSlice = createSlice({
                 });
                 //alert(action.payload.message)
             }
+            state.signupInProgress = false
         },
         [signupUser.rejected]: (state) => {
             console.log("signup  failed")
             alert("login failed,Try again")
+            state.signupInProgress = false
         },
     }
 })

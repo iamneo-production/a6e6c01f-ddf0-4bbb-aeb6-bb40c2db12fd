@@ -7,6 +7,7 @@ import Footer from '../../components/common/Footer';
 import {useDispatch, useSelector} from "react-redux";
 import {useEffect} from "react";
 import {fetchProduct, setSelectedCategory} from "../../features/productSlice";
+import {Overlay, Spinner} from "react-bootstrap";
 
 
 
@@ -16,6 +17,7 @@ import {fetchProduct, setSelectedCategory} from "../../features/productSlice";
 export default function HomePage(){
   const allProductList = useSelector(state => state.product.allProductList)
   const token = useSelector(state => state.user.token)
+    const fetchProductInProcess = useSelector(state => state.product.fetchProductInProcess)
   const navigate = useNavigate();
   const dispatch = useDispatch()
   useEffect(() =>{
@@ -27,6 +29,20 @@ export default function HomePage(){
     await dispatch(setSelectedCategory({category: category}))
     navigate("/category")
   }
+
+    const loadingOverlayStyle = {
+        position: 'fixed',
+        top: 0,
+        left: 0,
+        width: '100%',
+        height: '100%',
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: 'rgba(0,0,0,0.4)',
+        zIndex: 9999,
+    };
+
 return(
         <div className='home'>
           
@@ -95,10 +111,16 @@ return(
           <section class="container">
     <h2 class="text-center mb-4">Featured Products</h2>
     <div class="row">
-      <Card ProductList={allProductList}/>
-    
-      
-     
+
+        {fetchProductInProcess ?
+            <div style={loadingOverlayStyle}>
+                <Spinner animation="border" role="status">
+                    <span className="sr-only">Loading...</span>
+                </Spinner>
+            </div>:
+            <Card ProductList={allProductList}/>
+        }
+
     </div>
     
     

@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { signupUser } from '../../features/userSlice';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { OverlayTrigger, Tooltip } from 'react-bootstrap';
+import {OverlayTrigger, Spinner, Tooltip} from 'react-bootstrap';
 import { BsInfoCircle } from 'react-icons/bs';
 
 export default function SignupForm(props) {
@@ -12,11 +12,26 @@ export default function SignupForm(props) {
     const [inputValue, setInputValue] = useState({ firstName: '', lastName: '', email: '', phone: '', password: '', roles: 'BUYER' });
     const dispatch = useDispatch()
     const signupSuccess = useSelector(state => state.user.signupSuccess)
+    const signupInProgress = useSelector(state => state.user.signupInProgress)
     const nameValidation = new RegExp('^[A-Za-z\\s]+$')
     const emailValidation = new RegExp('^[a-z][a-z0-9]+(@gmail.com)$')
     const passwordValidation = new RegExp('^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d).{5,}$')
     const phonenoValidation = new RegExp('^[6-9]\\d{9}$')
     const tooltipRef = useRef(null);
+
+
+    const loadingOverlayStyle = {
+        top: 0,
+        left: 0,
+        width: '100%',
+        height: '100%',
+        display: 'flex',
+        justifyContent: 'center',
+        flexDirection: 'column',
+        alignItems: 'center',
+        backgroundColor: 'rgba(0,0,0,0)',
+        zIndex: 9999,
+    };
 
     const handleSignup = () => {
 
@@ -80,6 +95,12 @@ export default function SignupForm(props) {
                 <Offcanvas.Title><b>Signup</b></Offcanvas.Title>
             </Offcanvas.Header>
             <Offcanvas.Body>
+                {signupInProgress ?
+                    <div style={loadingOverlayStyle}>
+                        <Spinner className={"mb-2"} animation="border" role="status">
+                        </Spinner>
+                        <span className="text-dark">Loading...</span>
+                    </div> :
                 <div class="container">
                     <div class="mb-3">
                         <p style={{ textAlign: "left" }}>First Name</p>
@@ -139,6 +160,7 @@ export default function SignupForm(props) {
                         <p style={{ marginTop: 8 }}>Already have an account? <a onClick={() => { props.onHide(); props.openSignin() }} style={{ cursor: 'pointer' }} class="text-reset text-decoration-underline"><b>Signin</b></a></p>
                     </div>
                 </div>
+                }
             </Offcanvas.Body>
         </Offcanvas>
     )
