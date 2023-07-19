@@ -11,7 +11,11 @@ import { useNavigate } from "react-router-dom";
 
 export default function ProductsPage() {
     const [showRemove, setShowRemove] = useState(false);
-    const handleShowRemoveModal = () => setShowRemove(true);
+    const [selectedItem,setSelectedItem] = useState('');
+    const handleShowRemoveModal = (productId) => {
+        setSelectedItem(productId)
+        setShowRemove(true)
+    };
     const handleHideRemoveModal = () => setShowRemove(false);
     console.log(showRemove);
     const start = 0;
@@ -33,6 +37,8 @@ export default function ProductsPage() {
         const date = new Date(value);
         return date.toLocaleDateString() + " " + date.toLocaleTimeString()
     }
+
+
 
     return (
         <div>
@@ -78,14 +84,16 @@ export default function ProductsPage() {
                                 <td>{handleDate(createdAt)}</td>
                                 <td>
                                     <div className='d-flex flex-row justify-content-end'>
-                                        <button type="button" className="btn btn-danger" style={{ color: "black" }} onClick={() => { handleShowRemoveModal() }}><b>Remove</b></button>
-                                        <ProductsRemoveModal productId={id} show={showRemove} handleHideRemoveModal={handleHideRemoveModal}></ProductsRemoveModal>
+                                        <button type="button" className="btn btn-danger" style={{ color: "black" }} onClick={() => { handleShowRemoveModal(id) }}><b>Remove</b></button>
+
                                     </div>
                                 </td>
                             </tr>
                         ))}
                     </tbody>
+                    <ProductsRemoveModal productId={selectedItem} show={showRemove} handleHideRemoveModal={handleHideRemoveModal}></ProductsRemoveModal>
                 </Table>
+
                 )}
             </div>
             <Footer/>
