@@ -4,6 +4,8 @@ import {fetchProductById} from "../../features/productSlice";
 import axios from "axios";
 import {baseUrl} from "../../api/config";
 import moment from "moment/moment";
+import StarRating from "./StarRating";
+import DefaultStars from "./DefaultStars";
 
 
 
@@ -32,9 +34,16 @@ const Review = () =>{
                 <img src={require('../../assets/profile.jpg')} alt="" className="rounded-circle avatar-lg"
                      style={{width: 50, height: 50}}/>
                 <div className="ml-2 px-3">
-                    <h5 className="mb-1">
-                        {value.customer_name}
-                    </h5>
+                    <div className="row">
+                        <div className="col-auto">
+                            <h5 className="mb-1">
+                                {value.customer_name}
+                            </h5>
+                        </div>
+                        <div className="col">
+                            <DefaultStars value={value.rating} exportStar={() => { return }} />
+                        </div>
+                    </div>
                     <p className="font-12 mb-0">
                         <span>{moment(value.updated_at).format('LLL')}</span>
                     </p>
