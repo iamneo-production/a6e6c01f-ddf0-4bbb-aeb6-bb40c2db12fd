@@ -1,5 +1,5 @@
 import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
-import {createProduct,deleteProductById, getProduct,getProductById,getProductBySellerId,getProductBySearch,getProductByCategory} from "../api/productService";
+import {createProduct,deleteProductById, getProduct,getProductById,getProductBySellerId,getProductBySearch,getProductByCategory,updateProductById} from "../api/productService";
 import {toast} from "react-toastify";
 
 export const addProduct =
