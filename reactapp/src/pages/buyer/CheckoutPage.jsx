@@ -59,7 +59,7 @@ export default function CheckoutPage() {
             });
         }
         else {
-            navigateToOrderPlacementPage();
+            navigate("\orderplaced")
         }
     };
 
