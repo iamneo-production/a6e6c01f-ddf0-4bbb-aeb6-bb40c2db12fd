@@ -7,10 +7,12 @@ import AskQueryModal from "./AskQueryModal";
 import {addCart} from "../../features/cartSlice";
 import {MdKeyboardBackspace} from 'react-icons/md';
 import { useNavigate } from "react-router-dom";
+import {fetchCart} from "../../features/cartSlice";
 
 const SingleProduct = () =>{
   const token = useSelector(state => state.user.token)
     const productDetails = useSelector(state => state.product.productDetails)
+    console.log(productDetails);
     const selectedProduct = useSelector(state => state.product.selectedProduct)
     const [queryModal, setQueryModal] = useState(false);
     const handleCloseQueryModal = () => setQueryModal(false);
@@ -27,6 +29,12 @@ const SingleProduct = () =>{
 
     function handleAddToCart(){
       dispatch(addCart({token:token,productId:selectedProduct,quantity:1}))
+    }
+
+    async function handleBuyNow(){
+      await dispatch(addCart({token:token,productId:selectedProduct,quantity:1}))
+      navigate("/checkout")
+      dispatch(fetchCart({token:token}))
     }
     return(
         <>
@@ -54,7 +62,7 @@ const SingleProduct = () =>{
         ):(
           <>
           <button onClick={() => handleAddToCart()} class="btn btn-danger  ">Add to Cart</button>
-          <button type="submit" class="btn btn-danger mx-3">Buy Now</button>
+          <button onClick={() => handleBuyNow()} type="submit" class="btn btn-danger mx-3">Buy Now</button>
           <button onClick={() => setQueryModal(true)} type="submit" class="btn btn-outline-danger "><i className="material-icons" ><BsChatRightQuoteFill /></i> Ask Questions</button>
           </>
         )}
