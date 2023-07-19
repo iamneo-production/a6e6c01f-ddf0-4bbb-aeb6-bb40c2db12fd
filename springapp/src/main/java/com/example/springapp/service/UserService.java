@@ -118,6 +118,56 @@ public class UserService implements UserDetailsService {
     }
 
 
+    
+    //Admin authorizations
+    //disable buyer
+    public User disableBuyer(Long id) {
+        Optional<User> optionalBuyer = userRepository.findById(id);
+        if (optionalBuyer.isPresent()) {
+            User existingUser = optionalBuyer.get();
+            existingUser.setDisabled(true);
+            return userRepository.save(existingUser);
+        } else {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Buyer not found");
+        }
+    }
+
+    //delete buyer
+    public User deleteBuyer(Long id) {
+        Optional<User> optionalBuyer = userRepository.findById(id);
+        if (optionalBuyer.isPresent()) {
+            User existingUser = optionalBuyer.get();
+            existingUser.setDeleted(true);
+            return userRepository.save(existingUser);
+        } else {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Buyer not found");
+        }
+    }
+
+    //disable seller
+    public User disableSeller(Long id) {
+        Optional<User> optionalSeller = userRepository.findById(id);
+        if (optionalSeller.isPresent()) {
+            User existingUser = optionalSeller.get();
+            existingUser.setDisabled(true);
+            return userRepository.save(existingUser);
+        } else {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Seller not found");
+        }
+    }
+
+    //delete seller
+    public User deleteSeller(Long id) {
+        Optional<User> optionalSeller = userRepository.findById(id);
+        if (optionalSeller.isPresent()) {
+            User existingUser = optionalSeller.get();
+            existingUser.setDeleted(true);
+            return userRepository.save(existingUser);
+        } else {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Seller not found");
+        }
+    }
+
 }
 
 
