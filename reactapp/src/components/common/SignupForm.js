@@ -54,7 +54,6 @@ export default function SignupForm(props) {
                                 dispatch(signupUser(inputValue))
                                 console.log("Signedup--", signupSuccess)
                                 setInputValue({ firstName: '', lastName: '', email: '', address: '', phone: '', password: '', roles: 'BUYER' })
-                                props.onHide()
                             }
                             else {
                                 toast.error('Enter a valid phone number!', {
