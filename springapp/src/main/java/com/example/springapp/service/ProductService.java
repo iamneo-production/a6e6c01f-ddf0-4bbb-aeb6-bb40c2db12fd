@@ -64,7 +64,19 @@ public class ProductService {
 
     // Update Product
     public Product updateProduct(Product incomingProduct) {
-        return productRepository.save(incomingProduct);
+
+        Integer productId = incomingProduct.getId(); // Assuming there's an 'id' field in the Product class
+        Product existingProduct = productRepository.findById(productId).orElseThrow();
+
+        existingProduct.setName(incomingProduct.getName());
+        existingProduct.setDescription(incomingProduct.getDescription());
+        existingProduct.setPrice(incomingProduct.getPrice());
+        existingProduct.setQuantity(incomingProduct.getQuantity());
+        existingProduct.setBrand(incomingProduct.getBrand());
+        existingProduct.setColour(incomingProduct.getColour());
+        existingProduct.setCategory(incomingProduct.getCategory());
+
+        return productRepository.save(existingProduct);
     }
 
     // Delete Product by Id
