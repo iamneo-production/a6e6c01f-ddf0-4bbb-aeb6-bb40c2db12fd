@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import { useNavigate } from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
 import { getSellerProducts } from '../../features/productSlice';
+import { ReactComponent as EmptySellerProducts } from '../../assets/EmptySellerProducts.svg';
 
 const products = [
     {
@@ -31,7 +32,16 @@ const AllProducts = () => {
 
     return (
         <div>
-            {
+            {sellerProductsList.length === 0 ? (
+            <div style={{ display: "flex", alignItems: "center", justifyContent: "center" }} >
+                <div style={{ width: 400, height: 400 }}>
+                    <div style={{ display: "flex", alignItems: "center", justifyContent: "center" }}>
+                        <h5 style={{ color: "grey" }}><b>No products added yet</b></h5>
+                    </div>
+                    <EmptySellerProducts />
+                </div>
+            </div>
+            ) : (
                 sellerProductsList.map((prod, index) =>
                 (
                     <div>
@@ -61,7 +71,7 @@ const AllProducts = () => {
                         <br />
                     </div>
                 ))
-            }
+            )}
         </div>
     );
 };
