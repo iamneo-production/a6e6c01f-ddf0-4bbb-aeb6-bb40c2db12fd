@@ -81,13 +81,13 @@ public class ProductService {
 
     // Delete Product by Id
     public void deleteProductById(Integer productId) {
-        System.out.println(".....");
-        System.out.println(productId);
-        productRepository.deleteById(productId);
+        Product product = productRepository.findById(productId).orElseThrow();
+        product.setDeleted(true);
+        productRepository.save(product);
     }
 
     public List<Product> getProductBySeller(User user) {
-        return productRepository.findAllBySeller(user);
+        return productRepository.findAllBySellerAndIsDeletedFalse(user);
     }
 
     public List<Product> searchProducts(String query) {
@@ -95,7 +95,7 @@ public class ProductService {
     }
 
     public List<Product> getAllProducts() {
-        return productRepository.findAll();
+        return productRepository.findAllByIsDeletedFalse();
     }
 
     public List<Product> getProductByCategory(String category) {
