@@ -56,22 +56,29 @@ export const userSlice = createSlice({
             console.log("pending")
         },
         [loginUser.fulfilled]: (state, action) => {
+            state.signinInProgress = false
             console.log("Fulfilled")
-            if (action.payload.message === "success") {
-                state.token = action.payload.data.token
-                state.currentUser.firstName = action.payload.data.currentUser.firstName
-                state.currentUser.lastName = action.payload.data.currentUser.lastName
-                state.currentUser.email = action.payload.data.currentUser.email
-                state.currentUser.phone = action.payload.data.currentUser.phone
-                state.currentUser.roles = action.payload.data.currentUser.roles
-                state.currentUser.id = action.payload.data.currentUser.id
-                state.signinSuccess = true
-            } else {
-                toast.error(action.payload.message, {
+            console.log(action)
+            if(action.payload !== undefined){
+                if (action.payload.message === "success") {
+                    state.token = action.payload.data.token
+                    state.currentUser.firstName = action.payload.data.currentUser.firstName
+                    state.currentUser.lastName = action.payload.data.currentUser.lastName
+                    state.currentUser.email = action.payload.data.currentUser.email
+                    state.currentUser.phone = action.payload.data.currentUser.phone
+                    state.currentUser.roles = action.payload.data.currentUser.roles
+                    state.currentUser.id = action.payload.data.currentUser.id
+                    state.signinSuccess = true
+                } else {
+                    toast.error(action.payload.message, {
+                        position: toast.POSITION.TOP_CENTER
+                    });
+                }
+            }else {
+                toast.error("Try again after sometime", {
                     position: toast.POSITION.TOP_CENTER
                 });
             }
-            state.signinInProgress = false
         },
         [loginUser.rejected]: (state) => {
             console.log("login  failed")
@@ -84,18 +91,24 @@ export const userSlice = createSlice({
         },
         [signupUser.fulfilled]: (state, action) => {
             console.log("Fulfilled")
-            if (action.payload.message === "success") {
-                state.signupSuccess = true
-                toast('Account Created Successfully', {
-                    position: toast.POSITION.TOP_CENTER
-                });
-            } else {
-                toast.error(action.payload.message, {
-                    position: toast.POSITION.TOP_CENTER
-                });
-                //alert(action.payload.message)
-            }
             state.signupInProgress = false
+            if(action.payload !== undefined){
+                if (action.payload.message === "success") {
+                    state.signupSuccess = true
+                    toast('Account Created Successfully', {
+                        position: toast.POSITION.TOP_CENTER
+                    });
+                } else {
+                    toast.error(action.payload.message, {
+                        position: toast.POSITION.TOP_CENTER
+                    });
+                    //alert(action.payload.message)
+                }
+            }else {
+                toast.error("Try again after sometime", {
+                    position: toast.POSITION.TOP_CENTER
+                });
+            }
         },
         [signupUser.rejected]: (state) => {
             console.log("signup  failed")

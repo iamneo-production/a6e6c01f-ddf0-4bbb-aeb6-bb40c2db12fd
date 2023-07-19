@@ -13,10 +13,19 @@ const QA = () => {
         dispatch(fetchQAByProduct({token: token, productId: selectedProduct}))
     },[])
 
+    function handleNoQA(){
+        let nodata = true
+        for (let i=0;i<qaList.length;i++){
+            if(qaList[i].status === 'Answered'){
+                nodata =false
+            }
+        }
+        return nodata
+    }
     return (
         <>
         <div class="mb-4 pb-4 border-bottom">
-            {qaList.length === 0 ? (<p style={{color:"grey"}}>Be the first to ask queries</p>) :
+            {handleNoQA() ? (<p style={{color:"grey"}}>Be the first to ask queries</p>) :
             qaList.map((value,index) =>(
                 <div>
                     {value.status === 'Answered' &&

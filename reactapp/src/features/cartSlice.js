@@ -59,12 +59,18 @@ export const cartSlice = createSlice({
             console.log("Cart Add pending")
         },
         [addCart.fulfilled]:(state,action) =>{
-            if(action.payload.message ==="success"){
-                toast.success('Added to Cart ', {
-                    position: toast.POSITION.TOP_CENTER
-                });
+            if(action.payload !== undefined){
+                if(action.payload.message ==="success"){
+                    toast.success('Added to Cart ', {
+                        position: toast.POSITION.TOP_CENTER
+                    });
+                }else {
+                    toast.error('Please try again!!', {
+                        position: toast.POSITION.TOP_CENTER
+                    });
+                }
             }else {
-                toast.error('Please try again!!', {
+                toast.error("Try again after sometime", {
                     position: toast.POSITION.TOP_CENTER
                 });
             }
@@ -78,10 +84,16 @@ export const cartSlice = createSlice({
             console.log("Cart Add pending")
         },
         [updateCart.fulfilled]:(state,action) =>{
-            if(action.payload.message ==="success"){
-                console.log("updated")
+            if(action.payload !== undefined){
+                if(action.payload.message ==="success"){
+                    console.log("updated")
+                }else {
+                    toast.error('Please try again!!', {
+                        position: toast.POSITION.TOP_CENTER
+                    });
+                }
             }else {
-                toast.error('Please try again!!', {
+                toast.error("Try again after sometime", {
                     position: toast.POSITION.TOP_CENTER
                 });
             }
@@ -95,13 +107,19 @@ export const cartSlice = createSlice({
             console.log("remove Cart pending")
         },
         [removeCart.fulfilled]:(state,action) =>{
-            if(action.payload.message ==="success"){
-                console.log("removed Cart")
-                toast.success('Product Removed!', {
-                    position: toast.POSITION.TOP_CENTER
-                });
+            if(action.payload !== undefined){
+                if(action.payload.message ==="success"){
+                    console.log("removed Cart")
+                    toast.success('Product Removed!', {
+                        position: toast.POSITION.TOP_CENTER
+                    });
+                }else {
+                    toast.error('Please try again!!', {
+                        position: toast.POSITION.TOP_CENTER
+                    });
+                }
             }else {
-                toast.error('Please try again!!', {
+                toast.error("Try again after sometime", {
                     position: toast.POSITION.TOP_CENTER
                 });
             }
@@ -116,11 +134,17 @@ export const cartSlice = createSlice({
             console.log("pending")
         },
         [fetchCart.fulfilled]:(state,action) =>{
-            if(action.payload.message ==="success"){
-                state.cartList = action.payload.data
-                console.log("Cart fetched")
+            if(action.payload !== undefined){
+                if(action.payload.message ==="success"){
+                    state.cartList = action.payload.data
+                    console.log("Cart fetched")
+                }else {
+                    console.log(action.payload.message)
+                }
             }else {
-                console.log(action.payload.message)
+                toast.error("Try again after sometime", {
+                    position: toast.POSITION.TOP_CENTER
+                });
             }
         },
         [fetchCart.rejected]:(state)=>{

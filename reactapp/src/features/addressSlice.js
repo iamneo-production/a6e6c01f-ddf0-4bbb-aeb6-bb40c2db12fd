@@ -59,12 +59,18 @@ export const addressSlice = createSlice({
             console.log("Address Add pending")
         },
         [addAddress.fulfilled]:(state,action) =>{
-            if(action.payload.message ==="success"){
-                toast.success('Address Added Successfully', {
-                    position: toast.POSITION.TOP_CENTER
-                });
+            if(action.payload !== undefined){
+                if(action.payload.message ==="success"){
+                    toast.success('Address Added Successfully', {
+                        position: toast.POSITION.TOP_CENTER
+                    });
+                }else {
+                    toast.error('Please try again!!', {
+                        position: toast.POSITION.TOP_CENTER
+                    });
+                }
             }else {
-                toast.error('Please try again!!', {
+                toast.error("Try again after sometime", {
                     position: toast.POSITION.TOP_CENTER
                 });
             }
@@ -78,10 +84,16 @@ export const addressSlice = createSlice({
             console.log("Address Add pending")
         },
         [updateAddress.fulfilled]:(state,action) =>{
-            if(action.payload.message ==="success"){
-                console.log("updated")
+            if(action.payload !== undefined){
+                if(action.payload.message ==="success"){
+                    console.log("updated")
+                }else {
+                    toast.error('Please try again!!', {
+                        position: toast.POSITION.TOP_CENTER
+                    });
+                }
             }else {
-                toast.error('Please try again!!', {
+                toast.error("Try again after sometime", {
                     position: toast.POSITION.TOP_CENTER
                 });
             }
@@ -95,13 +107,19 @@ export const addressSlice = createSlice({
             console.log("remove Address pending")
         },
         [removeAddress.fulfilled]:(state,action) =>{
-            if(action.payload.message ==="success"){
-                console.log("removed Address")
-                toast.success('Address Removed!', {
-                    position: toast.POSITION.TOP_CENTER
-                });
+            if(action.payload !== undefined){
+                if(action.payload.message ==="success"){
+                    console.log("removed Address")
+                    toast.success('Address Removed!', {
+                        position: toast.POSITION.TOP_CENTER
+                    });
+                }else {
+                    toast.error('Please try again!!', {
+                        position: toast.POSITION.TOP_CENTER
+                    });
+                }
             }else {
-                toast.error('Please try again!!', {
+                toast.error("Try again after sometime", {
                     position: toast.POSITION.TOP_CENTER
                 });
             }
@@ -116,11 +134,17 @@ export const addressSlice = createSlice({
             console.log("pending")
         },
         [fetchAddress.fulfilled]:(state,action) =>{
-            if(action.payload.message ==="success"){
-                state.addressList = action.payload.data
-                console.log("Address fetched")
+            if(action.payload !== undefined){
+                if(action.payload.message ==="success"){
+                    state.addressList = action.payload.data
+                    console.log("Address fetched")
+                }else {
+                    console.log(action.payload.message)
+                }
             }else {
-                console.log(action.payload.message)
+                toast.error("Try again after sometime", {
+                    position: toast.POSITION.TOP_CENTER
+                });
             }
         },
         [fetchAddress.rejected]:(state)=>{
