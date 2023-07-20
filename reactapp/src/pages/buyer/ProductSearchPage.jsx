@@ -19,7 +19,7 @@ export default function ProductSearchPage() {
     useEffect(()=>{
         console.log("----yesss");
         dispatch(fetchProductByQuery({token:token,query:searchQuery}))
-    },[])
+    },[searchQuery])
 
     console.log(searchProductResult)
     const handleGoBack = () => {

@@ -75,7 +75,7 @@ const PurchaseTable = ({ data, handleRefresh }) => {
                                         />
                                     </td>
                                     <td style={{ width: '400px' }}><h6>{value.productId.name}</h6></td>
-                                    <td><h6 className='text-success'>{value.productId.price}</h6></td>
+                                    <td><h6 className='text-success'>{value.productId.price+50}</h6></td>
                                     <td ><h6>{value.quantity}</h6></td>
                                     <td><h6>{moment(value.purchaseDate).format('LLL')}</h6></td>
                                     <td>

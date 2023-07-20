@@ -57,26 +57,26 @@ return(
               <ul className="navbar-nav justify-content-between w-100">
                 <li className="nav-item ">
                 
-                <span className="nav-link" style={{cursor:"pointer"}}>Fashion</span>
+                <span className="nav-link" onClick={() => handleCategorySelect('Fashion')} style={{cursor:"pointer"}}>Fashion</span>
                 </li>
                 <li className="nav-item">
                 <span  onClick={() => handleCategorySelect('Mobile')} style={{cursor:"pointer"}} className="nav-link">Mobile Phones</span>
                 </li>
                 <li className="nav-item">
                   
-                <span className="nav-link" style={{cursor:"pointer"}}>Ornaments</span>
+                <span className="nav-link" onClick={() => handleCategorySelect('Camera')} style={{cursor:"pointer"}}>Camera</span>
                 </li>
                 <li className="nav-item">
                   
-                  <span className="nav-link" style={{cursor:"pointer"}}>Skin Care</span>
+                  <span className="nav-link" onClick={() => handleCategorySelect('Skincare')} style={{cursor:"pointer"}}>Skin Care</span>
                 </li>
                 <li className="nav-item">
                   
-                <span className="nav-link" style={{cursor:"pointer"}}>Footware</span>
+                <span className="nav-link" onClick={() => handleCategorySelect('Footware')} style={{cursor:"pointer"}}>Footware</span>
                 </li>
                 <li className="nav-item">
                   
-                <span className="nav-link" style={{cursor:"pointer"}}>Backpack</span>
+                <span className="nav-link" onClick={() => handleCategorySelect('Backpack')} style={{cursor:"pointer"}}>Backpack</span>
                 </li>
                 <li className="nav-item">
                   
