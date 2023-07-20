@@ -68,18 +68,17 @@ public class ProductService {
     }
 
     // Update Product
-    public Product updateProduct(Product incomingProduct) {
-
-        Integer productId = incomingProduct.getId(); // Assuming there's an 'id' field in the Product class
+    public Product updatingProduct(int productId,ProductRequestDto productRequestDto) throws IOException {
+         // Assuming there's an 'id' field in the Product class
         Product existingProduct = productRepository.findById(productId).orElseThrow();
-
-        existingProduct.setName(incomingProduct.getName());
-        existingProduct.setDescription(incomingProduct.getDescription());
-        existingProduct.setPrice(incomingProduct.getPrice());
-        existingProduct.setQuantity(incomingProduct.getQuantity());
-        existingProduct.setBrand(incomingProduct.getBrand());
-        existingProduct.setColour(incomingProduct.getColour());
-        existingProduct.setCategory(incomingProduct.getCategory());
+        System.out.println(productRequestDto.getQuantity());
+        existingProduct.setName(productRequestDto.getName());
+        existingProduct.setDescription(productRequestDto.getDescription());
+        existingProduct.setPrice(productRequestDto.getPrice());
+        existingProduct.setQuantity(productRequestDto.getQuantity());
+        existingProduct.setBrand(productRequestDto.getBrand());
+        existingProduct.setColour(productRequestDto.getColour());
+        existingProduct.setCategory(productRequestDto.getCategory());
 
         return productRepository.save(existingProduct);
     }
