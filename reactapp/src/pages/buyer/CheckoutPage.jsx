@@ -16,7 +16,7 @@ import {createPurchase} from "../../api/purchaseService";
 
 export default function CheckoutPage() {
     const token = useSelector((state) => state.user.token);
-    const [selectedPaymentMethod, setSelectedPaymentMethod] = useState(null);
+    const [selectedPaymentMethod, setSelectedPaymentMethod] = useState("");
     const [selectedAddress, setSelectedAddress] = useState(null);
     const dispatch = useDispatch();
     useEffect(() => {
@@ -25,7 +25,7 @@ export default function CheckoutPage() {
     }, []);
     const cartList = useSelector((state) => state.cart.cartList);
     const addressList = useSelector((state) => state.address.addressList);
-    const deliveryCharge = 0;
+    const deliveryCharge = 50;
     const [showOrderPopup, setShowOrderPopup] = useState(false);
     const handleHideRemoveModal = () => setShowOrderPopup(false);
 
@@ -48,6 +48,7 @@ export default function CheckoutPage() {
     };
 
     const handleOrderPlace = () => {
+        console.log(selectedPaymentMethod)
         if (addressList.length === 0) {
             toast.error('Address is not added', {
                 position: toast.POSITION.TOP_CENTER
@@ -64,7 +65,7 @@ export default function CheckoutPage() {
     };
 
     const totalPrice = cartList.reduce((total, item) => {
-        const itemPrice = item.product.price * item.quantity + 50;
+        const itemPrice = item.product.price * item.quantity;
         return total + itemPrice;
     }, 0);
 
@@ -346,7 +347,7 @@ export default function CheckoutPage() {
             </div>
             <br />
             <br />
-            <OrderPlaceModal cartList={cartList} show={showOrderPopup} handleHideRemoveModal={handleHideRemoveModal} />
+            <OrderPlaceModal payment={selectedPaymentMethod} cartList={cartList} show={showOrderPopup} handleHideRemoveModal={handleHideRemoveModal} />
             <Footer />
         </div>
     );

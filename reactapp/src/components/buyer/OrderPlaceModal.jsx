@@ -7,6 +7,7 @@ import {addPurchase} from "../../features/purchaseSlice";
 
 export default function OrderPlaceModal(props) {
     const navigate = useNavigate();
+
     const token = useSelector((state) => state.user.token);
     const dispatch = useDispatch();
 
@@ -18,7 +19,7 @@ export default function OrderPlaceModal(props) {
         return cartIds
     }
     async function handlePurchase() {
-        await dispatch(addPurchase({token: token, cartIds: getCartIds()}))
+        await dispatch(addPurchase({token: token, cartIds: getCartIds(),paymentMethod:props.payment}))
         navigate("/orderplaced")
     }
 

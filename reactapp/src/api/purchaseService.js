@@ -21,7 +21,8 @@ export function getPurchaseByBuyerId(buyerId) {
 
 export async function createPurchase(token,body){
   return await axios.post(`${baseUrl}/purchase`,{
-    "cartIds":body.cartIds
+    "cartIds":body.cartIds,
+    "paymentMethod":body.paymentMethod
   },{
     headers: { Authorization: `Bearer ${token}`}
   })
