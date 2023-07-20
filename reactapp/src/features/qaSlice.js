@@ -73,13 +73,18 @@ export const qaSlice = createSlice({
             console.log("QA Add pending")
         },
         [addQA.fulfilled]:(state,action) =>{
-            console.log("addQA.fulfilled--",action.payload)
-            if(action.payload.message ==="success"){
-                toast.success('Question Submitted Successfully ', {
-                    position: toast.POSITION.TOP_CENTER
-                });
+            if(action.payload !== undefined){
+                if(action.payload.message ==="success"){
+                    toast.success('Question Submitted Successfully ', {
+                        position: toast.POSITION.TOP_CENTER
+                    });
+                }else {
+                    toast.error('Please try again!!', {
+                        position: toast.POSITION.TOP_CENTER
+                    });
+                }
             }else {
-                toast.error('Please try again!!', {
+                toast.error("Try again after sometime", {
                     position: toast.POSITION.TOP_CENTER
                 });
             }
@@ -93,10 +98,16 @@ export const qaSlice = createSlice({
             console.log("QA Add pending")
         },
         [answerQA.fulfilled]:(state,action) =>{
-            if(action.payload.message ==="success"){
-                console.log("updated")
+            if(action.payload !== undefined){
+                if(action.payload.message ==="success"){
+                    console.log("updated")
+                }else {
+                    toast.error('Please try again!!', {
+                        position: toast.POSITION.TOP_CENTER
+                    });
+                }
             }else {
-                toast.error('Please try again!!', {
+                toast.error("Try again after sometime", {
                     position: toast.POSITION.TOP_CENTER
                 });
             }
@@ -111,11 +122,17 @@ export const qaSlice = createSlice({
             console.log("pending")
         },
         [fetchQAByProduct.fulfilled]:(state,action) =>{
-            if(action.payload.message ==="success"){
-                state.qaList = action.payload.data
-                console.log("QA fetched")
+            if(action.payload !== undefined){
+                if(action.payload.message ==="success"){
+                    state.qaList = action.payload.data
+                    console.log("QA fetched")
+                }else {
+                    console.log(action.payload.message)
+                }
             }else {
-                console.log(action.payload.message)
+                toast.error("Try again after sometime", {
+                    position: toast.POSITION.TOP_CENTER
+                });
             }
         },
         [fetchQAByProduct.rejected]:(state)=>{
@@ -126,11 +143,17 @@ export const qaSlice = createSlice({
             console.log("pending")
         },
         [fetchQABySeller.fulfilled]:(state,action) =>{
-            if(action.payload.message ==="success"){
-                state.qaSellerList = action.payload.data
-                console.log("QA fetched")
+            if(action.payload !== undefined){
+                if(action.payload.message ==="success"){
+                    state.qaSellerList = action.payload.data
+                    console.log("QA fetched")
+                }else {
+                    console.log(action.payload.message)
+                }
             }else {
-                console.log(action.payload.message)
+                toast.error("Try again after sometime", {
+                    position: toast.POSITION.TOP_CENTER
+                });
             }
         },
         [fetchQABySeller.rejected]:(state)=>{
@@ -140,11 +163,17 @@ export const qaSlice = createSlice({
             console.log("pending")
         },
         [fetchQAByBuyer.fulfilled]:(state,action) =>{
-            if(action.payload.message ==="success"){
-                state.qaBuyerList = action.payload.data
-                console.log("QA fetched")
+            if(action.payload !== undefined){
+                if(action.payload.message ==="success"){
+                    state.qaBuyerList = action.payload.data
+                    console.log("QA fetched")
+                }else {
+                    console.log(action.payload.message)
+                }
             }else {
-                console.log(action.payload.message)
+                toast.error("Try again after sometime", {
+                    position: toast.POSITION.TOP_CENTER
+                });
             }
         },
         [fetchQAByBuyer.rejected]:(state)=>{

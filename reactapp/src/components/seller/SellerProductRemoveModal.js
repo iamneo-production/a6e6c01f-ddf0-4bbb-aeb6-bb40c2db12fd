@@ -1,17 +1,17 @@
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import {useDispatch, useSelector} from "react-redux";
-import {deleteProduct, fetchProduct} from "../../features/productSlice";
+import {deleteProduct, getSellerProducts} from "../../features/productSlice";
 
 
-export default function ProductsRemoveModal(props) {
+export default function SellerProductRemoveModal(props) {
   const token = useSelector(state => state.user.token)
     const dispatch = useDispatch()
-  console.log(props.productId)
+    console.log(props.productId)
     async function handleDeleteProduct(){
 
         await dispatch(deleteProduct({ token: token, productId: props.productId }))
-        await dispatch(fetchProduct({token:token}))
+        await dispatch(getSellerProducts({token:token}))
         console.log("product deleted")
         props.handleHideRemoveModal()
     }

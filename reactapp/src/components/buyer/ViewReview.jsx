@@ -4,6 +4,7 @@ import { GET_REVIEWS_BY_PURCHASE } from '../../api/reviewService';
 import Loader from '../common/Loader';
 import DefaultStars from './DefaultStars';
 import UpdateReview from './UpdateReview';
+import { toast } from "react-toastify";
 
 
 const ViewReviewModal = ({ showModal, handleClose, purchaseId }) => {
@@ -11,7 +12,6 @@ const ViewReviewModal = ({ showModal, handleClose, purchaseId }) => {
     const [load, setLoad] = useState(false);
     const [data, setData] = useState([]);
     const [rating, setRating] = useState(null); // Updated to null initially
-
     const getData = async () => {
         try {
             const res = await GET_REVIEWS_BY_PURCHASE(purchaseId);
@@ -32,13 +32,18 @@ const ViewReviewModal = ({ showModal, handleClose, purchaseId }) => {
     }, [showModal, purchaseId]);
 
     const handleUpdateClick = () => {
-        handleClose()
         setShowUpdateModal(true);
     };
 
     const handleUpdateClose = () => {
         setShowUpdateModal(false);
     };
+
+    const displayToast = () => {
+        toast.success('Updated Successfully', {
+            position: toast.POSITION.TOP_CENTER
+        });
+    }
 
     return (
         <div>
@@ -91,8 +96,10 @@ const ViewReviewModal = ({ showModal, handleClose, purchaseId }) => {
                     showModal={showUpdateModal}
                     handleClose={(flag) => {
                         handleUpdateClose()
+                        handleClose()
                         if (!flag) return
                         // success snackbar 
+                        displayToast()
                     }}
                     purchaseId={purchaseId} />
             )}

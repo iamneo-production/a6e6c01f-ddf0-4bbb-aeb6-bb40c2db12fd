@@ -6,12 +6,12 @@ import {useSelector} from "react-redux";
 
 export default function DashBoard() {
     const [data,setData] = useState({
-        total_revenue: undefined,
-        total_no_products: undefined,
-        sold_products: undefined,
-        unsold_products: undefined,
-        out_of_stock_products: undefined,
-        total_customers: undefined
+        total_revenue: 0,
+        total_no_products: 0,
+        sold_products: 0,
+        unsold_products: 0,
+        out_of_stock_products: 0,
+        total_customers: 0
     })
     const token = useSelector(state => state.user.token)
     useEffect(() =>{

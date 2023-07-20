@@ -1,27 +1,16 @@
 import React, { useState } from 'react';
 import { Button, Modal, Form } from 'react-bootstrap';
 import StarRating from './StarRating';
-import Snackbar from '@mui/material/Snackbar';
-import Alert from '@mui/material/Alert';
 import { ADD_REVIEW } from '../../api/reviewService';
 
 const ReviewModal = ({ showModal, handleClose, purchaseId }) => {
     const [textareaValue, setTextareaValue] = useState('');
-    const [openSnackbar, setOpenSnackbar] = useState(false);
     const [rating, setRating] = useState(0);
 
     const handleTextareaChange = (event) => {
         setTextareaValue(event.target.value);
     };
 
-    const handleOpenSnackbar = () => {
-        setOpenSnackbar(true);
-    };
-
-    const handleCloseSnackbar = () => {
-        handleClose(false);
-        setOpenSnackbar(false);
-    };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -37,7 +26,6 @@ const ReviewModal = ({ showModal, handleClose, purchaseId }) => {
         try {
             const res = await ADD_REVIEW(purchaseId, textareaValue, rating);
             console.log(res?.data);
-            handleOpenSnackbar();
             cleanUp();
             handleClose(true);
         } catch (error) {
@@ -84,21 +72,6 @@ const ReviewModal = ({ showModal, handleClose, purchaseId }) => {
                     </Modal.Footer>
                 </form>
             </Modal>
-            <Snackbar
-                open={openSnackbar}
-                autoHideDuration={1000}
-                onClose={handleCloseSnackbar}
-                anchorOrigin={{ horizontal: 'center', vertical: 'top' }}
-            >
-                <Alert
-                    onClose={handleCloseSnackbar}
-                    severity="success"
-                    variant="filled"
-                    sx={{ width: '100%' }}
-                >
-                    Review Submitted - Thank you!
-                </Alert>
-            </Snackbar>
         </div>
     );
 };

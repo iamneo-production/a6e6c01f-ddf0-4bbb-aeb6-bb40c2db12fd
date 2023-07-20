@@ -54,3 +54,31 @@ export async function getProductByCategory(token,category){
         headers: { Authorization: `Bearer ${token}` }
     })
 }
+
+export async function updateProductById(token, productId, updatedProduct) {
+    return await axios.put(`${baseUrl}/seller/products/${productId}`, {
+        "name":updatedProduct.name,
+        "description":updatedProduct.description,
+        "price":updatedProduct.price,
+        "quantity":updatedProduct.quantity,
+        "brand":updatedProduct.brand,
+        "colour":updatedProduct.colour,
+        "category":updatedProduct.category
+    }, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        'Content-Type': 'multipart/form-data',
+      },
+    });
+  }
+
+export async function updateProductImageById(token, productId, image) {
+    return await axios.put(`${baseUrl}/seller/product/update-image/${productId}`, {
+        "image":image,
+    }, {
+        headers: {
+            Authorization: `Bearer ${token}`,
+            'Content-Type': 'multipart/form-data',
+        },
+    });
+}

@@ -1,5 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import { MdKeyboardBackspace } from 'react-icons/md';
+import { ReactComponent as QA } from '../../assets/QA.svg';
 import Footer from '../../components/common/Footer';
 import { useNavigate } from "react-router-dom";
 import NavigationBar from '../../components/common/NavigationBar';
@@ -29,7 +30,17 @@ export default function BuyerQA() {
             <div>
 
                 <div className="container">
-                    {qaBuyerList.map((value, index) =>(
+                    {qaBuyerList.length === 0 ? (
+                        <div style={{ display: "flex", alignItems: "center", justifyContent: "center" }} >
+                            <div style={{ width: 400, height: 400 }}>
+                                <div style={{ display: "flex", alignItems: "center", justifyContent: "center" }}>
+                                    <h5 style={{ color: "grey" }}><b>No query asked yet</b></h5>
+                                </div>
+                                <QA />
+                            </div>
+                        </div>
+                     ) : 
+                    qaBuyerList.map((value, index) =>(
                         <div className="card mb-3">
                             <div className="card-body">
                                 <h6 className="card-title"><b>{value.product.name}</b></h6>

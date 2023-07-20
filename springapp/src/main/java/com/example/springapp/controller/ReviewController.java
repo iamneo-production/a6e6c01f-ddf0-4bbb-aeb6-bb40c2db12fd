@@ -1,5 +1,6 @@
 package com.example.springapp.controller;
 
+import com.example.springapp.BaseResponseDTO;
 import com.example.springapp.model.Review;
 import com.example.springapp.service.ReviewService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,20 +42,21 @@ public class ReviewController {
     }
 
     @PostMapping("/review/{purchaseId}")
-    public ResponseEntity<String> postReview(@PathVariable int purchaseId, @RequestBody Review review) {
+    public ResponseEntity<BaseResponseDTO> postReview(@PathVariable int purchaseId, @RequestBody Review review) {
         reviewService.postReview(purchaseId, review);
-        return ResponseEntity.status(HttpStatus.CREATED).body("Review posted successfully");
+        return ResponseEntity.ok(new BaseResponseDTO("success"));
     }
 
     @GetMapping("/review/purchase/{purchaseId}")
-    public ResponseEntity<Review> getReviewByPurchaseId(@PathVariable int purchaseId) {
+    public ResponseEntity<Review> getReviewByPurchaseId(@PathVariable Long purchaseId) {
         Review review = reviewService.getReviewByPurchaseId(purchaseId);
         return ResponseEntity.ok(review);
     }
 
     @PutMapping("/review/{purchaseId}")
-    public ResponseEntity<String> updateReview(@PathVariable int purchaseId, @RequestBody Review review) {
+    public ResponseEntity<String> updateReview(@PathVariable Long purchaseId, @RequestBody Review review) {
         reviewService.updateReview(purchaseId, review);
         return ResponseEntity.ok("Review updated successfully");
     }
+
 }

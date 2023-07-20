@@ -92,8 +92,8 @@ public class UserService implements UserDetailsService {
     }
     
     // Get User by Id
-    public List<User> getUsersById(String email){
-        return userRepository.findByUserid(email);
+    public List<User> getUsersById(Integer id){
+        return userRepository.findByUserid(id);
     }
     // Update User
     
@@ -101,8 +101,8 @@ public class UserService implements UserDetailsService {
         this.userRepository = userRepository;
     }
 
-    public User updateUser(User incomingUser) {
-        Optional<User> optionalUser = userRepository.findByEmail(incomingUser.getEmail());
+    public User updateUser(Long id,User incomingUser) {
+        Optional<User> optionalUser = userRepository.findById(id);
         if (optionalUser.isPresent()) {
             User existingUser = optionalUser.get();
             existingUser.setFirstName(incomingUser.getFirstName());
@@ -117,6 +117,56 @@ public class UserService implements UserDetailsService {
         }
     }
 
+
+    
+    //Admin authorizations
+    //disable buyer
+    public User disableBuyer(Long id) {
+        Optional<User> optionalBuyer = userRepository.findById(id);
+        if (optionalBuyer.isPresent()) {
+            User existingUser = optionalBuyer.get();
+            existingUser.setDisabled(true);
+            return userRepository.save(existingUser);
+        } else {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Buyer not found");
+        }
+    }
+
+    //delete buyer
+    public User deleteBuyer(Long id) {
+        Optional<User> optionalBuyer = userRepository.findById(id);
+        if (optionalBuyer.isPresent()) {
+            User existingUser = optionalBuyer.get();
+            existingUser.setDeleted(true);
+            return userRepository.save(existingUser);
+        } else {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Buyer not found");
+        }
+    }
+
+    //disable seller
+    public User disableSeller(Long id) {
+        Optional<User> optionalSeller = userRepository.findById(id);
+        if (optionalSeller.isPresent()) {
+            User existingUser = optionalSeller.get();
+            existingUser.setDisabled(true);
+            return userRepository.save(existingUser);
+        } else {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Seller not found");
+        }
+    }
+
+    //delete seller
+    public User deleteSeller(Long id) {
+        Optional<User> optionalSeller = userRepository.findById(id);
+        if (optionalSeller.isPresent()) {
+            User existingUser = optionalSeller.get();
+            existingUser.setDeleted(true);
+            return userRepository.save(existingUser);
+        } else {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Seller not found");
+        }
+    }
 
 }
 

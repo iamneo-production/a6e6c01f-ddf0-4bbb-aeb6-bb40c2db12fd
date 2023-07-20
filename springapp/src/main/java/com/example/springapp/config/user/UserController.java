@@ -74,18 +74,48 @@ public class UserController {
     
     
     //Get user by id
-    @GetMapping(value = "/api/auth/user/{email}")
+    @GetMapping(value = "/api/auth/user/{id}")
     @CrossOrigin(origins = "http://localhost:8081/")
-    public List<User> getUserById(@PathVariable("email") String email){
-        return userService.getUsersById(email);
+    public List<User> getUserById(@PathVariable("id") Integer id){
+        return userService.getUsersById(id);
     }
 
     
     //Update user details
-    @PutMapping(value = "/api/auth/user/{email}")
+    @PutMapping(value = "/api/auth/user/{id}")
     @CrossOrigin(origins = "http://localhost:8081/")
-    public User updateUser(@RequestBody User incomingUser){
-         return userService.updateUser(incomingUser); 
+    public User updateUser(@PathVariable Long id,@RequestBody User incomingUser){
+         return userService.updateUser(id,incomingUser); 
+    }
+
+
+    //Admin authorizations
+    // disable buyer by id
+    @PutMapping(value="/api/auth/buyer/{id}/disable")
+    @CrossOrigin(origins = "http://localhost:8081/")
+    public User disableBuyer(@PathVariable Long id){
+         return userService.disableBuyer(id); 
+    }
+
+    //delete buyer by id
+    @DeleteMapping(value="/api/auth/buyer/{id}/delete")
+    @CrossOrigin(origins = "http://localhost:8081/")
+    public User deleteBuyer(@PathVariable Long id){
+         return userService.deleteBuyer(id); 
+    }
+
+    //disable seller by id
+    @PutMapping(value="/api/auth/seller/{id}/disable")
+    @CrossOrigin(origins = "http://localhost:8081/")
+    public User disableSeller(@PathVariable Long id){
+         return userService.disableSeller(id); 
+    }
+
+    //delete seller by id
+    @DeleteMapping(value="/api/auth/seller/{id}/delete")
+    @CrossOrigin(origins = "http://localhost:8081/")
+    public User deleteSeller(@PathVariable Long id){
+         return userService.deleteSeller(id); 
     }
     
 }

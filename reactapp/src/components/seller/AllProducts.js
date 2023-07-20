@@ -1,7 +1,9 @@
-import React, { useEffect } from 'react';
+import React, { useEffect,useState } from 'react';
 import { useNavigate } from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
 import { getSellerProducts } from '../../features/productSlice';
+import { ReactComponent as EmptySellerProducts } from '../../assets/EmptySellerProducts.svg';
+import SellerProductRemoveModal from './SellerProductRemoveModal'
 
 const products = [
     {
@@ -20,8 +22,14 @@ const products = [
 ];
 
 const AllProducts = () => {
-
+    const [showRemove, setShowRemove] = useState(false);
+    const [selectedItem,setSelectedItem] = useState('');
+    const handleShowRemoveModal = (productId) => {
+        setSelectedItem(productId)
+        setShowRemove(true)
+    };
     const navigate = useNavigate();
+    const handleHideRemoveModal = () => setShowRemove(false);
     const token = useSelector(state => state.user.token)
     const dispatch = useDispatch()
     useEffect(() =>{
@@ -31,7 +39,16 @@ const AllProducts = () => {
 
     return (
         <div>
-            {
+            {sellerProductsList.length === 0 ? (
+            <div style={{ display: "flex", alignItems: "center", justifyContent: "center" }} >
+                <div style={{ width: 400, height: 400 }}>
+                    <div style={{ display: "flex", alignItems: "center", justifyContent: "center" }}>
+                        <h5 style={{ color: "grey" }}><b>No products added yet</b></h5>
+                    </div>
+                    <EmptySellerProducts />
+                </div>
+            </div>
+            ) : (
                 sellerProductsList.map((prod, index) =>
                 (
                     <div>
@@ -51,17 +68,18 @@ const AllProducts = () => {
                                             <span className="text-success fw-bold fs-8" style={{ marginRight: "10px" }}>{`₹ ${prod.price.toLocaleString("en-US")}`}</span>
                                             
                                         </div>
-                                        <div className=' btn btn-light border d-inline  px-2 py-2 mb-3 fw-bold fs-6'>Buyers</div>
-                                        <div className=' btn btn-light border d-inline ms-3 px-2 py-2 mb-3 fw-bold fs-6'>Edit</div>
-                                        <div className=' btn btn-light border d-inline float-end px-2 py-2 mb-3 bg-danger fw-bold'>Remove</div>
+                                        <div className=' btn btn-light border d-inline  px-2 py-2 mb-3 fw-bold fs-6' onClick={() => navigate(`/seller/buyersandreviews/${prod.id}`)}>Buyers</div>
+                                        <div className=' btn btn-light border d-inline ms-3 px-2 py-2 mb-3 fw-bold fs-6'onClick={() => navigate(`/seller/editproduct/${prod.id}`)}>Edit</div>
+                                        <div className=' btn btn-light border d-inline float-end px-2 py-2 mb-3 bg-danger fw-bold' onClick={() => { handleShowRemoveModal(prod.id) }}>Remove</div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                         <br />
+                        <SellerProductRemoveModal productId={selectedItem} show={showRemove} handleHideRemoveModal={handleHideRemoveModal}></SellerProductRemoveModal>
                     </div>
                 ))
-            }
+            )}
         </div>
     );
 };

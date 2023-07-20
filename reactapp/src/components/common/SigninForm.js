@@ -1,10 +1,10 @@
 import { useState,useRef } from 'react';
 import Offcanvas from 'react-bootstrap/Offcanvas';
-import { useDispatch } from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import { loginUser } from '../../features/userSlice';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { OverlayTrigger, Tooltip } from 'react-bootstrap';
+import {OverlayTrigger, Spinner, Tooltip} from 'react-bootstrap';
 import { BsInfoCircle } from 'react-icons/bs';
 
 export default function SigninForm(props) {
@@ -14,6 +14,20 @@ export default function SigninForm(props) {
     const emailValidation = new RegExp ('\\w@gmail.com')
     const passwordValidation = new RegExp ('^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{5,}$')
     const tooltipRef = useRef(null);
+    const signinInProgress = useSelector(state => state.user.signinInProgress)
+
+    const loadingOverlayStyle = {
+        top: 0,
+        left: 0,
+        width: '100%',
+        height: '100%',
+        display: 'flex',
+        justifyContent: 'center',
+        flexDirection: 'column',
+        alignItems: 'center',
+        backgroundColor: 'rgba(0,0,0,0)',
+        zIndex: 9999,
+    };
 
     const handleSignin = () => {
 
@@ -49,6 +63,13 @@ export default function SigninForm(props) {
                 <Offcanvas.Title><b>Signin</b></Offcanvas.Title>
             </Offcanvas.Header>
             <Offcanvas.Body>
+                {signinInProgress ?
+                    <div style={loadingOverlayStyle}>
+                        <Spinner className={"mb-2"} animation="border" role="status">
+                        </Spinner>
+                        <span className="text-dark">Loading...</span>
+                    </div>
+                    :
                 <div class="container">
 
                     <div class="mb-3">
@@ -82,6 +103,7 @@ export default function SigninForm(props) {
                         <p style={{ marginTop: 15 }}>Didn't have an account? <a onClick={() => { props.onHide(); props.openSignup() }} style={{cursor:'pointer'}} class="text-reset text-decoration-underline"><b>Signup</b></a></p>
                     </div>
                 </div>
+                }
             </Offcanvas.Body>
         </Offcanvas>
     )
