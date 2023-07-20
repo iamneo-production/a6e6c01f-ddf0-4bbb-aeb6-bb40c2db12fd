@@ -34,7 +34,14 @@ public class Cart {
 
     private int quantity;
 
+    public Cart(User buyer, Product product, int quantity) {
+        this.buyer = buyer;
+        this.product = product;
+        this.quantity = quantity;
+    }
 
+    public Cart() {
+    }
 
     public int getId() {
         return id;

@@ -32,23 +32,19 @@ public class ReviewService {
     public void postReview(int id, Review review) {
         Optional<Purchase> purchaseOptional = purchaseRepository.findById(id);
         Purchase purchase = purchaseOptional.orElseThrow(() -> new ReviewNotFoundException("Purchase not found"));
-
-        int productId = purchase.getProductId();
-        Optional<Product> productOptional = productRepository.findById(productId);
-        Product product = productOptional.orElseThrow(() -> new ReviewNotFoundException("Product not found"));
-
         Review newReview = new Review();
-        newReview.setProductId(productId);
-        newReview.setSellerId(Math.toIntExact(product.getSeller().getId()));
+        newReview.setProductId(purchase.getProductId().getId().longValue());
+        newReview.setSellerId(purchase.getProductId().getSeller().getId());
         newReview.setBuyerId(purchase.getBuyer().getId());
         newReview.setRating(review.getRating());
         newReview.setComment(review.getComment());
-        newReview.setPurchaseId(id);
-
+        newReview.setPurchaseId((long) purchase.getId());
         reviewRepository.save(newReview);
+        purchase.setReviewed(true);
+        purchaseRepository.save(purchase);
     }
 
-    public Review getReviewByPurchaseId(int purchaseId) {
+    public Review getReviewByPurchaseId(Long purchaseId) {
         List<Review> reviewList = reviewRepository.findByPurchaseId(purchaseId);
         if (reviewList.isEmpty()) {
             throw new ReviewNotFoundException("Review not found");
@@ -56,7 +52,7 @@ public class ReviewService {
         return reviewList.get(0);
     }
 
-    public void updateReview(int purchaseId, Review review) {
+    public void updateReview(Long purchaseId, Review review) {
         Optional<Review> existingReviewOptional = reviewRepository.findByPurchaseId(purchaseId).stream().findFirst();
         if (existingReviewOptional.isEmpty()) {
             throw new ReviewNotFoundException("Review not found");
