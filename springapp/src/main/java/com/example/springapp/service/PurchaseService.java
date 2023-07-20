@@ -28,7 +28,7 @@ public class PurchaseService {
         this.cartRepository = cartRepository;
     }
 
-    public void makePurchase(List<Integer> cartIds) {
+    public void makePurchase(List<Integer> cartIds, String paymentMethod) {
         List<Purchase> purchases = new ArrayList<>();
         for (Integer cartId: cartIds
              ) {
@@ -37,6 +37,7 @@ public class PurchaseService {
             purchase.setPurchaseDate(new Date());
             purchase.setProductId(cart.getProduct());
             purchase.setQuantity(cart.getQuantity());
+            purchase.setPaymentMethod(paymentMethod);
             purchase.setBuyer(cart.getBuyer());
             purchases.add(purchase);
             Product product = cart.getProduct();
@@ -97,5 +98,10 @@ public class PurchaseService {
 
     public List<Purchase> getPurchaseByBuyer(User user) {
         return purchaseRepository.findAllByBuyer(user);
+    }
+
+    public List<Purchase> getPurchaseByProduct(String productId) {
+        Product product = productRepository.findById(Integer.parseInt(productId)).orElseThrow();
+        return purchaseRepository.findAllByProduct(product);
     }
 }

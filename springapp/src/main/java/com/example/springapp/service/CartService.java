@@ -23,8 +23,7 @@ public class CartService {
     }
 
     public List<Cart> getCartProducts(User user) {
-        System.out.println("------seervice-"+user.getEmail());
-        return cartRepository.findByBuyer(user);
+        return cartRepository.findByBuyerAndIsDeletedFalse(user);
     }
 
     public void deleteCartProduct(Integer cartId) {

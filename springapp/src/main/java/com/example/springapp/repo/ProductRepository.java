@@ -41,4 +41,12 @@ public interface ProductRepository extends JpaRepository<Product, Integer> {
             "INNER JOIN user AS u ON r.buyer_id = u.id " +
             "WHERE p.id = ?1",nativeQuery = true)
     List<Object[]> getProductReviews(int productId);
+
+    List<Product> findAllByIsDeletedFalse();
+
+    List<Product> findAllBySellerAndIsDeletedFalse(User user);
+
+    List<Product> findByNameContainingIgnoreCaseAndIsDeletedFalse(String query);
+
+    List<Product> findAllByCategoryAndIsDeletedFalse(String category);
 }

@@ -84,16 +84,9 @@ public class ProductController {
         }
     }
 
-    @PutMapping(value = "/api/seller/products")
-    @CrossOrigin(origins = "http://localhost:8081/")
-    public Product updateProduct(@RequestBody Product incomingProduct){
-        return productService.updateProduct(incomingProduct); }
-
     @DeleteMapping(value = "/api/seller/product-delete")
     public ResponseEntity<BaseResponseDTO> deleteProductById(@RequestParam String productId){
         try{
-            System.out.println(".....");
-            System.out.println(productId);
             productService.deleteProductById(Integer.parseInt(productId));
             return ResponseEntity.ok(new BaseResponseDTO("success"));
         }catch(Exception e){
@@ -140,16 +133,19 @@ public class ProductController {
     public ResponseEntity<BaseResponseDTO> updateProduct(@PathVariable("productId") Integer productId,
                                                          @ModelAttribute ProductRequestDto productRequestDto) throws IOException {
         try {
-            Product existingProduct = productService.getProductById(productId);
-            existingProduct.setName(productRequestDto.getName());
-            existingProduct.setDescription(productRequestDto.getDescription());
-            existingProduct.setPrice(productRequestDto.getPrice());
-            existingProduct.setQuantity(productRequestDto.getQuantity());
-            existingProduct.setBrand(productRequestDto.getBrand());
-            existingProduct.setColour(productRequestDto.getColour());
-            existingProduct.setCategory(productRequestDto.getCategory());
+            Product updatedProduct = productService.updatingProduct(productId,productRequestDto);
+            return ResponseEntity.ok(new BaseResponseDTO("success", updatedProduct));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new BaseResponseDTO("failed"));
+        }
+    }
 
-            Product updatedProduct = productService.updateProduct(existingProduct);
+    @PutMapping(value = "/api/seller/product/update-image/{productId}")
+    @CrossOrigin(origins = "http://localhost:8081/")
+    public ResponseEntity<BaseResponseDTO> updateProductImage(@PathVariable("productId") Integer productId,
+                                                         @ModelAttribute ProductRequestDto productRequestDto) throws IOException {
+        try {
+            Product updatedProduct = productService.updateProductImage(productId,productRequestDto);
             return ResponseEntity.ok(new BaseResponseDTO("success", updatedProduct));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new BaseResponseDTO("failed"));

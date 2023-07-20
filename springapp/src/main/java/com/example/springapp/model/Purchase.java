@@ -26,6 +26,8 @@ public class Purchase {
 
     private Date purchaseDate;
 
+    private String paymentMethod;
+
     private  boolean isReviewed;
 
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
@@ -41,10 +43,11 @@ public class Purchase {
     public Purchase() {
     }
 
-    public Purchase(Product product, User buyer, Date purchaseDate) {
+    public Purchase(Product product, User buyer, Date purchaseDate, String paymentMethod) {
         this.product = product;
         this.buyer = buyer;
         this.purchaseDate = purchaseDate;
+        this.paymentMethod=paymentMethod;
     }
 
     // Getters and setters
@@ -128,5 +131,13 @@ public class Purchase {
 
     public void setReviewed(boolean reviewed) {
         isReviewed = reviewed;
+    }
+
+    public String getPaymentMethod() {
+        return paymentMethod;
+    }
+
+    public void setPaymentMethod(String paymentMethod) {
+        this.paymentMethod = paymentMethod;
     }
 }

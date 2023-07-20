@@ -16,6 +16,8 @@ import {createPurchase} from "../../api/purchaseService";
 
 export default function CheckoutPage() {
     const token = useSelector((state) => state.user.token);
+    const [selectedPaymentMethod, setSelectedPaymentMethod] = useState("");
+    const [selectedAddress, setSelectedAddress] = useState(null);
     const dispatch = useDispatch();
     useEffect(() => {
         dispatch(fetchCart({ token: token }));
@@ -23,11 +25,20 @@ export default function CheckoutPage() {
     }, []);
     const cartList = useSelector((state) => state.cart.cartList);
     const addressList = useSelector((state) => state.address.addressList);
-    const deliveryCharge = 0;
+    const deliveryCharge = 50;
     const [showOrderPopup, setShowOrderPopup] = useState(false);
     const handleHideRemoveModal = () => setShowOrderPopup(false);
 
-    const notify = () => toast('Will be delivered here');
+    const notify = () => {
+        if (addressList.length === 0) {
+            toast.error('Address is not added', {
+                position: toast.POSITION.TOP_CENTER
+            });
+        }
+        else {
+            toast('Will be delivered here');
+        }
+    };
     const handleChangeAddress = () => {
         navigate('/changeaddress');
     };
@@ -37,7 +48,20 @@ export default function CheckoutPage() {
     };
 
     const handleOrderPlace = () => {
-        setShowOrderPopup(true);
+        console.log(selectedPaymentMethod)
+        if (addressList.length === 0) {
+            toast.error('Address is not added', {
+                position: toast.POSITION.TOP_CENTER
+            });
+        }
+        else if (!selectedPaymentMethod) {
+            toast.error('Please select a payment method', {
+                position: toast.POSITION.TOP_CENTER
+            });
+        }
+        else {
+            setShowOrderPopup(true);
+        }
     };
 
     const totalPrice = cartList.reduce((total, item) => {
@@ -133,7 +157,6 @@ export default function CheckoutPage() {
                                 >
                                     <b>Deliver Here</b>
                                 </button>
-                                <ToastContainer />
                             </div>
                         </div>
                     </div>
@@ -181,9 +204,9 @@ export default function CheckoutPage() {
                     <div>
                         {cartList.map((prod, index) => (
                             <div key={index}>
-                                <div style={{ display: 'flex', justifyContent: 'center' }}>
+                                <div className="container" >
                                     <div className="row">
-                                        <div className="col-md-2 ms-5">
+                                        <div className="col-2">
                                             <img
                                                 src={`data:image/jpeg;base64,${prod.product.image}`}
                                                 alt="Card"
@@ -192,7 +215,7 @@ export default function CheckoutPage() {
                                                 height={135}
                                             />
                                         </div>
-                                        <div className="col-md-9 border">
+                                        <div className="col-10 border">
                                             <div className="card-body">
                                                 <h6 className="card-title fw-bold">{prod.product.name}</h6>
                                                 <span className="card-text text-muted fw-bold">{`₹ ${prod.product.price.toLocaleString(
@@ -225,6 +248,8 @@ export default function CheckoutPage() {
                                     type="radio"
                                     name="flexRadioDefault"
                                     id="flexRadioDefault1"
+                                    checked={selectedPaymentMethod === 'card'}
+                                    onChange={() => setSelectedPaymentMethod('card')}
                                 />
                                 <label className="form-check-label" htmlFor="flexRadioDefault1">
                                     <b>Pay with Debit/Credit/ATM Cards</b>
@@ -236,6 +261,8 @@ export default function CheckoutPage() {
                                     type="radio"
                                     name="flexRadioDefault"
                                     id="flexRadioDefault2"
+                                    checked={selectedPaymentMethod === 'net banking'}
+                                    onChange={() => setSelectedPaymentMethod('net banking')}
                                 />
                                 <label className="form-check-label" htmlFor="flexRadioDefault2">
                                     <b>Net Banking</b>
@@ -256,6 +283,8 @@ export default function CheckoutPage() {
                                     type="radio"
                                     name="flexRadioDefault"
                                     id="flexRadioDefault3"
+                                    checked={selectedPaymentMethod === 'upi'}
+                                    onChange={() => setSelectedPaymentMethod('upi')}
                                 />
                                 <label className="form-check-label" htmlFor="flexRadioDefault3">
                                     <b>Other UPI Apps</b>
@@ -278,6 +307,8 @@ export default function CheckoutPage() {
                                     type="radio"
                                     name="flexRadioDefault"
                                     id="flexRadioDefault4"
+                                    checked={selectedPaymentMethod === 'emi'}
+                                    onChange={() => setSelectedPaymentMethod('emi')}
                                 />
                                 <label className="form-check-label" htmlFor="flexRadioDefault4">
                                     <b>EMI</b>
@@ -289,6 +320,8 @@ export default function CheckoutPage() {
                                     type="radio"
                                     name="flexRadioDefault"
                                     id="flexRadioDefault5"
+                                    checked={selectedPaymentMethod === 'cash on delivery'}
+                                    onChange={() => setSelectedPaymentMethod('cash on delivery')}
                                 />
                                 <label className="form-check-label" htmlFor="flexRadioDefault5">
                                     <b>Cash on Delivery/Pay on Delivery</b>
@@ -314,7 +347,7 @@ export default function CheckoutPage() {
             </div>
             <br />
             <br />
-            <OrderPlaceModal cartList={cartList} show={showOrderPopup} handleHideRemoveModal={handleHideRemoveModal} />
+            <OrderPlaceModal payment={selectedPaymentMethod} cartList={cartList} show={showOrderPopup} handleHideRemoveModal={handleHideRemoveModal} />
             <Footer />
         </div>
     );
