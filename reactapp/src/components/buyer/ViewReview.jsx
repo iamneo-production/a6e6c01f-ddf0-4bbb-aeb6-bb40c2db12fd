@@ -1,19 +1,37 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Modal, Button } from 'react-bootstrap';
-import { TableData } from './DummyTableData';
+import { GET_REVIEWS_BY_PURCHASE } from '../../api/reviewService';
+import Loader from '../common/Loader';
 import DefaultStars from './DefaultStars';
 import UpdateReview from './UpdateReview';
+import { toast } from "react-toastify";
 
-const ViewReviewModal = ({ showModal, handleClose, id }) => {
-    const item = TableData.find((item) => item.id === id);
+
+const ViewReviewModal = ({ showModal, handleClose, purchaseId }) => {
     const [showUpdateModal, setShowUpdateModal] = useState(false);
+    const [load, setLoad] = useState(false);
+    const [data, setData] = useState([]);
+    const [rating, setRating] = useState(null); // Updated to null initially
+    const getData = async () => {
+        try {
+            const res = await GET_REVIEWS_BY_PURCHASE(purchaseId);
+            setData(res.data);
+            setRating(res.data?.rating || null); // Set to null if no rating available
+        } catch (error) {
+            console.log(error);
+        } finally {
+            setLoad(false);
+        }
+    };
 
-    if (!item) {
-        return null; // Return null or a fallback component if the item is not found
-    }
+
+    useEffect(() => {
+        if (!showModal) return;
+        setLoad(true);
+        getData();
+    }, [showModal, purchaseId]);
 
     const handleUpdateClick = () => {
-        handleClose();
         setShowUpdateModal(true);
     };
 
@@ -21,30 +39,51 @@ const ViewReviewModal = ({ showModal, handleClose, id }) => {
         setShowUpdateModal(false);
     };
 
+    const displayToast = () => {
+        toast.success('Updated Successfully', {
+            position: toast.POSITION.TOP_CENTER
+        });
+    }
 
     return (
         <div>
             <Modal show={showModal} onHide={handleClose}>
                 <Modal.Header closeButton>
                     <Modal.Title>
-                        <h3>Your reviews</h3>
+                        <h4>Review</h4>
                     </Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    <div>
-                        <h5>Your comments:</h5>
-                        <p>{item.review}</p>
-                        <h5>Your rating:</h5>
-                        <DefaultStars
-                            value={item.rating}
-                            exportStar={() => { return }}
-                        />
-                    </div>
+
+                    {
+                        !load ?
+                            <>
+                                <div>
+                                    <h6>Your Comment :</h6>
+                                </div>
+                                <div>{data?.comment}</div>
+                                <br />
+                                <div>
+                                    <h6>Your Rating :</h6>
+                                </div>
+                                {rating !== null ? ( // Check if rating is not null
+                                    <DefaultStars value={rating} exportStar={() => { return }} />
+                                ) : (
+                                    <div>No rating available</div>
+                                )}
+                            </>
+                            :
+                            <div>
+                                <Loader />
+                            </div>
+                    }
+
                 </Modal.Body>
                 <Modal.Footer>
-                    <Button variant="primary"
+                    <Button
+                        variant="primary"
                         style={{ backgroundColor: '#F25151', borderColor: '#F25151' }}
-                        onClick={handleUpdateClick}
+                        onClick={handleUpdateClick} // Handle the click event to open UpdateReview modal
                     >
                         Update
                     </Button>
@@ -52,9 +91,18 @@ const ViewReviewModal = ({ showModal, handleClose, id }) => {
             </Modal>
 
             {showUpdateModal && (
-                <UpdateReview showModal={showUpdateModal} handleClose={handleUpdateClose} id={id} />
+                <UpdateReview
+                    data={data}
+                    showModal={showUpdateModal}
+                    handleClose={(flag) => {
+                        handleUpdateClose()
+                        handleClose()
+                        if (!flag) return
+                        // success snackbar 
+                        displayToast()
+                    }}
+                    purchaseId={purchaseId} />
             )}
-
         </div>
     );
 };

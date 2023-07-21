@@ -13,7 +13,7 @@ export default function SellerHomePage() {
             <DashBoard />
             <br/>
             <ProductHeader />
-            <AllProducts/>
+            <AllProducts/><br/>
             <Footer/>
             
         </div>
