@@ -1,5 +1,15 @@
 import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
-import {createProduct,deleteProductById, getProduct,getProductById,getProductBySellerId,getProductBySearch,getProductByCategory,updateProductById} from "../api/productService";
+import {
+    createProduct,
+    deleteProductById,
+    getProduct,
+    getProductById,
+    getProductBySellerId,
+    getProductBySearch,
+    getProductByCategory,
+    updateProductById,
+    updateProductImageById
+} from "../api/productService";
 import {toast} from "react-toastify";
 
 export const addProduct =
@@ -96,6 +106,17 @@ export const fetchProduct =
             }
         );
 
+export const updateProductImage =
+    createAsyncThunk('product/updateProductImage', async (body) => {
+        return updateProductImageById(
+            body.token, body.productId, body.image
+        ).then((res) => {
+            return res.data
+        }).catch((err) => {
+            return err.response.data
+        })
+    })
+
 
 
 const productSlice = createSlice({
@@ -129,16 +150,22 @@ const productSlice = createSlice({
             console.log("Product Add pending")
         },
         [addProduct.fulfilled]:(state,action) =>{
-            if(action.payload.message ==="success"){
-                toast.success('Product Added Successfully', {
-                    position: toast.POSITION.TOP_CENTER
-                });
+            state.addProductInProcess =false
+            if(action.payload !== undefined){
+                if(action.payload.message ==="success"){
+                    toast.success('Product Added Successfully', {
+                        position: toast.POSITION.TOP_CENTER
+                    });
+                }else {
+                    toast.error('Please try again!!', {
+                        position: toast.POSITION.TOP_CENTER
+                    });
+                }
             }else {
-                toast.error('Please try again!!', {
+                toast.error("Try again after sometime", {
                     position: toast.POSITION.TOP_CENTER
                 });
             }
-            state.addProductInProcess =false
         },
         [addProduct.rejected]:(state)=>{
             state.addProductInProcess = false
@@ -151,14 +178,20 @@ const productSlice = createSlice({
             console.log("pending")
         },
         [fetchProduct.fulfilled]:(state,action) =>{
-            if(action.payload.message ==="success"){
-                state.allProductList = action.payload.data
-                console.log("Product fetched")
-                console.log(state.allProductList)
-            }else {
-                console.log(action.payload.message)
-            }
             state.fetchProductInProcess =false
+            if(action.payload !== undefined){
+                if(action.payload.message ==="success"){
+                    state.allProductList = action.payload.data
+                    console.log("Product fetched")
+                    console.log(state.allProductList)
+                }else {
+                    console.log(action.payload.message)
+                }
+            }else {
+                toast.error("Try again after sometime", {
+                    position: toast.POSITION.TOP_CENTER
+                });
+            }
         },
         [fetchProduct.rejected]:(state)=>{
             state.fetchProductInProcess = false
@@ -169,20 +202,22 @@ const productSlice = createSlice({
             console.log("pending")
         },
         [fetchProductById.fulfilled]:(state,action) =>{
-            if(action.payload.message ==="success"){
-                state.productDetails = action.payload.data
-                console.log("Product fetched")
-                console.log(state.productList)
-            }else {
-                console.log(action.payload.message)
-            }
             state.fetchProductInProcess =false
+            if(action.payload !== undefined){
+                if(action.payload.message ==="success"){
+                    state.productDetails = action.payload.data
+                    console.log("Product fetched")
+                    console.log(state.productList)
+                }else {
+                    console.log(action.payload.message)
+                }
+            }else {
+                toast.error("Try again after sometime", {
+                    position: toast.POSITION.TOP_CENTER
+                });
+            }
         },
         [fetchProductById.rejected]:(state)=>{
-            state.fetchProductInProcess = false
-            console.log("Product fetch failed")
-        },
-        [fetchProduct.rejected]:(state)=>{
             state.fetchProductInProcess = false
             console.log("Product fetch failed")
         },
@@ -190,10 +225,16 @@ const productSlice = createSlice({
             console.log("pending")
         },
         [deleteProduct.fulfilled]:(state,action) =>{
-            if(action.payload.message ==="success"){
-                console.log("Product deleted")
+            if(action.payload !== undefined){
+                if(action.payload.message ==="success"){
+                    console.log("Product deleted")
+                }else {
+                    console.log(action.payload)
+                }
             }else {
-                console.log(action.payload)
+                toast.error("Try again after sometime", {
+                    position: toast.POSITION.TOP_CENTER
+                });
             }
         },
         [deleteProduct.rejected]:(state)=>{
@@ -204,14 +245,20 @@ const productSlice = createSlice({
             console.log("pending")
         },
         [getSellerProducts.fulfilled]:(state,action) =>{
-            if(action.payload.message ==="success"){
-                state.sellerProductsList = action.payload.data
-                console.log("Product fetched")
-                console.log(state.sellerProductsList)
-            }else {
-                console.log(action.payload.message)
-            }
             state.fetchSellerProductInProcess =false
+            if(action.payload !== undefined){
+                if(action.payload.message ==="success"){
+                    state.sellerProductsList = action.payload.data
+                    console.log("Product fetched")
+                    console.log(state.sellerProductsList)
+                }else {
+                    console.log(action.payload.message)
+                }
+            }else {
+                toast.error("Try again after sometime", {
+                    position: toast.POSITION.TOP_CENTER
+                });
+            }
         },
         [getSellerProducts.rejected]:(state)=>{
             state.fetchSellerProductInProcess = false
@@ -222,13 +269,18 @@ const productSlice = createSlice({
             console.log("pending")
         },
         [fetchProductByQuery.fulfilled]:(state,action) =>{
-            console.log("fetchProductByQuery-",action.payload.data);
-            if(action.payload.message ==="success"){
-                state.searchProductResult = action.payload.data
-            }else {
-                console.log(action.payload.message)
-            }
             state.fetchProductInProcess =false
+            if(action.payload !== undefined){
+                if(action.payload.message ==="success"){
+                    state.searchProductResult = action.payload.data
+                }else {
+                    console.log(action.payload.message)
+                }
+            }else {
+                toast.error("Try again after sometime", {
+                    position: toast.POSITION.TOP_CENTER
+                });
+            }
         },
         [fetchProductByQuery.rejected]:(state)=>{
             state.fetchProductInProcess = false
@@ -239,13 +291,19 @@ const productSlice = createSlice({
             console.log("pending")
         },
         [fetchProductByCategory.fulfilled]:(state,action) =>{
-            if(action.payload.message ==="success"){
-                state.categoryProductResult = action.payload.data
-                console.log("Product fetched")
-            }else {
-                console.log(action.payload.message)
-            }
             state.fetchProductInProcess =false
+            if(action.payload !== undefined){
+                if(action.payload.message ==="success"){
+                    state.categoryProductResult = action.payload.data
+                    console.log("Product fetched")
+                }else {
+                    console.log(action.payload.message)
+                }
+            }else {
+                toast.error("Try again after sometime", {
+                    position: toast.POSITION.TOP_CENTER
+                });
+            }
         },
         [fetchProductByCategory.rejected]:(state)=>{
             state.fetchProductInProcess = false
@@ -253,7 +311,11 @@ const productSlice = createSlice({
         },
         [updateProduct.fulfilled]: (state, action) => {
             // Assuming the response data includes the updated product details
-            state.productDetails = action.payload;
+            state.productDetails = action.payload.data;
+        },
+        [updateProductImage.fulfilled]: (state, action) => {
+            // Assuming the response data includes the updated product details
+            state.productDetails = action.payload.data;
         },
     }
 })

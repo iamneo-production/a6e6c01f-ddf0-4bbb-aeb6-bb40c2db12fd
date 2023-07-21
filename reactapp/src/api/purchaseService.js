@@ -2,6 +2,12 @@ import axios from "axios";
 import {baseUrl} from "./config";
 const baseURL = "http://localhost:8080";
 
+export async function getPurchaseByProduct(token, productId) {
+  return await axios.get(`${baseUrl}/seller/product/purchase?productId=${productId}`, {
+    headers: {Authorization: `Bearer ${token}`}
+  })
+}
+
 export function getPurchaseByBuyerId(buyerId) {
   const url = `${baseURL}/purchase/buyer?buyerId=${buyerId}`;
   const config = {
@@ -15,7 +21,8 @@ export function getPurchaseByBuyerId(buyerId) {
 
 export async function createPurchase(token,body){
   return await axios.post(`${baseUrl}/purchase`,{
-    "cartIds":body.cartIds
+    "cartIds":body.cartIds,
+    "paymentMethod":body.paymentMethod
   },{
     headers: { Authorization: `Bearer ${token}`}
   })

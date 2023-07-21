@@ -1,6 +1,6 @@
 import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
 import {toast} from "react-toastify";
-import {createPurchase, getPurchaseByBuyer, } from "../api/purchaseService";
+import {createPurchase, getPurchaseByBuyer, getPurchaseByProduct,} from "../api/purchaseService";
 
 export const addPurchase =
     createAsyncThunk('purchase/addPurchase',async (body)=>{
@@ -23,10 +23,23 @@ export const fetchPurchase =
         })
     })
 
+export const fetchPurchaseByProduct =
+    createAsyncThunk('purchase/fetchPurchaseByProduct',async (body)=>{
+        return  getPurchaseByProduct(
+            body.token,
+            body.productId
+        ).then((res) =>{
+            return res.data
+        }).catch((err) =>{
+            return err.response.data
+        })
+    })
+
 export const purchaseSlice = createSlice({
     name:"purchase",
     initialState:{
-        purchaseList:[]
+        purchaseList:[],
+        purchaseListByProduct:[]
     },
     reducers:{
 
@@ -36,12 +49,18 @@ export const purchaseSlice = createSlice({
             console.log("Purchase Add pending")
         },
         [addPurchase.fulfilled]:(state,action) =>{
-            if(action.payload.message ==="success"){
-                toast.success('Order Placed ', {
-                    position: toast.POSITION.TOP_CENTER
-                });
+            if(action.payload !== undefined){
+                if(action.payload.message ==="success"){
+                    toast.success('Order Placed ', {
+                        position: toast.POSITION.TOP_CENTER
+                    });
+                }else {
+                    toast.error('Please try again!!', {
+                        position: toast.POSITION.TOP_CENTER
+                    });
+                }
             }else {
-                toast.error('Please try again!!', {
+                toast.error("Try again after sometime", {
                     position: toast.POSITION.TOP_CENTER
                 });
             }
@@ -56,14 +75,42 @@ export const purchaseSlice = createSlice({
             console.log("pending")
         },
         [fetchPurchase.fulfilled]:(state,action) =>{
-            if(action.payload.message ==="success"){
-                state.purchaseList = action.payload.data
-                console.log("Purchase fetched")
+            if(action.payload !== undefined){
+                if(action.payload.message ==="success"){
+                    state.purchaseList = action.payload.data
+                    console.log("Purchase fetched")
+                }else {
+                    console.log(action.payload.message)
+                }
             }else {
-                console.log(action.payload.message)
+                toast.error("Try again after sometime", {
+                    position: toast.POSITION.TOP_CENTER
+                });
             }
         },
         [fetchPurchase.rejected]:(state)=>{
+            state.fetchPurchaseInProcess = false
+            console.log("Purchase fetch failed")
+        },
+        [fetchPurchaseByProduct.pending]:(state) => {
+            state.fetchPurchaseInProcess = true
+            console.log("pending")
+        },
+        [fetchPurchaseByProduct.fulfilled]:(state,action) =>{
+            if(action.payload !== undefined){
+                if(action.payload.message ==="success"){
+                    state.purchaseListByProduct = action.payload.data
+                    console.log("Purchase fetched")
+                }else {
+                    console.log(action.payload.message)
+                }
+            }else {
+                toast.error("Try again after sometime", {
+                    position: toast.POSITION.TOP_CENTER
+                });
+            }
+        },
+        [fetchPurchaseByProduct.rejected]:(state)=>{
             state.fetchPurchaseInProcess = false
             console.log("Purchase fetch failed")
         },

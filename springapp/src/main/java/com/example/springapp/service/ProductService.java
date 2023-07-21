@@ -4,8 +4,10 @@ package com.example.springapp.service;
 import com.example.springapp.config.user.UserRepository;
 import com.example.springapp.dto.request.ProductRequestDto;
 import com.example.springapp.dto.response.SellerDashboardResponse;
+import com.example.springapp.model.Cart;
 import com.example.springapp.model.User;
 import com.example.springapp.model.Product;
+import com.example.springapp.repo.CartRepository;
 import com.example.springapp.repo.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,6 +20,9 @@ public class ProductService {
 
     @Autowired
     private ProductRepository productRepository;
+
+    @Autowired
+    private CartRepository cartRepository;
 
     @Autowired
     private UserRepository userRepository;
@@ -63,19 +68,24 @@ public class ProductService {
     }
 
     // Update Product
-    public Product updateProduct(Product incomingProduct) {
-
-        Integer productId = incomingProduct.getId(); // Assuming there's an 'id' field in the Product class
+    public Product updatingProduct(int productId,ProductRequestDto productRequestDto) throws IOException {
+         // Assuming there's an 'id' field in the Product class
         Product existingProduct = productRepository.findById(productId).orElseThrow();
+        System.out.println(productRequestDto.getQuantity());
+        existingProduct.setName(productRequestDto.getName());
+        existingProduct.setDescription(productRequestDto.getDescription());
+        existingProduct.setPrice(productRequestDto.getPrice());
+        existingProduct.setQuantity(productRequestDto.getQuantity());
+        existingProduct.setBrand(productRequestDto.getBrand());
+        existingProduct.setColour(productRequestDto.getColour());
+        existingProduct.setCategory(productRequestDto.getCategory());
 
-        existingProduct.setName(incomingProduct.getName());
-        existingProduct.setDescription(incomingProduct.getDescription());
-        existingProduct.setPrice(incomingProduct.getPrice());
-        existingProduct.setQuantity(incomingProduct.getQuantity());
-        existingProduct.setBrand(incomingProduct.getBrand());
-        existingProduct.setColour(incomingProduct.getColour());
-        existingProduct.setCategory(incomingProduct.getCategory());
+        return productRepository.save(existingProduct);
+    }
 
+    public Product updateProductImage(int productId,ProductRequestDto productRequestDto) throws IOException {
+        Product existingProduct = productRepository.findById(productId).orElseThrow();
+        existingProduct.setImage(productRequestDto.getImage());
         return productRepository.save(existingProduct);
     }
 
@@ -84,6 +94,12 @@ public class ProductService {
         Product product = productRepository.findById(productId).orElseThrow();
         product.setDeleted(true);
         productRepository.save(product);
+        List<Cart> cartList = cartRepository.findAllByProduct(product);
+        for (Cart c: cartList
+             ) {
+            c.setDeleted(true);
+            cartRepository.save(c);
+        }
     }
 
     public List<Product> getProductBySeller(User user) {
@@ -91,7 +107,7 @@ public class ProductService {
     }
 
     public List<Product> searchProducts(String query) {
-        return productRepository.findByNameContainingIgnoreCase(query);
+        return productRepository.findByNameContainingIgnoreCaseAndIsDeletedFalse(query);
     }
 
     public List<Product> getAllProducts() {
@@ -99,7 +115,7 @@ public class ProductService {
     }
 
     public List<Product> getProductByCategory(String category) {
-        return productRepository.findAllByCategory(category);
+        return productRepository.findAllByCategoryAndIsDeletedFalse(category);
     }
 
     

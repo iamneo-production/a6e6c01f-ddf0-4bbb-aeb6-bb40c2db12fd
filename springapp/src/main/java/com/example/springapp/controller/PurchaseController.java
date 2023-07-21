@@ -6,16 +6,13 @@ import com.example.springapp.dto.request.PurchaseRequestDto;
 import com.example.springapp.model.User;
 import com.example.springapp.config.user.UserRepository;
 import com.example.springapp.service.ProductService;
-import com.example.springapp.model.Product;
 import com.example.springapp.model.Purchase;
 import com.example.springapp.service.PurchaseService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 
 import org.springframework.web.bind.annotation.*;
 import org.springframework.http.ResponseEntity;
 import java.util.*;
-import com.example.springapp.model.Product;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:8081/")
@@ -56,10 +53,16 @@ public class PurchaseController {
         return ResponseEntity.ok(new BaseResponseDTO("success",purchases));
     }
 
+    @GetMapping("/api/seller/product/purchase")
+    public ResponseEntity<BaseResponseDTO> getPurchaseByProduct(@RequestParam String productId) {
+        List<Purchase> purchases = purchaseService.getPurchaseByProduct(productId);
+        return ResponseEntity.ok(new BaseResponseDTO("success",purchases));
+    }
+
     @PostMapping("/api/purchase")
     public ResponseEntity<BaseResponseDTO> makePurchas(@RequestHeader(value = "Authorization", defaultValue = "") String token,
                                                         @RequestBody PurchaseRequestDto purchaseRequestDto) {
-        purchaseService.makePurchase(purchaseRequestDto.getCartIds());
+        purchaseService.makePurchase(purchaseRequestDto.getCartIds(), purchaseRequestDto.getPaymentMethod());
         return ResponseEntity.ok(new BaseResponseDTO("success"));
     }
 
@@ -71,11 +74,12 @@ public class PurchaseController {
         return ResponseEntity.ok(purchases);
     }
 
+
     @PostMapping("/purchase")
     public ResponseEntity<List<Purchase>> makePurchase(@RequestHeader(value = "Authorization") String token,
                                                         @RequestBody PurchaseRequestDto purchaseRequestDto) {
         User user = userRepository.findByEmail(tokenProvider.getUsernameFromToken(token)).orElseThrow();
-        purchaseService.makePurchase(purchaseRequestDto.getCartIds());
+        purchaseService.makePurchase(purchaseRequestDto.getCartIds(),purchaseRequestDto.getPaymentMethod());
         List<Purchase> purchases = new ArrayList<>();
         return ResponseEntity.ok(purchases);
     }
