@@ -7,8 +7,9 @@ import {deleteProduct, fetchProduct} from "../../features/productSlice";
 export default function ProductsRemoveModal(props) {
   const token = useSelector(state => state.user.token)
     const dispatch = useDispatch()
+  console.log(props.productId)
     async function handleDeleteProduct(){
-      console.log(token)
+
         await dispatch(deleteProduct({ token: token, productId: props.productId }))
         await dispatch(fetchProduct({token:token}))
         console.log("product deleted")

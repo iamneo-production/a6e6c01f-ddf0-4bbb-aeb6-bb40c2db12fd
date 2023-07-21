@@ -14,13 +14,21 @@ public class Purchase {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    private int productId; // Foreign key for Product
+    @ManyToOne
+    @JoinColumn(name = "product_id")
+    private Product product; // Foreign key for Product
 
     @ManyToOne
     @JoinColumn(name = "buyer_id")
     private User buyer;
 
+    private int quantity;
+
     private Date purchaseDate;
+
+    private String paymentMethod;
+
+    private  boolean isReviewed;
 
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private boolean isDeleted;
@@ -35,13 +43,23 @@ public class Purchase {
     public Purchase() {
     }
 
-    public Purchase(int productId, User buyerId, Date purchaseDate) {
-        this.productId = productId;
-        this.buyer = buyerId;
+    public Purchase(Product product, User buyer, Date purchaseDate, String paymentMethod) {
+        this.product = product;
+        this.buyer = buyer;
         this.purchaseDate = purchaseDate;
+        this.paymentMethod=paymentMethod;
     }
 
     // Getters and setters
+
+
+    public int getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
+    }
 
     public int getId() {
         return id;
@@ -51,12 +69,12 @@ public class Purchase {
         this.id = id;
     }
 
-    public int getProductId() {
-        return productId;
+    public Product getProductId() {
+        return product;
     }
 
-    public void setProductId(int productId) {
-        this.productId = productId;
+    public void setProductId(Product product) {
+        this.product = product;
     }
 
     public User getBuyer() {
@@ -97,5 +115,29 @@ public class Purchase {
 
     public void setUpdatedAt(Date updatedAt) {
         this.updatedAt = updatedAt;
+    }
+
+    public Product getProduct() {
+        return product;
+    }
+
+    public void setProduct(Product product) {
+        this.product = product;
+    }
+
+    public boolean isReviewed() {
+        return isReviewed;
+    }
+
+    public void setReviewed(boolean reviewed) {
+        isReviewed = reviewed;
+    }
+
+    public String getPaymentMethod() {
+        return paymentMethod;
+    }
+
+    public void setPaymentMethod(String paymentMethod) {
+        this.paymentMethod = paymentMethod;
     }
 }

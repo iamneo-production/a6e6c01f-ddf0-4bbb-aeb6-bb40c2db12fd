@@ -12,12 +12,14 @@ public class Review {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-    private int productId;
-    private int sellerId;
+    private Long productId;
+    private Long sellerId;
     private Long buyerId;
     private int rating;
+
+    @Column(length=10000)
     private String comment;
-    private int purchaseId;
+    private Long purchaseId;
 
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private boolean isDeleted;
@@ -32,7 +34,7 @@ public class Review {
     public Review() {
     }
 
-    public Review(int productId, int sellerId, Long buyerId, int rating, String comment, int purchaseId) {
+    public Review(Long productId, Long sellerId, Long buyerId, int rating, String comment, Long purchaseId) {
         this.productId = productId;
         this.sellerId = sellerId;
         this.buyerId = buyerId;
@@ -51,19 +53,19 @@ public class Review {
         this.id = id;
     }
 
-    public int getProductId() {
+    public Long getProductId() {
         return productId;
     }
 
-    public void setProductId(int productId) {
+    public void setProductId(Long productId) {
         this.productId = productId;
     }
 
-    public int getSellerId() {
+    public Long getSellerId() {
         return sellerId;
     }
 
-    public void setSellerId(int sellerId) {
+    public void setSellerId(Long sellerId) {
         this.sellerId = sellerId;
     }
 
@@ -91,11 +93,11 @@ public class Review {
         this.comment = comment;
     }
 
-    public int getPurchaseId() {
+    public Long getPurchaseId() {
         return purchaseId;
     }
 
-    public void setPurchaseId(int purchaseId) {
+    public void setPurchaseId(Long purchaseId) {
         this.purchaseId = purchaseId;
     }
 

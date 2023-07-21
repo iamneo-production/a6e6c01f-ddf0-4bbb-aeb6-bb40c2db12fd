@@ -19,7 +19,7 @@ public class Address {
     @JoinColumn(name = "buyer_id")
     private User buyer;
 
-    private int flat_no;
+    private String flatNo;
 
     private String area;
 
@@ -53,12 +53,12 @@ public class Address {
         this.buyer = buyer;
     }
 
-    public int getFlat_no() {
-        return flat_no;
+    public String getFlatNo() {
+        return flatNo;
     }
 
-    public void setFlat_no(int flat_no) {
-        this.flat_no = flat_no;
+    public void setFlatNo(String flatNo) {
+        this.flatNo = flatNo;
     }
 
     public String getArea() {

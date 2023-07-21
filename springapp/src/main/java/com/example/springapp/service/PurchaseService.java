@@ -1,10 +1,8 @@
 package com.example.springapp.service;
 
 import com.example.springapp.exception.PurchaseNotFoundException;
-import com.example.springapp.model.User;
-import com.example.springapp.model.Product;
-import com.example.springapp.model.Purchase;
-import com.example.springapp.model.Review;
+import com.example.springapp.model.*;
+import com.example.springapp.repo.CartRepository;
 import com.example.springapp.repo.PurchaseRepository;
 import com.example.springapp.repo.ReviewRepository;
 import com.example.springapp.repo.ProductRepository;
@@ -19,18 +17,35 @@ public class PurchaseService {
     private final ProductRepository productRepository;
     private final ReviewRepository reviewRepository;
 
+    private final CartRepository cartRepository;
+
     @Autowired
     public PurchaseService(PurchaseRepository purchaseRepository, ProductRepository productRepository,
-            ReviewRepository reviewRepository) {
+            ReviewRepository reviewRepository,CartRepository cartRepository) {
         this.purchaseRepository = purchaseRepository;
         this.productRepository = productRepository;
         this.reviewRepository = reviewRepository;
+        this.cartRepository = cartRepository;
     }
 
-    public void makePurchase(Purchase purchase, User user) {
-        purchase.setBuyer(user); // Update this line
-        purchase.setPurchaseDate(new Date());
-        purchaseRepository.save(purchase);
+    public void makePurchase(List<Integer> cartIds, String paymentMethod) {
+        List<Purchase> purchases = new ArrayList<>();
+        for (Integer cartId: cartIds
+             ) {
+            Cart cart = cartRepository.findById(cartId).orElseThrow();
+            Purchase purchase = new Purchase();
+            purchase.setPurchaseDate(new Date());
+            purchase.setProductId(cart.getProduct());
+            purchase.setQuantity(cart.getQuantity());
+            purchase.setPaymentMethod(paymentMethod);
+            purchase.setBuyer(cart.getBuyer());
+            purchases.add(purchase);
+            Product product = cart.getProduct();
+            product.setQuantity(product.getQuantity()- purchase.getQuantity());
+            cartRepository.delete(cart);
+            productRepository.save(product);
+        }
+        purchaseRepository.saveAll(purchases);
     }
 
     public Purchase getPurchaseById(int id) {
@@ -46,7 +61,7 @@ public class PurchaseService {
         List<Map<String, Object>> result = new ArrayList<>();
 
         for (Purchase purchase : purchases) {
-            int productId = purchase.getProductId();
+            int productId = 1;
             Optional<Product> productOptional = productRepository.findById(productId);
             Product product = productOptional.orElse(null);
 
@@ -59,7 +74,7 @@ public class PurchaseService {
                 purchaseMap.put("purchaseDate", purchase.getPurchaseDate());
 
                 // Retrieve review details
-                List<Review> reviews = reviewRepository.findByPurchaseId(purchase.getId());
+                List<Review> reviews = reviewRepository.findByPurchaseId((long)purchase.getId());
                 if (!reviews.isEmpty()) {
                     Review review = reviews.get(0); // Assuming the list contains only one review per purchaseId
                     purchaseMap.put("comment", review.getComment());
@@ -76,8 +91,17 @@ public class PurchaseService {
         return result;
     }
 
+
     public List<Purchase> getAllPurchases() {
         return purchaseRepository.findAll();
     }
 
+    public List<Purchase> getPurchaseByBuyer(User user) {
+        return purchaseRepository.findAllByBuyer(user);
+    }
+
+    public List<Purchase> getPurchaseByProduct(String productId) {
+        Product product = productRepository.findById(Integer.parseInt(productId)).orElseThrow();
+        return purchaseRepository.findAllByProduct(product);
+    }
 }

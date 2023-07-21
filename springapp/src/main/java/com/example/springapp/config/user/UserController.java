@@ -10,6 +10,8 @@ import com.example.springapp.service.UserService;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.List;
+
 
 
 @RestController
@@ -22,10 +24,15 @@ public class UserController {
     @PostMapping("/api/auth/register")
     @CrossOrigin(origins = "http://localhost:8081/")
     public BaseResponseDTO createUser(@RequestBody User newUser){
-        if(userService.createUser(newUser)){
-            return new BaseResponseDTO("success");
-        }else {
-            return new BaseResponseDTO("failed");
+        if(userService.checkUserNameExistsForSignup(newUser.getEmail())){
+            return new BaseResponseDTO("Already have an account");
+        }
+        else {
+            if (userService.createUser(newUser)) {
+                return new BaseResponseDTO("success");
+            } else {
+                return new BaseResponseDTO("failed");
+            }
         }
     }
 
@@ -44,7 +51,7 @@ public class UserController {
                 return new BaseResponseDTO("password invalid");
             }
         }else {
-            return new BaseResponseDTO("user not exist");
+            return new BaseResponseDTO("Account not exist");
         }
     }
 
@@ -57,6 +64,58 @@ public class UserController {
             return ResponseEntity.ok(new BaseResponseDTO("success",data));
         }
         return new ResponseEntity<>(new BaseResponseDTO("failed",data), HttpStatus.UNAUTHORIZED);
+    }
+    //Get all users
+    @GetMapping(value= "/api/auth/user")
+    @CrossOrigin(origins = "http://localhost:8081/")
+    public List<User> getAllUser(){
+        return userService.findallUser();        
+    }
+    
+    
+    //Get user by id
+    @GetMapping(value = "/api/auth/user/{id}")
+    @CrossOrigin(origins = "http://localhost:8081/")
+    public List<User> getUserById(@PathVariable("id") Integer id){
+        return userService.getUsersById(id);
+    }
+
+    
+    //Update user details
+    @PutMapping(value = "/api/auth/user/{id}")
+    @CrossOrigin(origins = "http://localhost:8081/")
+    public User updateUser(@PathVariable Long id,@RequestBody User incomingUser){
+         return userService.updateUser(id,incomingUser); 
+    }
+
+
+    //Admin authorizations
+    // disable buyer by id
+    @PutMapping(value="/api/auth/buyer/{id}/disable")
+    @CrossOrigin(origins = "http://localhost:8081/")
+    public User disableBuyer(@PathVariable Long id){
+         return userService.disableBuyer(id); 
+    }
+
+    //delete buyer by id
+    @DeleteMapping(value="/api/auth/buyer/{id}/delete")
+    @CrossOrigin(origins = "http://localhost:8081/")
+    public User deleteBuyer(@PathVariable Long id){
+         return userService.deleteBuyer(id); 
+    }
+
+    //disable seller by id
+    @PutMapping(value="/api/auth/seller/{id}/disable")
+    @CrossOrigin(origins = "http://localhost:8081/")
+    public User disableSeller(@PathVariable Long id){
+         return userService.disableSeller(id); 
+    }
+
+    //delete seller by id
+    @DeleteMapping(value="/api/auth/seller/{id}/delete")
+    @CrossOrigin(origins = "http://localhost:8081/")
+    public User deleteSeller(@PathVariable Long id){
+         return userService.deleteSeller(id); 
     }
     
 }
