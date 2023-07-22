@@ -35,10 +35,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.cors().and() .csrf().disable()
                 .authorizeRequests()
+                .antMatchers("/api/auth/**", "/product", "/purchase/**", "/review/**").permitAll()
                 .antMatchers("/api/admin/**").hasRole("ADMIN")
                 .antMatchers("/api/seller/**").hasAnyRole("ADMIN", "SELLER")
                 .antMatchers("/api/**").hasAnyRole("ADMIN", "SELLER", "BUYER")
-                .antMatchers("/api/auth/**", "/product", "/purchase/**", "/review/**").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .exceptionHandling()

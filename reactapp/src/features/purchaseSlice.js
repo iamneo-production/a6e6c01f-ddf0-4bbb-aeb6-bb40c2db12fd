@@ -51,9 +51,7 @@ export const purchaseSlice = createSlice({
         [addPurchase.fulfilled]:(state,action) =>{
             if(action.payload !== undefined){
                 if(action.payload.message ==="success"){
-                    toast.success('Order Placed ', {
-                        position: toast.POSITION.TOP_CENTER
-                    });
+                    console.log("OrderPlaced")
                 }else {
                     toast.error('Please try again!!', {
                         position: toast.POSITION.TOP_CENTER
