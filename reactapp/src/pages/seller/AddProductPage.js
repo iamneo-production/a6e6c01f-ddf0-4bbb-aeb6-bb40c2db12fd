@@ -87,7 +87,7 @@ export default function AddProductPage() {
 
                     <label for="exampleFormControlInput1" class="form-label"><b>Price</b></label>
                     <div style={inputStyle.input}>
-                        <input value={formValue.price} type="text" onChange={(e)=> setFormValue({...formValue,price:e.target.value})} placeholder='Product price' class="form-control" id="exampleFormControlInput1"></input>
+                        <input value={formValue.price} type="number" onChange={(e)=> setFormValue({...formValue,price:e.target.value})} placeholder='Product price' class="form-control" id="exampleFormControlInput1"></input>
                     </div>
                     <br></br>
 
@@ -111,7 +111,7 @@ export default function AddProductPage() {
 
                     <label for="exampleFormControlInput1" class="form-label"><b>Quantity</b></label>
                     <div style={inputStyle.input}>
-                        <input value={formValue.quantity} type="text" onChange={(e)=> setFormValue({...formValue,quantity:e.target.value})} placeholder='Product Quantity' class="form-control" id="exampleFormControlInput1"></input>
+                        <input value={formValue.quantity} type="number" onChange={(e)=> setFormValue({...formValue,quantity:e.target.value})} placeholder='Product Quantity' class="form-control" id="exampleFormControlInput1"></input>
                     </div>
                     <br></br>
 
