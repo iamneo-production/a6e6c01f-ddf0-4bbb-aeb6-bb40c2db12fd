@@ -80,7 +80,8 @@ export default function ProductsPage() {
                                     style={{ width: '500px' }}
                                 >{name}</td>
                                 <td>{price}</td>
-                                <td>{quantity}</td>
+                                {quantity <= 0 ?  (<td style={{color:"red"}}>Out of stock</td>) : 
+                                (<td>{quantity}</td>)}
                                 <td>{handleDate(createdAt)}</td>
                                 <td>
                                     <div className='d-flex flex-row justify-content-end'>

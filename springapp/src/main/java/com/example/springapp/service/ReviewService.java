@@ -65,27 +65,18 @@ public class ReviewService {
         reviewRepository.save(existingReview);
     }
 
-    public List<Review> getReviewByProductId(int productId) {
+    public List<Review> getReviewByProductId(Long productId) {
         List<Review> reviews = reviewRepository.findByProductId(productId);
-        if (reviews.isEmpty()) {
-            throw new ReviewNotFoundException("No reviews found for the product");
-        }
         return reviews;
     }
 
-    public List<Review> getReviewBySellerId(int sellerId) {
+    public List<Review> getReviewBySellerId(Long sellerId) {
         List<Review> reviews = reviewRepository.findBySellerId(sellerId);
-        if (reviews.isEmpty()) {
-            throw new ReviewNotFoundException("No reviews found for the seller");
-        }
         return reviews;
     }
 
     public List<Review> getAllReviews() {
         List<Review> reviews = reviewRepository.findAll();
-        if (reviews.isEmpty()) {
-            throw new ReviewNotFoundException("No reviews found");
-        }
         return reviews;
     }
 
