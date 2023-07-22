@@ -53,11 +53,6 @@ public class PurchaseController {
         return ResponseEntity.ok(new BaseResponseDTO("success",purchases));
     }
 
-    @GetMapping("/api/seller/product/purchase")
-    public ResponseEntity<BaseResponseDTO> getPurchaseByProduct(@RequestParam String productId) {
-        List<Purchase> purchases = purchaseService.getPurchaseByProduct(productId);
-        return ResponseEntity.ok(new BaseResponseDTO("success",purchases));
-    }
 
     @PostMapping("/api/purchase")
     public ResponseEntity<BaseResponseDTO> makePurchas(@RequestHeader(value = "Authorization", defaultValue = "") String token,

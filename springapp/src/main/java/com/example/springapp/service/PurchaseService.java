@@ -100,8 +100,5 @@ public class PurchaseService {
         return purchaseRepository.findAllByBuyer(user);
     }
 
-    public List<Purchase> getPurchaseByProduct(String productId) {
-        Product product = productRepository.findById(Integer.parseInt(productId)).orElseThrow();
-        return purchaseRepository.findAllByProduct(product);
-    }
+    
 }
