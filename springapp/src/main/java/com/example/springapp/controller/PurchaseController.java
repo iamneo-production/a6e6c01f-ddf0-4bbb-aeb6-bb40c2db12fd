@@ -68,9 +68,9 @@ public class PurchaseController {
 
     // Test Case
     @GetMapping("/purchase/buyer")
-    public ResponseEntity<List<Map<String, Object>>> getPurchaseByBuyerId(@RequestParam String buyerId) {
-        List<Map<String, Object>> purchases = purchaseService.getPurchaseByBuyerId(Integer.parseInt(buyerId));
-        return ResponseEntity.ok(purchases);
+    public ResponseEntity<List<Map<String, Object>>> getPurchaseByBuyerId(@RequestParam("buyerId") int buyerId) {
+        List<Map<String, Object>> result = purchaseService.getPurchaseByBuyerId(buyerId);
+        return ResponseEntity.ok(result);
     }
 
 
