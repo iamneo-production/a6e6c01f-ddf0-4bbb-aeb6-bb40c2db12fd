@@ -21,8 +21,53 @@ export async function loginUserService(email,password){
     })
 }
 
+
 export async function validateTokenService(token){
     return await axios.get(`${baseUrl}/auth/validateToken`,{
         headers: {"Authorization" : token}
     })
 }
+export async function getAllUser(token){
+    return await axios.get(`${baseUrl}/auth/user`,{
+        headers: { Authorization: `Bearer ${token}` }
+    })
+}
+
+
+export async function getUserById(token,id){
+    return await axios.get(`${baseUrl}/auth/user=${id}`,{
+        headers: { Authorization: `Bearer ${token}` }
+    })
+}
+
+export async function updateUserById(token, id, updatedUser) {
+    return await axios.put(`${baseUrl}/auth/user/${id}`, updatedUser, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+}
+export async function disabledBuyerById(token, id, disabledBuyer) {
+    return await axios.put(`${baseUrl}/auth/buyer/{id}/disable/${id}`, disabledBuyer, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+}
+export async function deletedBuyerById(token, id, deletedBuyer) {
+    return await axios.put(`${baseUrl}/auth/buyer/{id}/delete/${id}`, deletedBuyer, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+}
+export async function disabledSellerById(token, id, disabledSeller) {
+    return await axios.put(`${baseUrl}/auth/seller/{id}/disable/${id}`, disabledSeller, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+}
+export async function deletedSellerById(token, id, deletedSeller) {
+    return await axios.put(`${baseUrl}/auth/seller/{id}/delete/${id}`, deletedSeller, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+}
+export async function getActionById(id) {
+    return await axios.put(`${baseUrl}/auth/seller/{id}/delete/${id}`, deletedSeller, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+}
+
