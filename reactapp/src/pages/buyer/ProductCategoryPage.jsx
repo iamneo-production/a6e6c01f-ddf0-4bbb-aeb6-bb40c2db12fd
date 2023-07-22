@@ -24,6 +24,37 @@ export default function ProductCategoryPage() {
     const handleGoBack = () => {
         navigate("/home")
     };
+    const [selectedBrandFilters, setSelectedBrandFilters] = useState([]);
+    const [selectedColorFilters, setSelectedColorFilters] = useState([]);
+
+    
+    const handleBrandFilterChange = (brand) => {
+        setSelectedBrandFilters(prevFilters => {
+            if (prevFilters.includes(brand)) {
+                return prevFilters.filter(item => item !== brand);
+            } else {
+                return [...prevFilters, brand];
+            }
+        });
+    };
+
+    
+    const handleColorFilterChange = (color) => {
+        setSelectedColorFilters(prevFilters => {
+            if (prevFilters.includes(color)) {
+                return prevFilters.filter(item => item !== color);
+            } else {
+                return [...prevFilters, color];
+            }
+        });
+    };
+
+    
+    const filteredResults = categoryProductResult.filter(item => {
+        const brandFilterPassed = selectedBrandFilters.length === 0 || selectedBrandFilters.includes(item.brand);
+        const colorFilterPassed = selectedColorFilters.length === 0 || selectedColorFilters.includes(item.colour);
+        return brandFilterPassed && colorFilterPassed;
+    });
     return (
         <div>
             <NavigationBar/><br/><br/><br/>
@@ -63,11 +94,15 @@ export default function ProductCategoryPage() {
                             </div>
                         </div>
                     ) : (
-                    <Card ProductList={categoryProductResult}/>
+                    <Card ProductList={filteredResults}/>
                     )}
                 </div>
             </section>
-            <FilterModal show={showDropDown} onHide={handleCloseDropDown} />
+            <FilterModal show={showDropDown}
+                         onHide={handleCloseDropDown}
+                         categoryProductResult={categoryProductResult}
+                         onBrandFilterChange={handleBrandFilterChange}
+                         onColorFilterChange={handleColorFilterChange}/>
         </div>
 
     )
