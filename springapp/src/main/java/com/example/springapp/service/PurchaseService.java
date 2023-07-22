@@ -104,4 +104,7 @@ public class PurchaseService {
         Product product = productRepository.findById(Integer.parseInt(productId)).orElseThrow();
         return purchaseRepository.findAllByProduct(product);
     }
+
+
+    
 }
