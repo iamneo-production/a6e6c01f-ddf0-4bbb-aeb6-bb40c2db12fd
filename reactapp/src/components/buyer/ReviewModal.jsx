@@ -1,77 +1,79 @@
 import React, { useState } from 'react';
 import { Button, Modal, Form } from 'react-bootstrap';
 import StarRating from './StarRating';
-import Snackbar from '@mui/material/Snackbar';
-import Alert from '@mui/material/Alert';
+import { ADD_REVIEW } from '../../api/reviewService';
 
-
-const ReviewModal = ({ showModal, handleClose, id }) => {
+const ReviewModal = ({ showModal, handleClose, purchaseId }) => {
     const [textareaValue, setTextareaValue] = useState('');
-    const [openSnackbar, setOpenSnackbar] = useState(false);
+    const [rating, setRating] = useState(0);
 
     const handleTextareaChange = (event) => {
         setTextareaValue(event.target.value);
     };
 
-    const handleOpenSnackbar = () => {
-        setOpenSnackbar(true);
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        handleUpdate();
     };
 
-    const handleCloseSnackbar = () => {
-        handleClose();
-        setOpenSnackbar(false);
+    const cleanUp = async () => {
+        setTextareaValue('');
+        setRating(0);
+    };
+
+    const handleUpdate = async () => {
+        try {
+            const res = await ADD_REVIEW(purchaseId, textareaValue, rating);
+            console.log(res?.data);
+            cleanUp();
+            handleClose(true);
+        } catch (error) {
+            console.log(error);
+        }
     };
 
     return (
-        <div >
-            <Modal show={showModal} onHide={handleClose} >
+        <div>
+            <Modal show={showModal} onHide={() => handleClose(false)}>
                 <Modal.Header closeButton>
-                    <Modal.Title> <h3>Review and Rating</h3> </Modal.Title>
+                    <Modal.Title>
+                        <h3>Review and Rating</h3>
+                    </Modal.Title>
                 </Modal.Header>
-                <Modal.Body>
-                    <Form.Group controlId="exampleForm.ControlTextarea">
-                        <Form.Control
-                            as="textarea"
-                            rows={6}
-                            placeholder='Max 100 words'
-                            value={textareaValue}
-                            onChange={handleTextareaChange}
-                        />
-                    </Form.Group>
-                    {/* <div className='d-flex p-3 justify-content-start'> */}
-                    <div className='text-center mt-3'>
-                        <h5>Your rating </h5>
-                        <StarRating
-                            exportStar={() => { return }}
-                        />
-                    </div>
-                </Modal.Body>
-                <Modal.Footer>
-                    <Button variant="secondary" onClick={handleClose}>
-                        Cancel
-                    </Button>
-                    <Button variant="primary" style={{ backgroundColor: '#F25151', borderColor: '#F25151' }} onClick={handleOpenSnackbar}>
-                        Post
-                    </Button>
-                </Modal.Footer>
+                <form onSubmit={(e) => handleSubmit(e)}>
+                    <Modal.Body>
+                        <Form.Group controlId="exampleForm.ControlTextarea">
+                            <Form.Control
+                                as="textarea"
+                                rows={6}
+                                required
+                                placeholder="Max 100 words"
+                                value={textareaValue}
+                                onChange={handleTextareaChange}
+                            />
+                        </Form.Group>
+                        <div className="text-center mt-3">
+                            <h5>Your rating</h5>
+                            <StarRating exportStar={(val) => setRating(val)} />
+                        </div>
+                    </Modal.Body>
+                    <Modal.Footer>
+                        <Button variant="secondary" onClick={() => handleClose(false)}>
+                            Cancel
+                        </Button>
+                        <Button
+                            variant="primary"
+                            type="submit"
+                            style={{ backgroundColor: '#F25151', borderColor: '#F25151' }}
+                        >
+                            Post
+                        </Button>
+                    </Modal.Footer>
+                </form>
             </Modal>
-            <Snackbar
-                open={openSnackbar}
-                autoHideDuration={1000}
-                onClose={handleCloseSnackbar}
-                anchorOrigin={{ horizontal: 'center', vertical: 'top' }}
-            >
-                <Alert
-                    onClose={handleCloseSnackbar}
-                    severity="success"
-                    variant="filled"
-                    sx={{ width: '100%' }}
-                >
-                    Review Submitted - Thank you!
-                </Alert>
-            </Snackbar>
-        </div >
-    )
-}
+        </div>
+    );
+};
 
 export default ReviewModal;
