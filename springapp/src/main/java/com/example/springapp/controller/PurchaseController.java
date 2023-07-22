@@ -68,19 +68,16 @@ public class PurchaseController {
 
     // Test Case
     @GetMapping("/purchase/buyer")
-    public ResponseEntity<List<Purchase>> getPurchaseByBuyerId(@RequestHeader(value = "Authorization") String token) {
-        User user = userRepository.findByEmail(tokenProvider.getUsernameFromToken(tokenProvider.getTokenFromHeader(token))).orElseThrow();
-        List<Purchase> purchases = purchaseService.getPurchaseByBuyer(user);
+    public ResponseEntity<List<Map<String, Object>>> getPurchaseByBuyerId(@RequestParam String buyerId) {
+        List<Map<String, Object>> purchases = purchaseService.getPurchaseByBuyerId(Integer.parseInt(buyerId));
         return ResponseEntity.ok(purchases);
     }
 
 
     @PostMapping("/purchase")
-    public ResponseEntity<List<Purchase>> makePurchase(@RequestHeader(value = "Authorization") String token,
-                                                        @RequestBody PurchaseRequestDto purchaseRequestDto) {
-        User user = userRepository.findByEmail(tokenProvider.getUsernameFromToken(token)).orElseThrow();
-        purchaseService.makePurchase(purchaseRequestDto.getCartIds(),purchaseRequestDto.getPaymentMethod());
-        List<Purchase> purchases = new ArrayList<>();
+    public ResponseEntity<List<Purchase>> makePurchase(@RequestBody PurchaseRequestDto purchaseRequestDto) {
+                
+        List<Purchase> purchases = purchaseService.makePurchase(purchaseRequestDto.getCartIds(),purchaseRequestDto.getPaymentMethod());
         return ResponseEntity.ok(purchases);
     }
 

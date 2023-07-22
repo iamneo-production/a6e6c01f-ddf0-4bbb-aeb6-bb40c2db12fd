@@ -21,16 +21,16 @@ public class ReviewController {
     }
 
     // Test Case
-    @GetMapping("/review/product/{productId}")
-    public ResponseEntity<List<Review>> getReviewByProductId(@PathVariable int productId) {
-        List<Review> reviews = reviewService.getReviewByProductId(productId);
+    @GetMapping("/review/product")
+    public ResponseEntity<List<Review>> getReviewByProductId(@RequestParam String productId) {
+        List<Review> reviews = reviewService.getReviewByProductId(Long.parseLong(productId));
         return ResponseEntity.ok(reviews);
     }
 
     // Test Case
-    @GetMapping("/review/seller/{sellerId}")
-    public ResponseEntity<List<Review>> getReviewBySellerId(@PathVariable int sellerId) {
-        List<Review> reviews = reviewService.getReviewBySellerId(sellerId);
+    @GetMapping("/review/seller")
+    public ResponseEntity<List<Review>> getReviewBySellerId(@RequestParam String sellerId) {
+        List<Review> reviews = reviewService.getReviewBySellerId(Long.parseLong(sellerId));
         return ResponseEntity.ok(reviews);
     }
 
