@@ -30,6 +30,7 @@ export default function LandingPage() {
     if (signinSuccess) {
         console.log("success-login")
         console.log(currentUser)
+        if(currentUser && currentUser.roles){
         if (currentUser.roles === 'ROLE_ADMIN') {
             navigate("/admin/products");
         } else if (currentUser.roles === 'ROLE_SELLER') {
@@ -38,6 +39,7 @@ export default function LandingPage() {
         } else if (currentUser.roles === 'ROLE_BUYER') {
             navigate("/home");
         }
+    }
     }
 
     return (
