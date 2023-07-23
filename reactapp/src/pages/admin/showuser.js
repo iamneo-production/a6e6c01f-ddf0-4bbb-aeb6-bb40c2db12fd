@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, {  useEffect } from 'react';
 import { Table } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
-import { disableBuyer,disableSeller,deleteBuyer,deleteSeller, fetchAllUsers,} from '../../features/userSlice';
+import { disableBuyer,deleteBuyer,fetchAllUsers,} from '../../features/userSlice';
 import { ToastContainer, toast } from 'react-toastify';
 import { fetchProductByIdd } from '../../features/productSlice';
 import { fetchPurchaseById } from '../../features/purchaseSlice';
@@ -23,12 +23,12 @@ export default function Showuser() {
   
 const handledisable = (id) => {
   dispatch(disableBuyer({ token: token , id:id}));
-  // dispatch(disableSeller({ token: token ,Id:id}));
+  
   toast("Disabled Successfully");
 };
 const handledelete = (id) => {
   dispatch(deleteBuyer({ token: token , id:id}));
-  // dispatch(deleteSeller({ token: token ,Id:id}));
+ 
   toast("Deleted Successfully");
 };
 
@@ -37,11 +37,7 @@ const handleorders = (e,id) => {
   dispatch(fetchPurchaseById({ userid: id}));
   
 };
-const handleaction = (e,id) => {
-  console.log(id)
-  dispatch(fetchactionById({ userid: id}));
 
-};
 
 const handleproducts = (e,id) => {
   console.log(id)
@@ -180,7 +176,7 @@ return (
               <td>
                 <button style={{ color: "black", }} 
                 key={id}
-                onClick={(e) => { handleaction(e,id)}}
+                
                 className="btn btn-primary"
                   class="btn btn-danger" data-toggle="modal" data-target="#exampleModalactions">
                   <b>Actions</b></button>
