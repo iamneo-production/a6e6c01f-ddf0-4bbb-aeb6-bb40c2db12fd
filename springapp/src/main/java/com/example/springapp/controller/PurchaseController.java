@@ -6,14 +6,15 @@ import com.example.springapp.dto.request.PurchaseRequestDto;
 import com.example.springapp.model.User;
 import com.example.springapp.config.user.UserRepository;
 import com.example.springapp.service.ProductService;
+import com.example.springapp.model.Product;
 import com.example.springapp.model.Purchase;
 import com.example.springapp.service.PurchaseService;
 import org.springframework.beans.factory.annotation.Autowired;
-
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.http.ResponseEntity;
 import java.util.*;
-
+import com.example.springapp.model.Product;
 @RestController
 @CrossOrigin(origins = "http://localhost:8081/")
 public class PurchaseController {
@@ -52,6 +53,12 @@ public class PurchaseController {
         List<Purchase> purchases = purchaseService.getPurchaseByBuyer(user);
         return ResponseEntity.ok(new BaseResponseDTO("success",purchases));
     }
+    @GetMapping("/api/auth/buyer/{id}")
+    public ResponseEntity<BaseResponseDTO> getPurchaseByBuyeridd(@PathVariable("id") Integer id) {
+        User user = userRepository.findByUseridd(id);
+        List<Purchase> purchases = purchaseService.getPurchaseByBuyer(user);
+        return ResponseEntity.ok(new BaseResponseDTO("success",purchases));
+    }
 
 
     @PostMapping("/api/purchase")
@@ -75,5 +82,13 @@ public class PurchaseController {
         List<Purchase> purchases = purchaseService.makePurchase(purchaseRequestDto.getCartIds(),purchaseRequestDto.getPaymentMethod());
         return ResponseEntity.ok(purchases);
     }
+
+    @GetMapping("/api/seller/product/purchase")
+    public ResponseEntity<BaseResponseDTO> getPurchaseByProduct(@RequestParam String productId) {
+        List<Purchase> purchases = purchaseService.getPurchaseByProduct(productId);
+        return ResponseEntity.ok(new BaseResponseDTO("success",purchases));
+    }
+
+
 
 }
