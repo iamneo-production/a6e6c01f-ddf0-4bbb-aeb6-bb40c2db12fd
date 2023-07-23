@@ -28,7 +28,7 @@ public class PurchaseService {
         this.cartRepository = cartRepository;
     }
 
-    public void makePurchase(List<Integer> cartIds, String paymentMethod) {
+    public List<Purchase> makePurchase(List<Integer> cartIds, String paymentMethod) {
         List<Purchase> purchases = new ArrayList<>();
         for (Integer cartId: cartIds
              ) {
@@ -45,7 +45,7 @@ public class PurchaseService {
             cartRepository.delete(cart);
             productRepository.save(product);
         }
-        purchaseRepository.saveAll(purchases);
+        return purchaseRepository.saveAll(purchases);
     }
 
     public Purchase getPurchaseById(int id) {
@@ -104,4 +104,7 @@ public class PurchaseService {
         Product product = productRepository.findById(Integer.parseInt(productId)).orElseThrow();
         return purchaseRepository.findAllByProduct(product);
     }
+
+
+    
 }

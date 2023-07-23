@@ -15,6 +15,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.multipart.MultipartFile;
+import com.example.springapp.service.UserService;
 
 import java.io.IOException;
 import java.util.*;
@@ -72,6 +73,17 @@ public class ProductController {
         }
         //return productService.getProductBySellerId(sellerId);
     }
+    @GetMapping(value = "/api/auth/selleridd/{id}")
+    public ResponseEntity<BaseResponseDTO> getProductBySellerIdd(@PathVariable("id") Integer id){
+        try{
+            User user = userRepository.findByUseridd(id);
+            List<Product> sellerProductList = productService.getProductBySeller(user);
+            return ResponseEntity.ok(new BaseResponseDTO("success",sellerProductList));
+        }catch (Exception e){
+            return ResponseEntity.internalServerError().body(new BaseResponseDTO("failed"));
+        }
+        //return productService.getProductBySellerId(sellerId);
+    } 
 
     @PostMapping(value = "/api/seller/products")
     @CrossOrigin(origins = "http://localhost:8081/")
