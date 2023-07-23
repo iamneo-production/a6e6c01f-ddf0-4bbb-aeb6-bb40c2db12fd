@@ -8,7 +8,8 @@ import {
     getProductBySearch,
     getProductByCategory,
     updateProductById,
-    updateProductImageById
+    updateProductImageById,
+    getProductBySellerIdd
 } from "../api/productService";
 import {toast} from "react-toastify";
 
@@ -116,7 +117,17 @@ export const updateProductImage =
             return err.response.data
         })
     })
-
+export const fetchProductByIdd =
+        createAsyncThunk('purchase/fetchProductByIdd',async (body)=>{
+            console.log(body);
+            return  getProductBySellerIdd(
+                body.userid
+            ).then((res) =>{
+                return res.data
+            }).catch((err) =>{
+                return err.response.data
+            })
+        })
 
 
 const productSlice = createSlice({
@@ -125,6 +136,7 @@ const productSlice = createSlice({
         fetchProductInProcess:false,
         fetchSellerProductInProcess:false,
         allProductList: [],
+        productListById:[],
         sellerProductsList:[],
         selectedProduct:'',
         productDetails:'',
@@ -317,6 +329,27 @@ const productSlice = createSlice({
             // Assuming the response data includes the updated product details
             state.productDetails = action.payload.data;
         },
+        [fetchProductByIdd.pending]:(state) => {
+            state.fetchProductInProcess = true
+            console.log("pending")
+        },
+        [fetchProductByIdd.fulfilled]:(state,action) =>{
+            if(action.payload.message ==="success"){
+                state.productListById = action.payload.data
+                console.log(state.productListById)
+                console.log(action.payload)
+                console.log("Product fetched")
+                
+            }else {
+                console.log("Product failed")
+                console.log(action.payload.message)
+            }
+            // state.fetchProductInProcess =false
+        },
+        [fetchProductByIdd.rejected]:(state)=>{
+            state.fetchProductInProcess = false
+            console.log("Product fetch failed")
+    },
     }
 })
 
