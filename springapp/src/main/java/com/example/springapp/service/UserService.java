@@ -109,7 +109,7 @@ public class UserService implements UserDetailsService {
             existingUser.setLastName(incomingUser.getLastName());
             existingUser.setPassword(passwordEncoder.encode(incomingUser.getPassword()));
             existingUser.setPhone(incomingUser.getPhone());
-            existingUser.setRoles(incomingUser.getRoles());
+            //existingUser.setRoles(incomingUser.getRoles());
 
             return userRepository.save(existingUser);
         } else {

@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { createUserService, loginUserService,getActionById,getAllUser, getUserById,updateUserById  } from "../api/userService";
+import { createUserService, loginUserService,disabledBuyerById,deletedBuyerById,getAllUser, getUserById,updateUserById  } from "../api/userService";
 import {toast} from "react-toastify";
 
 export const loginUser =
@@ -63,11 +63,11 @@ export const fetchUserById =
         }
     );
 
-    export const disableBuyer = createAsyncThunk(
+   export const disableBuyer = createAsyncThunk(
         'user/disableBuyer',
-        async ({ token, id, disabledBuyer }) => {
+        async ({ token, id }) => {
           try {
-            const response = await updateUserById(token, id, disabledBuyer);
+            const response = await disabledBuyerById(token, id);
             return response.data;
           } catch (error) {
             throw error;
@@ -76,49 +76,15 @@ export const fetchUserById =
     );
     export const deleteBuyer = createAsyncThunk(
         'user/deleteBuyer',
-        async ({ token, id, deletedBuyer }) => {
+        async ({ token, id }) => {
           try {
-            const response = await updateUserById(token, id, deletedBuyer);
+            const response = await deletedBuyerById(token, id);
             return response.data;
           } catch (error) {
             throw error;
           }
         }
     );
-    export const disableSeller = createAsyncThunk(
-        'user/disableSeller',
-        async ({ token, id, disabledSeller }) => {
-          try {
-            const response = await updateUserById(token, id, disabledSeller);
-            return response.data;
-          } catch (error) {
-            throw error;
-          }
-        }
-    );
-    export const deleteSeller = createAsyncThunk(
-        'user/deleteSeller',
-        async ({ token, id, deletedSeller }) => {
-          try {
-            const response = await updateUserById(token, id, deletedSeller);
-            return response.data;
-          } catch (error) {
-            throw error;
-          }
-        }
-    );
-    export const fetchActionById =
-    createAsyncThunk('purchase/fetchPurchaseById',async (body)=>{
-        console.log(body);
-        return  getActionById(
-            body.userid
-        ).then((res) =>{
-            return res.data
-        }).catch((err) =>{
-            return err.response.data
-        })
-    })
-
 export const userSlice = createSlice({
     name: "user",
     initialState: {
@@ -262,31 +228,19 @@ export const userSlice = createSlice({
             state.userDetails = action.payload;
         },
         [disableBuyer.fulfilled]: (state, action) => {
-            // Assuming the response data includes the updated user data after disabling
-            state.currentUser = action.payload.updatedUser;
-            state.userDetails = action.payload.updatedUser;
-          },
-      
-          // Reducer for handling deleting a buyer
-          [deleteBuyer.fulfilled]: (state, action) => {
-            // Assuming the response data includes the updated user data after deletion
-            state.currentUser = action.payload.updatedUser;
-            state.userDetails = action.payload.updatedUser;
-          },
-      
-          // Reducer for handling disabling a seller
-          [disableSeller.fulfilled]: (state, action) => {
-            // Assuming the response data includes the updated user data after disabling
-            state.currentUser = action.payload.updatedUser;
-            state.userDetails = action.payload.updatedUser;
-          },
-      
-          // Reducer for handling deleting a seller
-          [deleteSeller.fulfilled]: (state, action) => {
-            // Assuming the response data includes the updated user data after deletion
-            state.currentUser = action.payload.updatedUser;
-            state.userDetails = action.payload.updatedUser;
-          },
+            console.log("Buyer diabled")
+
+
+        },
+
+
+        [deleteBuyer.fulfilled]: (state, action) => {
+            console.log("Buyer deleted")
+
+
+        },
+
+
     }
 })
 
