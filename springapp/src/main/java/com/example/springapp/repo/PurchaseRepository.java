@@ -18,4 +18,6 @@ public interface PurchaseRepository extends JpaRepository<Purchase, Long> {
     List<Purchase> findAllByBuyer(User user);
 
     List<Purchase> findAllByProduct(Product product);
+
+
 }

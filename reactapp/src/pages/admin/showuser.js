@@ -1,181 +1,217 @@
-import React, { Component } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Table } from 'react-bootstrap';
-import { TableData } from '../../components/admin/dummyUserTable';
+import { useDispatch, useSelector } from 'react-redux';
+import { disableBuyer,disableSeller,deleteBuyer,deleteSeller, fetchAllUsers,} from '../../features/userSlice';
 import { ToastContainer, toast } from 'react-toastify';
+import { fetchProductByIdd } from '../../features/productSlice';
+import { fetchPurchaseById } from '../../features/purchaseSlice';
 import 'react-toastify/dist/ReactToastify.css';
 import Footer from '../../components/common/Footer';
 import AdminNavigationBar from '../../components/admin/AdminNavigationBar';
-export default class showuser extends Component {
 
-  handleActionClick = () => {
-    window.location.href = "/action";
-  };
-  handleOrdersClick = () => {
-    window.location.href = "/orderprompt";
-  };
-  handleProductsClick = () => {
-    window.location.href = "/productprompt";
-  };
-  handledisable = () => {
-    toast("Disabled Successfully");
-  };
-  handledelete = () => {
-    toast("Deleted Successfully");
-  };
+export default function Showuser() {
+  const token = useSelector(state => state.user.token);
+  const allUserList = useSelector(state => state.user.allUserList);
+  const purchaseListById = useSelector(state => state.purchase.purchaseListById);
+  const productListById = useSelector(state => state.product.productListById);
 
-  handleGotoClick = () => {
-    window.location.href = "/admin/products";
-  };
+  const dispatch = useDispatch();
 
-  render() {
-    return (
-      <div>
-        <AdminNavigationBar />
-        <div className="d-flex justify-content-between">
-          <h3 style={{ marginLeft: 10, marginTop: 8 }}><b>USERS</b></h3>
-          <button type="button" onClick={(e) => this.handleGotoClick(e)} class="btn btn-primary" style={{ margin: "8px 10px", backgroundColor: "#B6D3FF", color: "black" }}><b>Go to products</b></button>
-        </div>
+  useEffect(() => {
+    dispatch(fetchAllUsers({ token: token }));
+     }, [token]);
+  
+const handledisable = (id) => {
+  dispatch(disableBuyer({ token: token , id:id}));
+  // dispatch(disableSeller({ token: token ,Id:id}));
+  toast("Disabled Successfully");
+};
+const handledelete = (id) => {
+  dispatch(deleteBuyer({ token: token , id:id}));
+  // dispatch(deleteSeller({ token: token ,Id:id}));
+  toast("Deleted Successfully");
+};
 
-        <br></br>
-        <div style={{ padding: "0px 50px 50px 50px" }}>
-          <Table>
-            <thead>
-              <tr>
-                <th className='text-secondary'>NAME</th>
-                <th className='text-secondary'>EMAIL</th>
-                <th className='text-secondary'>PHONE NUMBER</th>
-                <th className='text-secondary'>DATE JOINED</th>
-                <th className='text-secondary'>TYPE</th>
-                <th className='text-secondary'> </th>
-                <th className='text-secondary'> </th>
-              </tr>
-            </thead>
-            <tbody>
-              {TableData.map(({ Id, name, email, phoneNumber, dateJoined, type }) => (
-                <tr key={Id}>
-                  <td>{name}</td>
-                  <td>{email}</td>
-                  <td>{phoneNumber}</td>
-                  <td>{dateJoined}</td>
-                  <td>{type}</td>
-                  <td>
-                    <div>
-                      {type === "seller" ?
-                        <><button style={{ color: "black", width: '65%' }} className="btn btn-warning"
-                          data-toggle="modal" data-target="#exampleModalorder">
+const handleorders = (e,id) => {
+  console.log(id)
+  dispatch(fetchPurchaseById({ userid: id}));
+  
+};
+const handleaction = (e,id) => {
+  console.log(id)
+  dispatch(fetchactionById({ userid: id}));
 
-                          <b>Orders</b></button>
-                          <div class="modal fade" id="exampleModalorder" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-                            <div style={{ maxWidth: "580px" }} class="modal-dialog modal-dialog-centered" role="document">
-                              <div class="modal-content">
-                                <div class="modal-header">
-                                  <h5 class="modal-title" id="exampleModalLongTitle"><b>ORDERS</b></h5>
-                                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                  </button>
-                                </div>
-                                <div class="modal-body">
-                                  <div>
-                                    <Table >
-                                      <thead>
-                                        <tr>
-                                          <th style={{ borderTop: "0" }} className=' text-secondary'>NAME</th>
-                                          <th style={{ borderTop: "0", textAlign: "center" }} className='text-secondary'>COUNT</th>
-                                          <th style={{ borderTop: "0" }} className='text-secondary'>DATE OF PURCHASE</th>
-                                          <th style={{ borderTop: "0" }} className='text-secondary'>MODE OF TRANSACTION</th>
+};
 
-                                        </tr>
-                                      </thead>
-                                      <tbody>
-                                        {TableData.map(({ Id, name, count, dateOfPurchase, modeOfTransaction }) => (
-                                          <tr key={Id}>
-                                            <td style={{ textAlign: "center" }} className='text-secondary'>{name}</td>
-                                            <td style={{ textAlign: "center" }} className='text-secondary'>{count}</td>
-                                            <td style={{ textAlign: "center" }} className='text-secondary'>{dateOfPurchase}</td>
-                                            <td style={{ textAlign: "center" }} className='text-secondary'>{modeOfTransaction}</td>
+const handleproducts = (e,id) => {
+  console.log(id)
+  dispatch(fetchProductByIdd({ userid: id}));
+};
 
-                                          </tr>
-                                        ))}
-                                      </tbody>
-                                    </Table>
-                                  </div>
-                                </div>
-                              </div>
+const handleGotoClick = () => {
+  window.location.href = "/admin/products";
+};
+
+
+return (
+  <div>
+    {/* {console.log(TableData)} */}
+    <AdminNavigationBar />
+    <div className="d-flex justify-content-between">
+      <h3 style={{ marginLeft: 10, marginTop: 8 }}><b>USERS</b></h3>
+      <button type="button" onClick={handleGotoClick} class="btn btn-primary" style={{ margin: "8px 10px", backgroundColor: "#B6D3FF", color: "black" }}><b>Go to products</b></button>
+    </div>
+
+    <br></br>
+    <div style={{ padding: "0px 50px 50px 50px" }}>
+      <Table>
+        <thead>
+          <tr>
+            <th className='text-secondary'>NAME</th>
+            <th className='text-secondary'>EMAIL</th>
+            <th className='text-secondary'>PHONE NUMBER</th>
+            <th className='text-secondary'>DATE JOINED</th>
+            <th className='text-secondary'>TYPE</th>
+            <th className='text-secondary'> </th>
+            <th className='text-secondary'> </th>
+          </tr>
+        </thead>
+        <tbody>
+          {allUserList.map(({ id, firstName, email, phone, createdAt, roles }) => (
+            <tr key={id}>
+              <td>{firstName}</td>
+              <td>{email}</td>
+              <td>{phone}</td>
+              <td>{createdAt ? createdAt.slice(0, 10) : ""}</td>
+              <td>{roles.slice(5)}</td>
+              <td key={id}>
+                <div key={id}>
+                  {roles === "ROLE_BUYER" ?
+                    <><button style={{ color: "black", width: '65%' }} 
+                    key={id}
+                    onClick={(e) => { handleorders(e,id)}}
+                    className="btn btn-warning"
+                      data-toggle="modal" data-target="#exampleModalorder">
+                      <b>Orders</b>
+                    </button>
+
+                      <div class="modal fade"  id="exampleModalorder" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                        <div style={{ maxWidth: "580px" }} class="modal-dialog modal-dialog-centered" role="document">
+                          <div class="modal-content">
+                            <div class="modal-header">
+                              <h5 class="modal-title" id="exampleModalLongTitle"><b>ORDERS</b></h5>
+                              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                              </button>
                             </div>
-                          </div></> :
-                        <><button style={{ color: "black", }} className="btn btn-info"
-                          data-toggle="modal" data-target="#exampleModalproduct"
-                        ><b>Products</b></button> <div class="modal fade" id="exampleModalproduct" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-                            <div style={{ maxWidth: "904px" }} class="modal-dialog modal-dialog-centered" role="document">
-                              <div class="modal-content">
-                                <div class="modal-header">
-                                  <h5 class="modal-title" id="exampleModalLongTitle"><b>PRODUCTS</b></h5>
-                                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                  </button>
-                                </div>
-                                <div class="modal-body">
-                                  <div>
-                                    <Table>
-                                      <thead>
-                                        <tr>
-                                          <th style={{ borderTop: "0", width: '74%', textAlign: 'center' }} className='text-secondary'>NAME</th>
-                                          <th style={{ borderTop: "0" }} className='text-secondary'>COUNT</th>
-                                          <th style={{ borderTop: "0" }} className='text-secondary'>DATE ADDED</th>
-                                        </tr>
-                                      </thead>
-                                      <tbody>
-                                        {TableData.map(({ Id, proname, count, dateAdded }) => (
-                                          <tr key={Id}>
-                                            <td className='text-secondary'>{proname}</td>
-                                            <td style={{ textAlign: "center" }} className='text-secondary'>{count}</td>
-                                            <td style={{ textAlign: "center" }} className='text-secondary'>{dateAdded}</td>
+                            <div class="modal-body">
+                              <div>
+                                <Table >
+                                  <thead>
+                                    <tr>
+                                      <th style={{ borderTop: "0" }} className=' text-secondary'>NAME</th>
+                                      <th style={{ borderTop: "0", textAlign: "center" }} className='text-secondary'>COUNT</th>
+                                      <th style={{ borderTop: "0" }} className='text-secondary'>DATE OF PURCHASE</th>
+                                      <th style={{ borderTop: "0" }} className='text-secondary'>MODE OF TRANSACTION</th>
 
-                                          </tr>
-                                        ))}
-                                      </tbody>
-                                    </Table>
-                                  </div>
-                                </div>
+                                    </tr>
+                                  </thead>
+                                  <tbody>
+                                    {purchaseListById.map(({ id, product, quantity, purchaseDate, paymentMethod}) => (
+                                      <tr key={id}>
+                                        <td style={{ textAlign: "center" }} className='text-secondary'>{product.name}</td>
+                                        <td style={{ textAlign: "center" }} className='text-secondary'>{quantity}</td>
+                                        <td style={{ textAlign: "center" }} className='text-secondary'>{purchaseDate? purchaseDate.slice(0, 10) : ""}</td>
+                                        <td style={{ textAlign: "center" }} className='text-secondary'>{paymentMethod}</td>
+
+                                      </tr>
+                                    ))}
+                                  </tbody>
+                                </Table>
                               </div>
                             </div>
                           </div>
-                        </>}
-                    </div>
-                  </td>
+                        </div>
+                      </div></> :
+                    <><button style={{ color: "black", }}
+                        key={id}
+                        onClick={(e) => { handleproducts(e,id)}} 
+                        className="btn btn-info"
+                      data-toggle="modal" data-target="#exampleModalproduct"
+                    ><b>Products</b></button> <div class="modal fade" id="exampleModalproduct" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                        <div style={{ maxWidth: "904px" }} class="modal-dialog modal-dialog-centered" role="document">
+                          <div class="modal-content">
+                            <div class="modal-header">
+                              <h5 class="modal-title" id="exampleModalLongTitle"><b>PRODUCTS</b></h5>
+                              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                              </button>
+                            </div>
+                            <div class="modal-body">
+                              <div>
+                                <Table>
+                                  <thead>
+                                    <tr>
+                                      <th style={{ borderTop: "0", width: '50%', textAlign: 'center' }} className='text-secondary'>NAME</th>
+                                      <th style={{ borderTop: "0",textAlign: 'center' }} className='text-secondary'>COUNT</th>
+                                      <th style={{ borderTop: "0",textAlign: 'center' }} className='text-secondary'>DATE ADDED</th>
+                                    </tr>
+                                  </thead>
+                                  <tbody>
+                                    {productListById.map(({ id, name, quantity, createdAt }) => (
+                                      <tr key={id}>
+                                        <td style={{ textAlign: "center" }} className='text-secondary'>{name}</td>
+                                        <td style={{ textAlign: "center" }} className='text-secondary'>{quantity}</td>
+                                        <td style={{ textAlign: "center" }} className='text-secondary'>{createdAt? createdAt.slice(0, 10) : ""}</td>
 
-                  <td>
-                    <button style={{ color: "black", }} className="btn btn-primary"
-                      class="btn btn-danger" data-toggle="modal" data-target="#exampleModalactions">
-                      <b>Actions</b></button>
-                    <div class="modal fade" id="exampleModalactions" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-                      <div class="modal-dialog modal-dialog-centered" role="document">
-                        <div class="modal-content">
-                          <div class="modal-header">
-                            <h5 class="modal-title" id="exampleModalLongTitle">Choose one of the options</h5>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                              <span aria-hidden="true">&times;</span>
-                            </button>
-                          </div>
-                          <div class="modal-footer">
-                            <button type="button" class="btn btn-danger" onClick={(e) => this.handledisable(e)} data-dismiss="modal">Disable</button>
-                            <button type="button" onClick={(e) => this.handledelete(e)} data-dismiss="modal" class="btn btn-danger">Delete</button>
+                                      </tr>
+                                    ))}
+                                  </tbody>
+                                </Table>
+                              </div>
+                            </div>
                           </div>
                         </div>
                       </div>
+                    </>}
+                </div>
+              </td>
+
+              <td>
+                <button style={{ color: "black", }} 
+                key={id}
+                onClick={(e) => { handleaction(e,id)}}
+                className="btn btn-primary"
+                  class="btn btn-danger" data-toggle="modal" data-target="#exampleModalactions">
+                  <b>Actions</b></button>
+                <div class="modal fade" id="exampleModalactions" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                  <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLongTitle">Choose one of the options</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                          <span aria-hidden="true">&times;</span>
+                        </button>
+                      </div>
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-danger" onClick={() => { handledisable(id)}} data-dismiss="modal">Disable</button>
+                        <button type="button" onClick={( ) => { handledelete(id)}}data-dismiss="modal" class="btn btn-danger">Delete</button>
+                      </div>
                     </div>
-                  </td>
-                  <div>
-                    <ToastContainer />
                   </div>
-                </tr>
-              ))}
-            </tbody>
-          </Table>
-        </div>
-        <Footer />
-      </div >
-    )
+                </div>
+              </td>
+              <div>
+                <ToastContainer />
+              </div>
+            </tr>
+          ))}
+        </tbody>
+      </Table>
+    </div>
+    <Footer />
+  </div >
+);
   }
-}
+
 
