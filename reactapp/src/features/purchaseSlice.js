@@ -1,6 +1,6 @@
 import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
 import {toast} from "react-toastify";
-import {createPurchase, getPurchaseByBuyer, getPurchaseByProduct,} from "../api/purchaseService";
+import {createPurchase, getPurchaseByBuyer, getPurchaseByProduct,getPurchaseByBuyerIdd} from "../api/purchaseService";
 
 export const addPurchase =
     createAsyncThunk('purchase/addPurchase',async (body)=>{
@@ -34,15 +34,30 @@ export const fetchPurchaseByProduct =
             return err.response.data
         })
     })
+export const fetchPurchaseById =
+    createAsyncThunk('purchase/fetchPurchaseById',async (body)=>{
+        console.log(body);
+        return  getPurchaseByBuyerIdd(
+            body.userid
+        ).then((res) =>{
+            return res.data
+        }).catch((err) =>{
+            return err.response.data
+        })
+    })
 
 export const purchaseSlice = createSlice({
     name:"purchase",
     initialState:{
+        fetchPurchaseInProcess:'',
         purchaseList:[],
-        purchaseListByProduct:[]
+        purchaseListByProduct:[],
+        purchaseListById:[],
     },
     reducers:{
-
+        setSelectedPurchase:(state,action) =>{
+            state.selectedPurchase = action.payload.buyerId
+        },
     },
     extraReducers:{
         [addPurchase.pending]:(state) => {
@@ -51,9 +66,7 @@ export const purchaseSlice = createSlice({
         [addPurchase.fulfilled]:(state,action) =>{
             if(action.payload !== undefined){
                 if(action.payload.message ==="success"){
-                    toast.success('Order Placed ', {
-                        position: toast.POSITION.TOP_CENTER
-                    });
+                    console.log("OrderPlaced")
                 }else {
                     toast.error('Please try again!!', {
                         position: toast.POSITION.TOP_CENTER
@@ -111,6 +124,25 @@ export const purchaseSlice = createSlice({
             }
         },
         [fetchPurchaseByProduct.rejected]:(state)=>{
+            state.fetchPurchaseInProcess = false
+            console.log("Purchase fetch failed")
+        },
+         [fetchPurchaseById.pending]:(state) => {
+            state.fetchPurchaseInProcess = true
+            console.log("pending")
+        },
+        [fetchPurchaseById.fulfilled]:(state,action) =>{
+            if(action.payload.message ==="success"){
+                state.purchaseListById = action.payload.data
+                console.log(state.purchaseListById)
+                console.log(action.payload)
+                console.log("Purchase fetched")
+            }else {
+                console.log("purchase failed")
+                console.log(action.payload.message)
+            }
+        },
+        [fetchPurchaseById.rejected]:(state)=>{
             state.fetchPurchaseInProcess = false
             console.log("Purchase fetch failed")
         },

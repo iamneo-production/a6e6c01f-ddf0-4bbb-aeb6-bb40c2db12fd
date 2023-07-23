@@ -47,7 +47,7 @@ export default function SellerNavigationBar() {
                             <Offcanvas.Body>
                                 <div class="list-group list-group-flush">
                                     <a onClick={handleSellerHome} href="#" class="list-group-item list-group-item-action"><MdHome style={{ width: 30, height: 20 }} />Home</a>
-                                    <a href="#" class="list-group-item list-group-item-action"><MdAccountCircle style={{ width: 30, height: 20 }} />My Profile</a>
+                                    <a href="/profile" class="list-group-item list-group-item-action"><MdAccountCircle style={{ width: 30, height: 20 }} />My Profile</a>
                                     <a onClick={handleAddProducts} href="#" class="list-group-item list-group-item-action"><MdCheckCircle style={{ width: 30, height: 20 }} />Add Products</a>
                                     <a onClick={handleSellerQA} href="#" class="list-group-item list-group-item-action"><MdMessage style={{ width: 30, height: 20 }} />Q & A</a>
                                     <a href="#" class="list-group-item list-group-item-action" onClick={()=>handleLogout()}><MdLogout style={{ width: 30, height: 20 }} />Logout</a>

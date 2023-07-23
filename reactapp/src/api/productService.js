@@ -82,3 +82,6 @@ export async function updateProductImageById(token, productId, image) {
         },
     });
 }
+export async function getProductBySellerIdd(id) {
+    return await axios.get(`${baseUrl}/auth/selleridd/${id}`);
+  }
