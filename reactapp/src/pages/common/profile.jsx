@@ -3,33 +3,33 @@ import './profile.css';
 import NavigationBar from '../../components/common/NavigationBar';
 import { useDispatch, useSelector } from 'react-redux';
 import { updateUser } from '../../features/userSlice';
-import { ToastContainer, toast } from 'react-toastify';
+import {  toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import axios from "axios";
+
 
 export default function Profile() {
   const [firstname, setFirstName] = useState('');
   const [lastname, setLastName] = useState('');
-  const [email, setEmail] = useState('');
+  // const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [phonenumber, setPhoneNumber] = useState('');
-  const [address, setAddress] = useState('');
+  // const [address, setAddress] = useState('');
   const [editable, setEditable] = useState(false);
-  const [type, setType] = useState('');
+  // const [type, setType] = useState('');
 
   const dispatch = useDispatch();
   const currentUser = useSelector((state) => state.user.currentUser);
   const token = useSelector((state) => state.user.token);
-
+  const passwordValidation = new RegExp ('^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{5,}$')
   useEffect(() => {
    if (currentUser) {
       setFirstName(currentUser.firstName || '');
       setLastName(currentUser.lastName || '');
-      setEmail(currentUser.email || '');
+      // setEmail(currentUser.email || '');
       setPassword(currentUser.password || '');
       setPhoneNumber(currentUser.phone || '');
-      setAddress(currentUser.address || '');
-      setType(currentUser.type || '');
+      // setAddress(currentUser.address || '');
+      // setType(currentUser.type || '');
     }
   }, [currentUser]);
 
@@ -43,17 +43,23 @@ export default function Profile() {
     };
     
     if (Object.keys(updatedUser).some((key) => updatedUser[key] !== currentUser[key])) {
-      dispatch(updateUser({ token, id: currentUser.id, updatedUser }))
-        .then(() => {
-          toast.success('User updated successfully', {
-            position: toast.POSITION.TOP_CENTER,
+      if (passwordValidation.test(updatedUser.password)) {
+        dispatch(updateUser({ token, id: currentUser.id, updatedUser }))
+          .then(() => {
+            toast.success('User updated successfully', {
+              position: toast.POSITION.TOP_CENTER,
+            });
+          })
+          .catch(() => {
+            toast.error('Failed to update user', {
+              position: toast.POSITION.TOP_CENTER,
+            });
           });
-        })
-        .catch(() => {
-          toast.error('Failed to update user', {
-            position: toast.POSITION.TOP_CENTER,
-          });
-        });
+      }else{
+         toast.error('Enter a valid password!', {
+                        position: toast.POSITION.TOP_CENTER
+                    });
+      }
     } else {
       toast.info('No changes detected', {
         position: toast.POSITION.TOP_CENTER,
