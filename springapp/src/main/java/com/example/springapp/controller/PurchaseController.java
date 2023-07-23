@@ -60,11 +60,6 @@ public class PurchaseController {
         return ResponseEntity.ok(new BaseResponseDTO("success",purchases));
     }
 
-    @GetMapping("/api/seller/product/purchase")
-    public ResponseEntity<BaseResponseDTO> getPurchaseByProduct(@RequestParam String productId) {
-        List<Purchase> purchases = purchaseService.getPurchaseByProduct(productId);
-        return ResponseEntity.ok(new BaseResponseDTO("success",purchases));
-    }
 
     @PostMapping("/api/purchase")
     public ResponseEntity<BaseResponseDTO> makePurchas(@RequestHeader(value = "Authorization", defaultValue = "") String token,
@@ -75,20 +70,25 @@ public class PurchaseController {
 
     // Test Case
     @GetMapping("/purchase/buyer")
-    public ResponseEntity<List<Purchase>> getPurchaseByBuyerId(@RequestHeader(value = "Authorization") String token) {
-        User user = userRepository.findByEmail(tokenProvider.getUsernameFromToken(tokenProvider.getTokenFromHeader(token))).orElseThrow();
-        List<Purchase> purchases = purchaseService.getPurchaseByBuyer(user);
-        return ResponseEntity.ok(purchases);
+    public ResponseEntity<List<Map<String, Object>>> getPurchaseByBuyerId(@RequestParam("buyerId") int buyerId) {
+        List<Map<String, Object>> result = purchaseService.getPurchaseByBuyerId(buyerId);
+        return ResponseEntity.ok(result);
     }
 
 
     @PostMapping("/purchase")
-    public ResponseEntity<List<Purchase>> makePurchase(@RequestHeader(value = "Authorization") String token,
-                                                        @RequestBody PurchaseRequestDto purchaseRequestDto) {
-        User user = userRepository.findByEmail(tokenProvider.getUsernameFromToken(token)).orElseThrow();
-        purchaseService.makePurchase(purchaseRequestDto.getCartIds(),purchaseRequestDto.getPaymentMethod());
-        List<Purchase> purchases = new ArrayList<>();
+    public ResponseEntity<List<Purchase>> makePurchase(@RequestBody PurchaseRequestDto purchaseRequestDto) {
+                
+        List<Purchase> purchases = purchaseService.makePurchase(purchaseRequestDto.getCartIds(),purchaseRequestDto.getPaymentMethod());
         return ResponseEntity.ok(purchases);
     }
+
+    @GetMapping("/api/seller/product/purchase")
+    public ResponseEntity<BaseResponseDTO> getPurchaseByProduct(@RequestParam String productId) {
+        List<Purchase> purchases = purchaseService.getPurchaseByProduct(productId);
+        return ResponseEntity.ok(new BaseResponseDTO("success",purchases));
+    }
+
+
 
 }
