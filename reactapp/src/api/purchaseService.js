@@ -34,4 +34,6 @@ export async function getPurchaseByBuyer(token){
     headers: { Authorization: `Bearer ${token}` }
   })
 }
-
+export async function getPurchaseByBuyerIdd(id){
+  return await axios.get(`${baseUrl}/auth/buyer/${id}`);
+}

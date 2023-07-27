@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { createUserService, loginUserService } from "../api/userService";
+import { createUserService, loginUserService,disabledBuyerById,deletedBuyerById,getAllUser, getUserById,updateUserById  } from "../api/userService";
 import {toast} from "react-toastify";
 
 export const loginUser =
@@ -25,7 +25,66 @@ export const signupUser =
                 return err.data
             })
     })
+export const fetchAllUsers =
+    createAsyncThunk('user/fetchAllUsers', async (body) => {
+        return getAllUser(
+            body.token
+        ).then((res) => {
+            return res.data
+        }).catch((err) => {
+            return err.response.data
+        })
+    })
 
+
+export const fetchUserById =
+    createAsyncThunk('user/fetchUserById', async (body) => {
+        console.log("from slice")
+        console.log(body)
+        return getUserById(
+            body.token,
+            body.id
+        ).then((res) => {
+            return res.data
+        }).catch((err) => {
+            return err.response.data
+        })
+    })
+
+    export const updateUser = createAsyncThunk(
+        'user/updateUser',
+        async ({ token, id, updatedUser }) => {
+          try {
+            const response = await updateUserById(token, id, updatedUser);
+            return response.data;
+          } catch (error) {
+            throw error;
+          }
+        }
+    );
+
+   export const disableBuyer = createAsyncThunk(
+        'user/disableBuyer',
+        async ({ token, id }) => {
+          try {
+            const response = await disabledBuyerById(token, id);
+            return response.data;
+          } catch (error) {
+            throw error;
+          }
+        }
+    );
+    export const deleteBuyer = createAsyncThunk(
+        'user/deleteBuyer',
+        async ({ token, id }) => {
+          try {
+            const response = await deletedBuyerById(token, id);
+            return response.data;
+          } catch (error) {
+            throw error;
+          }
+        }
+    );
 export const userSlice = createSlice({
     name: "user",
     initialState: {
@@ -41,13 +100,21 @@ export const userSlice = createSlice({
         signupInProgress:false,
         signinInProgress:false,
         signinSuccess: false,
-        signupSuccess: false
+        signupSuccess: false,
+        fetchUserInProcess: false,
+        allUserList: [],
+        allActionList:[],
+        selectedUser:''
     },
     reducers: {
         signup: (state, actions) => {
             console.log(actions.payload)
 
-        }
+        },
+        setSelectedUser:(state,action) =>{
+            state.selectedUser = action.payload.id
+        },
+        
 
     },
     extraReducers: {
@@ -115,11 +182,70 @@ export const userSlice = createSlice({
             alert("login failed,Try again")
             state.signupInProgress = false
         },
+        [fetchAllUsers.pending]: (state) => {
+            state.fetchUserInProcess = true
+            console.log("pending")
+        },
+        [fetchAllUsers.fulfilled]: (state, action) => {
+            if(action.payload){
+                state.allUserList =action.payload
+                console.log("Users fetched")
+                console.log(state.allUserList)
+            }else{
+                console.log("User Not fetched")
+            }
+            state.fetchUserInProcess = false
+        },
+        [fetchAllUsers.rejected]: (state) => {
+            state.fetchUserInProcess = false
+            console.log("Users fetch failed")
+        },
+        [fetchUserById.pending]: (state) => {
+            state.fetchUserInProcess = true
+            console.log("pending")
+        },
+        [fetchUserById.fulfilled]: (state, action) => {
+            if(action.payload.message ==="success"){
+                state.userDetails = action.payload.data
+                console.log("Users fetched")
+                console.log(state.userList)
+            }else {
+                console.log(action.payload.message)
+            }
+            state.fetchUserInProcess = false;
+        },
+        [fetchUserById.rejected]: (state) => {
+            state.fetchUserInProcess = false;
+            console.log("Fetching user by ID failed");
+            
+        },
+        [updateUser.fulfilled]: (state, action) => {
+            // Assuming the response data includes the updated product details
+            state.currentUser.firstName = action.payload.firstName
+            state.currentUser.lastName = action.payload.lastName
+            state.currentUser.email = action.payload.email
+            state.currentUser.phone = action.payload.phone
+            state.userDetails = action.payload;
+        },
+        [disableBuyer.fulfilled]: (state, action) => {
+            console.log("Buyer diabled")
+
+
+        },
+
+
+        [deleteBuyer.fulfilled]: (state, action) => {
+            console.log("Buyer deleted")
+
+
+        },
+
+
     }
 })
 
 
-export const { signup } = userSlice.actions
+export const { signup, disableUser, deleteUser } = userSlice.actions
 
 export const userReducer = userSlice.reducer
 
